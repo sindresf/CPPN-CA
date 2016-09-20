@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CACPPNConsole.CA.BaseTypes;
+using CACPPN.CA.BaseTypes;
 
-namespace ConsoleApplication1.CA.DerivedTypes.StateSetTypes
+namespace CACPPN.CA.DerivedTypes.StateSetTypes
 {
 	class FloatIntervalStateSet : StateSet
 	{

@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="CA\BaseTypes\BoundaryCondition.cs" />
     <Compile Include="CA\BaseTypes\Cell.cs" />
+    <Compile Include="CA\BaseTypes\ExperimentSetup.cs" />
     <Compile Include="CA\BaseTypes\InitialCondition.cs" />
     <Compile Include="CA\BaseTypes\Neighbourhood.cs" />
     <Compile Include="CA\BaseTypes\StateSet.cs" />

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CACPPNConsole.CA.BaseTypes;
+using CACPPN.CA.BaseTypes;
 
-namespace ConsoleApplication1.CA.DerivedTypes.NeighbourhoodTypes.Deterministic
+namespace CACPPN.CA.DerivedTypes.NeighbourhoodTypes.Deterministic
 {
 	class FreeFloatDistanceBasedNeighbourhood : Neighbourhood
 	{
