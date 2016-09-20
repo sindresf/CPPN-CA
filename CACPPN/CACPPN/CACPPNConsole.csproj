@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1527C23D-3D3C-4DE6-879B-7E2E5612811F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
+    <AssemblyName>ConsoleApplication1</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Box2DX, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Box2DX.2.0.2.0\lib\net40\Box2DX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms">
+      <HintPath>..\packages\System.Windows.Forms.4.0.0.0\lib\System.Windows.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CPPN\ThirdPartyAssemblies\TaoOpenGl\Tao.OpenGl.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Platform.Windows, Version=1.0.0.5, Culture=neutral, PublicKeyToken=701104b2da67a104, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CPPN\ThirdPartyAssemblies\TaoOpenGl\Tao.Platform.Windows.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CA\BaseTypes\BoundaryCondition.cs" />
+    <Compile Include="CA\BaseTypes\Cell.cs" />
+    <Compile Include="CA\BaseTypes\InitialCondition.cs" />
+    <Compile Include="CA\BaseTypes\Neighbourhood.cs" />
+    <Compile Include="CA\BaseTypes\StateSet.cs" />
+    <Compile Include="CA\BaseTypes\StoppingCondition.cs" />
+    <Compile Include="CA\BaseTypes\TimeVariable.cs" />
+    <Compile Include="CA\BaseTypes\TransitionRuleSet.cs" />
+    <Compile Include="CA\Interfaces\IBoundaryCondition.cs" />
+    <Compile Include="CA\Interfaces\ICell.cs" />
+    <Compile Include="CA\Interfaces\ICellularSpace.cs" />
+    <Compile Include="CA\Interfaces\IInitialCondition.cs" />
+    <Compile Include="CA\Interfaces\INeighbourhood.cs" />
+    <Compile Include="CA\Interfaces\IStateSet.cs" />
+    <Compile Include="CA\Interfaces\IStateTranslator.cs" />
+    <Compile Include="CA\Interfaces\IStoppingCondition.cs" />
+    <Compile Include="CA\Interfaces\ITimeVariable.cs" />
+    <Compile Include="CA\Interfaces\ITransitioner.cs" />
+    <Compile Include="CA\Interfaces\ITransitionRuleSet.cs" />
+    <Compile Include="Program\CACPPNBaseProgram.cs" />
+    <Compile Include="Program\CACPPNStatisticsProgram.cs" />
+    <Compile Include="Program\CAStatisticsProgram.cs" />
+    <Compile Include="Program\CABaseProgram.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CA\CellularSpaces\1D\" />
+    <Folder Include="CA\CellularSpaces\2D\" />
+    <Folder Include="CA\CellularSpaces\3D\" />
+    <Folder Include="CA\CellularSpaces\Open\" />
+    <Folder Include="CA\DerivedTypes\" />
+    <Folder Include="CA\FitnessEvaluators\" />
+    <Folder Include="CA\Utils\CSInitators\" />
+    <Folder Include="CA\Utils\CSMetaCalculations\" />
+    <Folder Include="CA\Utils\Logging\Excel\" />
+    <Folder Include="CA\Utils\Logging\Textual\" />
+    <Folder Include="CA\Utils\Logging\Visual\" />
+    <Folder Include="CPPN\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
