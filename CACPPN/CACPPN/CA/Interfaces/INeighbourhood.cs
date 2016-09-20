@@ -1,12 +1,12 @@
-﻿using System;
+﻿using CACPPN.CA.Utils.Coordinates;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CACPPN.CA.Interfaces
 {
-	interface INeighbourhood
-	{
-	}
+    interface INeighbourhood
+    {
+        ICollection<ICell> Neighbors { get; set; }
+
+        void makeNeighbourhoodWithWidth(int stepsFromCell, ICoordinate cellCoordinates, CPPNCoordinateScale coordinateStep);
+    }
 }

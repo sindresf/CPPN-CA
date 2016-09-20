@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace CACPPN.CA.Interfaces
 {
-    interface ICell
+    interface ICoordinate
     {
-        ICoordinate GridPosition { get; }
-        INeighbourhood Neighbourhood { get; set; }
-        double State { get; set; }
+        ICoordinate GetCoordinates();
+        void SetCoordinates(double x, double y = 0, double z = 0);
     }
 }

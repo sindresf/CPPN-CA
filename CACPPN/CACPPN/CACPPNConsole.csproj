@@ -88,6 +88,7 @@
     <Compile Include="CA\Interfaces\IBoundaryCondition.cs" />
     <Compile Include="CA\Interfaces\ICell.cs" />
     <Compile Include="CA\Interfaces\ICellularSpace.cs" />
+    <Compile Include="CA\Interfaces\ICoordinate.cs" />
     <Compile Include="CA\Interfaces\IInitialCondition.cs" />
     <Compile Include="CA\Interfaces\INeighbourhood.cs" />
     <Compile Include="CA\Interfaces\IStateSet.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="CA\Interfaces\ITimeVariable.cs" />
     <Compile Include="CA\Interfaces\ITransitioner.cs" />
     <Compile Include="CA\Interfaces\ITransitionRuleSet.cs" />
+    <Compile Include="CA\Utils\CellCoordinates.cs" />
     <Compile Include="Program\CACPPNBaseProgram.cs" />
     <Compile Include="Program\CACPPNStatisticsProgram.cs" />
     <Compile Include="Program\CAStatisticsProgram.cs" />

@@ -1,16 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CACPPN.CA.Interfaces;
 
 namespace CACPPN.CA.BaseTypes
 {
     class Cell : ICell
     {
+
         protected INeighbourhood _neighbourhood;
-        public INeighbourhood neighbourhood
+        protected ICoordinate _gridPosition;
+
+        public ICoordinate GridPosition
+        {
+            get { return _gridPosition; }
+
+            private set
+            {
+                _gridPosition = value;
+            }
+        }
+
+        public Cell()
+        {
+            //TODO the private set sets the position here
+        }
+
+        public INeighbourhood Neighbourhood
         {
             get
             {
@@ -20,14 +34,12 @@ namespace CACPPN.CA.BaseTypes
             set
             {
                 if (_neighbourhood == null)
-                    neighbourhood = value;
+                    _neighbourhood = value;
+                else
+                    throw new ArgumentException("Can't change the neighbourhood!");
             }
         }
 
-        public virtual double State
-        {
-            get;
-            set;
-        }
+        public virtual double State { get; set; } //Don't know what to do with this one yet
     }
 }
