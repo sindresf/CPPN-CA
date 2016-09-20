@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CACPPN.CA.Interfaces
 {
-	interface ICell
-	{
-	}
+    interface ICell
+    {
+        INeighbourhood neighbourhood { get; set; }
+    }
 }

@@ -16,4 +16,4 @@ namespace CACPPN.CA.BaseTypes
                More or less a wrapper class for all the parts of a CA that the while loop might need.
         */
     }
-    }
+}
