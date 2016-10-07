@@ -9,22 +9,28 @@ namespace CACPPN.CA.BaseTypes
         protected INeighbourhood _neighbourhood;
         protected ICoordinate _gridPosition;
 
-        public ICoordinate GridPosition
+        public virtual ICoordinate GridPosition
         {
             get { return _gridPosition; }
 
-            private set
+            protected set
             {
                 _gridPosition = value;
             }
         }
 
-        public Cell()
+        public Cell(ICoordinate coords, double state)
         {
-            //TODO the private set sets the position here
+            GridPosition = coords;
+            State = state;
         }
 
-        public INeighbourhood Neighbourhood
+        public Cell(ICoordinate coords)
+        {
+            GridPosition = coords;
+        }
+
+        public virtual INeighbourhood Neighbourhood
         {
             get
             {
@@ -36,7 +42,7 @@ namespace CACPPN.CA.BaseTypes
                 if (_neighbourhood == null)
                     _neighbourhood = value;
                 else
-                    throw new ArgumentException("Can't change the neighbourhood!");
+                    throw new ArgumentException("Can't change the neighbourhood!"); //TODO unless random connection or size stuff for laters
             }
         }
 

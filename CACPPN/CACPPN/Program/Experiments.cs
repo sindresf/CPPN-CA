@@ -4,32 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CACPPN.CA.Interfaces;
+using CACPPN.CA.TypeEnums;
 
-namespace ConsoleApplication1.Program
+namespace CACPPN.Program
 {
     class Experiments
     {
 
         //TODO so this has that delegation dictionary with the enum names as keys and 
         // experiment functions as values
-     
-        public Experiment getExperiment()
+
+        public static Experiment GetExperiment(ExperimentNames experimentName)
         {
             //TODO and looks up that dictionary here and returns the setup.
             return null;
         }
-    }
-
-    enum ExperimentNames
-    {
-        BASIC,
-        SIMPLE,
-        NORMAL,
-        HARD,
-        EXPERT,
-        KOOKY,
-        FLUID,
-        WHATEVER
     }
 
     class Experiment

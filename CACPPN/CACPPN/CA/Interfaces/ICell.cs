@@ -8,7 +8,7 @@ namespace CACPPN.CA.Interfaces
 {
     interface ICell
     {
-        ICoordinate GridPosition { get; set; }
+        ICoordinate GridPosition { get; }
         INeighbourhood Neighbourhood { get; set; }
         double State { get; set; }
     }

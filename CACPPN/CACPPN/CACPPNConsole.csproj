@@ -68,6 +68,7 @@
     <Compile Include="CA\BaseTypes\StoppingCondition.cs" />
     <Compile Include="CA\BaseTypes\TimeVariable.cs" />
     <Compile Include="CA\BaseTypes\TransitionRuleSet.cs" />
+    <Compile Include="CA\CellularSpaces\OneDimensionalCellularSpace.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\BooleanCell.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\FloatCell.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\TreeCell.cs" />
@@ -113,7 +114,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CA\CellularSpaces\" />
     <Folder Include="CA\FitnessEvaluators\" />
     <Folder Include="CA\Utils\CSInitators\" />
     <Folder Include="CA\Utils\CSMetaCalculations\" />

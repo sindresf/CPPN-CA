@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CACPPN.CA.TypeEnums
+﻿namespace CACPPN.CA.TypeEnums
 {
     enum CellType
     {
@@ -64,5 +58,17 @@ namespace CACPPN.CA.TypeEnums
         CPPN,
         UNIFORM,
         NONE_UNIFORM
+    }
+
+    enum ExperimentNames
+    {
+        BASIC,
+        SIMPLE,
+        NORMAL,
+        HARD,
+        EXPERT,
+        KOOKY,
+        FLUID,
+        WHATEVER
     }
 }
