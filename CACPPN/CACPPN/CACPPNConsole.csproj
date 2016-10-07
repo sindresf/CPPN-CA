@@ -102,6 +102,7 @@
     <Compile Include="Program\CACPPNStatisticsProgram.cs" />
     <Compile Include="Program\CAStatisticsProgram.cs" />
     <Compile Include="Program\CABaseProgram.cs" />
+    <Compile Include="Program\Experiments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
