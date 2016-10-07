@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace CACPPN.CA.Interfaces
 {
-	interface IInitialCondition
-	{
-	}
+    interface IInitialCondition
+    {
+        void GetInitalRandom(ICellularSpace spaceToFill, double fillPercentage);
+
+        void GetSingleCentreCell(ICellularSpace spaceToFill);
+
+        //and then it's up to the spaces to take their respective structure "hardcoded fillers"
+    }
 }

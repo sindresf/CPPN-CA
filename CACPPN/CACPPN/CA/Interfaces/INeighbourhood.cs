@@ -8,5 +8,7 @@ namespace CACPPN.CA.Interfaces
         ICollection<ICell> Neighbors { get; set; }
 
         void makeNeighbourhoodWithWidth(int stepsFromCell, ICoordinate cellCoordinates, CPPNCoordinateScale coordinateStep);
+
+        //TODO another maker for stochastic construction
     }
 }

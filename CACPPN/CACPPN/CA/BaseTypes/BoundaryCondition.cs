@@ -7,7 +7,11 @@ using CACPPN.CA.Interfaces;
 
 namespace CACPPN.CA.BaseTypes
 {
-	class BoundaryCondition : IBoundaryCondition
-	{
-	}
+    class BoundaryCondition : IBoundaryCondition
+    {
+        public virtual void HandleBoundaryCellCase(ICell cell)
+        {
+            throw new Exception("Base boundary case don't do shitt!");
+        }
+    }
 }

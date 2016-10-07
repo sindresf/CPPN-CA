@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="CA\BaseTypes\BoundaryCondition.cs" />
     <Compile Include="CA\BaseTypes\Cell.cs" />
-    <Compile Include="CA\BaseTypes\ExperimentSetup.cs" />
+    <Compile Include="CA\BaseTypes\CellularSpace.cs" />
     <Compile Include="CA\BaseTypes\InitialCondition.cs" />
     <Compile Include="CA\BaseTypes\Neighbourhood.cs" />
     <Compile Include="CA\BaseTypes\StateSet.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="CA\DerivedTypes\StateSetTypes\ContinuousStateSet.cs" />
     <Compile Include="CA\DerivedTypes\StateSetTypes\FloatIntervalStateSet.cs" />
     <Compile Include="CA\DerivedTypes\StateSetTypes\IntegerStateSet.cs" />
+    <Compile Include="CA\Interfaces\ISituation.cs" />
     <Compile Include="CA\Interfaces\IBoundaryCondition.cs" />
     <Compile Include="CA\Interfaces\ICell.cs" />
     <Compile Include="CA\Interfaces\ICellularSpace.cs" />
@@ -97,7 +98,9 @@
     <Compile Include="CA\Interfaces\ITimeVariable.cs" />
     <Compile Include="CA\Interfaces\ITransitioner.cs" />
     <Compile Include="CA\Interfaces\ITransitionRuleSet.cs" />
+    <Compile Include="CA\TypeEnums\CAPartTypes.cs" />
     <Compile Include="CA\Utils\CellCoordinates.cs" />
+    <Compile Include="CA\Utils\IntervalManager.cs" />
     <Compile Include="Program\CACPPNBaseProgram.cs" />
     <Compile Include="Program\CACPPNStatisticsProgram.cs" />
     <Compile Include="Program\CAStatisticsProgram.cs" />
@@ -110,10 +113,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CA\CellularSpaces\1D\" />
-    <Folder Include="CA\CellularSpaces\2D\" />
-    <Folder Include="CA\CellularSpaces\3D\" />
-    <Folder Include="CA\CellularSpaces\Open\" />
+    <Folder Include="CA\CellularSpaces\" />
     <Folder Include="CA\FitnessEvaluators\" />
     <Folder Include="CA\Utils\CSInitators\" />
     <Folder Include="CA\Utils\CSMetaCalculations\" />

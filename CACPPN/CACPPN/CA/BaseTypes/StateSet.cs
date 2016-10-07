@@ -4,10 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CACPPN.CA.Interfaces;
+using CACPPN.CA.Utils;
 
 namespace CACPPN.CA.BaseTypes
 {
-	class StateSet : IStateSet
-	{
-	}
+    class StateSet : IStateSet
+    {
+        public int StateSetSize
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public List<double> States { get; protected set; }
+
+        protected bool uniformStateSet;
+
+        public StateSet(int initialSize, bool uniformStateSet = true)
+        {
+            StateSetSize = initialSize;
+            this.uniformStateSet = uniformStateSet;
+            States = IntervalManager.GetValueEveryStepBetweenZeroAndOne(StateSetSize);
+        }
+
+        public void ChangeStateSetSize(int byAmount)
+        {
+            StateSetSize += byAmount;
+        }
+
+        public void setAsNoneUniformStateSet()
+        {
+            this.uniformStateSet = false;
+        }
+    }
 }

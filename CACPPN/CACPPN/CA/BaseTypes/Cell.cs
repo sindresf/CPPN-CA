@@ -3,7 +3,7 @@ using CACPPN.CA.Interfaces;
 
 namespace CACPPN.CA.BaseTypes
 {
-    class Cell : ICell
+    class Cell : ICell //TODO Cell needs some looking into
     {
 
         protected INeighbourhood _neighbourhood;

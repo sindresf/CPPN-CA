@@ -48,7 +48,7 @@ namespace ConsoleApplication1.Program
         public INeighbourhood NeighbourHood { get; set; }
         public IStateSet StateSet { get; set; }
         public IStateTranslator StateTranslator { get; set; }
-        public IStoppingCondition StoppingCondition { get; set; } //Condition S ?
+        public IStoppingConditions StoppingCondition { get; set; } //Condition S ?
         public ITimeVariable TimeVariable { get; set; } //Default should just be "gogogo" aka no time, just asap
         public ITransitioner Transitioner { get; set; }
         public ITransitionRuleSet TransitionRuleSet { get; set; }

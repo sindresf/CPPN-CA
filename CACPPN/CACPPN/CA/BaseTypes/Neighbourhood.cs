@@ -8,7 +8,7 @@ namespace CACPPN.CA.BaseTypes
     class Neighbourhood : INeighbourhood
     {
         ICollection<ICell> _neighbors;
-        public ICollection<ICell> Neighbors
+        public virtual ICollection<ICell> Neighbors
         {
             get
             {
