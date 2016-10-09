@@ -25,7 +25,7 @@ namespace CACPPN.CA.Interfaces
 
         int GetTimeForCheckingStoppingCondition(); //The "20 steps and you should be at "successStoppingCondition" and such
 
-        void ChangeCountBasedStoppingCondition(StoppingConditionType whichCondition, int amount);
+        void ChangeCountBasedStoppingCondition(int amount);
     }
 
 }

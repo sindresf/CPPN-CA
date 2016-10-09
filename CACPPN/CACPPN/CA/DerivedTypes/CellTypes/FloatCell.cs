@@ -7,7 +7,7 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.CellTypes
 {
-	class FloatCell : Cell
-	{
-	}
+    class FloatCell : Cell
+    {
+    }
 }

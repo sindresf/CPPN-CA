@@ -8,7 +8,7 @@
         CONTINUOUS // this one only for Actual continuous state space
     }
 
-    enum CellularSpaceTypes
+    enum CellularSpaceType
     {
         ONE_DIMENSIONAL,
         TWO_DIMENSIONAL,
@@ -18,14 +18,10 @@
         HEXAGONAL // and such "whatevers"
     }
 
-    enum NeighbourhoodTypes
+    enum NeighbourhoodType
     {
-        VAN_NEUMANN, //TODO find out what the base ones were called
-        WOLFRAM,
-        RADIOUS_DEFINED,
-        STOCHASTIC_CONNECTION,
-        UNIFORM_COUNT,
-        STOCHASTIC_COUNT
+        DETERMINISTIC_WIDTH,
+        STOCHASTIC_WIDTH
     }
 
     enum BoundaryConditionType
@@ -35,14 +31,6 @@
         COPYING,
         REFLECTING,
         ABSORBING
-    }
-
-    enum StoppingConditionType
-    {
-        SUCCESS,
-        GIVE_UP,
-        CHECKING_TIME,
-        PROBLEM
     }
 
     enum TimeStepType
@@ -58,17 +46,5 @@
         CPPN,
         UNIFORM,
         NONE_UNIFORM
-    }
-
-    enum ExperimentNames
-    {
-        BASIC,
-        SIMPLE,
-        NORMAL,
-        HARD,
-        EXPERT,
-        KOOKY,
-        FLUID,
-        WHATEVER
     }
 }

@@ -30,6 +30,16 @@ namespace CACPPN.CA.BaseTypes
             GridPosition = coords;
         }
 
+        public Cell(double value)
+        {
+
+        }
+
+        public Cell()
+        {
+
+        }
+
         public virtual INeighbourhood Neighbourhood
         {
             get

@@ -101,12 +101,13 @@
     <Compile Include="CA\Interfaces\ITransitionRuleSet.cs" />
     <Compile Include="CA\TypeEnums\CAPartTypes.cs" />
     <Compile Include="CA\Utils\CellCoordinates.cs" />
+    <Compile Include="CA\Utils\Hyperparameters.cs" />
     <Compile Include="CA\Utils\IntervalManager.cs" />
     <Compile Include="Program\CACPPNBaseProgram.cs" />
     <Compile Include="Program\CACPPNStatisticsProgram.cs" />
     <Compile Include="Program\CAStatisticsProgram.cs" />
     <Compile Include="Program\CABaseProgram.cs" />
-    <Compile Include="Program\Experiments.cs" />
+    <Compile Include="Program\Experiments\BaseExperiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +121,7 @@
     <Folder Include="CA\Utils\Logging\Excel\" />
     <Folder Include="CA\Utils\Logging\Textual\" />
     <Folder Include="CA\Utils\Logging\Visual\" />
-    <Folder Include="CPPN\" />
+    <Folder Include="Program\CPPN\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

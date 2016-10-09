@@ -7,7 +7,7 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.StateSetTypes
 {
-	class BooleanStateSet : StateSet
-	{
-	}
+    class BooleanStateSet : StateSet
+    {
+    }
 }

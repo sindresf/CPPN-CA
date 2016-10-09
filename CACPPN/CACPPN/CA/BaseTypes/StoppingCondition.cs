@@ -7,7 +7,7 @@ using CACPPN.CA.Interfaces;
 
 namespace CACPPN.CA.BaseTypes
 {
-    class StoppingConditions : IStoppingConditions
+    class StoppingConditions
     {
         protected int GiveUpCount, CheckingTimeCount;
 
@@ -18,19 +18,6 @@ namespace CACPPN.CA.BaseTypes
             GiveUpCount = giveUp;
             CheckingTimeCount = checkingTime;
             this.SuccessState = SuccessState;
-        }
-
-        public void ChangeCountBasedStoppingCondition(StoppingConditionType whichCondition, int amount)
-        {
-            switch (whichCondition)
-            {
-                case StoppingConditionType.CHECKINGTIME:
-                    CheckingTimeCount += amount;
-                    break;
-                case StoppingConditionType.GIVEUP:
-                    GiveUpCount += amount;
-                    break;
-            }
         }
 
         public int GetGiveUpStoppingCondition()
