@@ -12,6 +12,9 @@ namespace CACPPN.Utils.SeedingMachines
         }
         public static void SpawnCrossOscillator(int iMid, int jMid, Cell[,] cellSpace, Orientation orientation)
         {
+            //in case of future orientation possibilities
+            if (orientation != Orientation.HORISONTAL && orientation != Orientation.VERTICAL)
+                throw new ArgumentException("that orientation not possible for this sees");
             //from midIndex out
             int seedHeight = 1;
             int seedWidth = 1;
@@ -25,29 +28,31 @@ namespace CACPPN.Utils.SeedingMachines
                 && jMid <= cellSpace.GetLength(1) - 1 - seedWidth))
                 throw new ArgumentOutOfRangeException(midpointTooCloseToEdgeErrorMessage);
 
-            if (orientation == Orientation.VERTICAL)
+            cellSpace[iMid, jMid].State = 1;
+            cellSpace[iMid, jMid].OldState = 1;
+
+            int iFirst = iMid;
+            int jFirst = jMid;
+            int iLast = iMid;
+            int jLast = jMid;
+
+            switch (orientation)
             {
-                cellSpace[iMid - 1, jMid].State = 1;
-                cellSpace[iMid - 1, jMid].OldState = 1;
-
-                cellSpace[iMid, jMid].State = 1;
-                cellSpace[iMid, jMid].OldState = 1;
-
-                cellSpace[iMid + 1, jMid].State = 1;
-                cellSpace[iMid + 1, jMid].OldState = 1;
+                case Orientation.HORISONTAL:
+                    jFirst -= 1;
+                    jLast += 1;
+                    break;
+                case Orientation.VERTICAL:
+                    iFirst -= 1;
+                    iLast += 1;
+                    break;
             }
-            else if (orientation == Orientation.HORISONTAL)
-            {
 
-                cellSpace[iMid, jMid - 1].State = 1;
-                cellSpace[iMid, jMid - 1].OldState = 1;
+            cellSpace[iFirst, jFirst].State = 1;
+            cellSpace[iFirst, jFirst].OldState = 1;
 
-                cellSpace[iMid, jMid].State = 1;
-                cellSpace[iMid, jMid].OldState = 1;
-
-                cellSpace[iMid, jMid + 1].State = 1;
-                cellSpace[iMid, jMid + 1].OldState = 1;
-            }
+            cellSpace[iLast, jLast].State = 1;
+            cellSpace[iLast, jLast].OldState = 1;
         }
     }
 }

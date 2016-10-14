@@ -31,17 +31,9 @@ namespace CACPPN.Program.Experiments
                     cellSpace[i, j] = new FloatCell(0, hyperParams.states);
                 }
             }
-            /* for (int i = 0; i < 12; i++)
-             {
-                 SpawnRandom();
-             }
-             SpawnRPentomino(hyperParams.spaceSize - 5);
-             SpawnRPentomino(5);
-
-             SpawnRPentomino(18);*/
 
             GameOfLifeSeeds.SpawnCrossOscillator(12, 12, cellSpace, Orientation.VERTICAL);
-            GameOfLifeSeeds.SpawnCrossOscillator(13, 14, cellSpace, Orientation.VERTICAL);
+            GameOfLifeSeeds.SpawnCrossOscillator(13, 16, cellSpace, Orientation.HORISONTAL);
         }
 
         private void SpawnRPentomino(int midIndex)
