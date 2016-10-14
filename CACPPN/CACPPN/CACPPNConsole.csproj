@@ -86,9 +86,11 @@
     <Compile Include="CA\DerivedTypes\StateSetTypes\ContinuousStateSet.cs" />
     <Compile Include="CA\DerivedTypes\StateSetTypes\FloatIntervalStateSet.cs" />
     <Compile Include="CA\DerivedTypes\StateSetTypes\IntegerStateSet.cs" />
-    <Compile Include="CA\TypeEnums\CAPartTypes.cs" />
-    <Compile Include="CA\Utils\Hyperparameters.cs" />
-    <Compile Include="CA\Utils\IntervalManager.cs" />
+    <Compile Include="CA\Enums\CAPartTypes.cs" />
+    <Compile Include="CA\Enums\Orientation.cs" />
+    <Compile Include="Utils\SeedingMachines\GameOfLifeSeeds.cs" />
+    <Compile Include="Utils\Hyperparameters.cs" />
+    <Compile Include="Utils\IntervalManager.cs" />
     <Compile Include="Program\CACPPNBaseProgram.cs" />
     <Compile Include="Program\CACPPNStatisticsProgram.cs" />
     <Compile Include="Program\CAStatisticsProgram.cs" />
@@ -105,12 +107,9 @@
   <ItemGroup>
     <Folder Include="CA\FitnessEvaluators\" />
     <Folder Include="CA\Interfaces\" />
-    <Folder Include="CA\Utils\CSInitators\" />
-    <Folder Include="CA\Utils\CSMetaCalculations\" />
-    <Folder Include="CA\Utils\Logging\Excel\" />
-    <Folder Include="CA\Utils\Logging\Textual\" />
-    <Folder Include="CA\Utils\Logging\Visual\" />
     <Folder Include="Program\CPPN\" />
+    <Folder Include="Utils\CSMetaCalculations\" />
+    <Folder Include="Utils\Logging\Excel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

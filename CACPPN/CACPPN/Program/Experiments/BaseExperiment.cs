@@ -1,5 +1,5 @@
-﻿using CACPPN.CA.Utils;
-using CACPPN.CA.TypeEnums;
+﻿using CACPPN.Utils;
+using CACPPN.CA.Enums.Types;
 using CACPPN.CA.DerivedTypes.CellTypes;
 using System;
 

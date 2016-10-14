@@ -1,4 +1,4 @@
-﻿namespace CACPPN.CA.Utils
+﻿namespace CACPPN.Utils
 {
     struct Hyperparameters
     {

@@ -1,4 +1,4 @@
-﻿namespace CACPPN.CA.TypeEnums
+﻿namespace CACPPN.CA.Enums.Types
 {
     enum CellType
     {

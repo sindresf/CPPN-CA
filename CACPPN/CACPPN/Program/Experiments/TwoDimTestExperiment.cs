@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using CACPPN.CA.DerivedTypes.CellTypes;
+using CACPPN.Utils.SeedingMachines;
+using CACPPN.CA.Enums.Types;
+using CACPPN.CA.Enums;
 
 namespace CACPPN.Program.Experiments
 {
@@ -12,7 +15,7 @@ namespace CACPPN.Program.Experiments
         {
             hyperParams.spaceSize = 27;
             hyperParams.generations = 100;
-            cellType = CA.TypeEnums.CellType.STEP_VALUED;
+            cellType = CellType.STEP_VALUED;
             hyperParams.states = 4;
             cellSpace = new FloatCell[hyperParams.spaceSize, hyperParams.spaceSize];
             lastSpaceState = new double[hyperParams.spaceSize, hyperParams.spaceSize];
@@ -28,26 +31,17 @@ namespace CACPPN.Program.Experiments
                     cellSpace[i, j] = new FloatCell(0, hyperParams.states);
                 }
             }
-            for (int i = 0; i < 12; i++)
-            {
-                SpawnRandom();
-            }
-            SpawnRPentomino(hyperParams.spaceSize - 5);
-            SpawnRPentomino(5);
+            /* for (int i = 0; i < 12; i++)
+             {
+                 SpawnRandom();
+             }
+             SpawnRPentomino(hyperParams.spaceSize - 5);
+             SpawnRPentomino(5);
 
-            SpawnRPentomino(18);
-        }
+             SpawnRPentomino(18);*/
 
-        private void SpawnOscillator(int midIndex)
-        {
-            cellSpace[midIndex, midIndex].State = 1;
-            cellSpace[midIndex, midIndex].OldState = 1;
-
-            cellSpace[midIndex - 1, midIndex].State = 1;
-            cellSpace[midIndex - 1, midIndex].OldState = 1;
-
-            cellSpace[midIndex + 1, midIndex].State = 1;
-            cellSpace[midIndex + 1, midIndex].OldState = 1;
+            GameOfLifeSeeds.SpawnCrossOscillator(12, 12, cellSpace, Orientation.VERTICAL);
+            GameOfLifeSeeds.SpawnCrossOscillator(13, 14, cellSpace, Orientation.VERTICAL);
         }
 
         private void SpawnRPentomino(int midIndex)

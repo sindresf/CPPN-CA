@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CACPPN.CA.Utils;
+using CACPPN.Utils;
 
 namespace CACPPN.CA.BaseTypes
 {
