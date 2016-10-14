@@ -7,13 +7,15 @@ namespace CACPPN.Program.Experiments
     class TwoDimTestExperiment : Experiment
     {
         FloatCell[,] cellSpace;
+        double[,] lastSpaceState;
         public TwoDimTestExperiment()
         {
             hyperParams.spaceSize = 27;
-            hyperParams.generations = 200;
+            hyperParams.generations = 100;
             cellType = CA.TypeEnums.CellType.STEP_VALUED;
             hyperParams.states = 4;
             cellSpace = new FloatCell[hyperParams.spaceSize, hyperParams.spaceSize];
+            lastSpaceState = new double[hyperParams.spaceSize, hyperParams.spaceSize];
             InitialConditionSetup();
         }
 
@@ -30,8 +32,8 @@ namespace CACPPN.Program.Experiments
             {
                 SpawnRandom();
             }
-            SpawnOscillator(5);
             SpawnRPentomino(hyperParams.spaceSize - 5);
+            SpawnRPentomino(5);
         }
 
         private void SpawnOscillator(int midIndex)
@@ -76,43 +78,65 @@ namespace CACPPN.Program.Experiments
 
         public override bool IsSuccessState()
         {
-            double spaceTotal = 0;
-            foreach (FloatCell cell in cellSpace)
+            for (int i = 0; i < hyperParams.spaceSize; i++)
             {
-                spaceTotal += cell.State;
+                for (int j = 0; j < hyperParams.spaceSize; j++)
+                {
+                    if (cellSpace[i, j].State != lastSpaceState[i, j])
+                        return false;
+                }
             }
-            if (spaceTotal == 0)
-                return true;
-            return false; //no "success" here because no goal, just run
+            return true;
         }
 
         public override void NextState()
         {
+            double nextState;
             for (int i = 1; i < hyperParams.spaceSize - 1; i++)
             {
                 for (int j = 1; j < hyperParams.spaceSize - 1; j++)
                 {
-                    cellSpace[i, j].State = ruleCheck(getOKNeighbourhood(i, j), cellSpace[i, j].OldState);
+                    nextState = ruleCheck(getOKNeighbourhood(i, j), cellSpace[i, j].OldState);
+                    lastSpaceState[i, j] = cellSpace[i, j].State;
+                    cellSpace[i, j].State = nextState;
                 }
             }
             //the four sides
             for (int i = 1; i < hyperParams.spaceSize - 1; i++)
             {
                 //upper row
-                cellSpace[0, i].State = ruleCheck(getUpperNeighbourhood(i), cellSpace[0, i].OldState);
+                nextState = ruleCheck(getUpperNeighbourhood(i), cellSpace[0, i].OldState);
+                lastSpaceState[0, i] = cellSpace[0, i].State;
+                cellSpace[0, i].State = nextState;
                 //lower row
-                cellSpace[hyperParams.spaceSize - 1, i].State = ruleCheck(getUpperNeighbourhood(i), cellSpace[hyperParams.spaceSize - 1, i].OldState);
+                nextState = ruleCheck(getUpperNeighbourhood(i), cellSpace[hyperParams.spaceSize - 1, i].OldState);
+                lastSpaceState[hyperParams.spaceSize - 1, i] = cellSpace[hyperParams.spaceSize - 1, i].State;
+                cellSpace[hyperParams.spaceSize - 1, i].State = nextState;
                 //left handside
-                cellSpace[i, 0].State = ruleCheck(getUpperNeighbourhood(i), cellSpace[i, 0].OldState);
+                nextState = ruleCheck(getUpperNeighbourhood(i), cellSpace[i, 0].OldState);
+                lastSpaceState[i, 0] = cellSpace[i, 0].State;
+                cellSpace[i, 0].State = nextState;
                 //right handside
-                cellSpace[i, hyperParams.spaceSize - 1].State = ruleCheck(getUpperNeighbourhood(i), cellSpace[i, hyperParams.spaceSize - 1].OldState);
+                nextState = ruleCheck(getUpperNeighbourhood(i), cellSpace[i, hyperParams.spaceSize - 1].OldState);
+                lastSpaceState[i, hyperParams.spaceSize - 1] = cellSpace[i, hyperParams.spaceSize - 1].State;
+                cellSpace[i, hyperParams.spaceSize - 1].State = nextState;
             }
             //the four corners
-            cellSpace[0, 0].State = ruleCheck(getUpperLeftNeighbourhood(), cellSpace[0, 0].OldState);
-            cellSpace[0, hyperParams.spaceSize - 1].State = ruleCheck(getLowerLeftNeighbourhood(), cellSpace[hyperParams.spaceSize - 1, 0].OldState);
-            cellSpace[hyperParams.spaceSize - 1, 0].State = ruleCheck(getUpperRightNeighbourhood(), cellSpace[0, hyperParams.spaceSize - 1].OldState);
-            cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].State = ruleCheck(getLowerRightNeighbourhood(), cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].OldState);
+            nextState = ruleCheck(getUpperLeftNeighbourhood(), cellSpace[0, 0].OldState);
+            lastSpaceState[0, 0] = cellSpace[0, 0].State;
+            cellSpace[0, 0].State = nextState;
 
+            nextState = ruleCheck(getLowerLeftNeighbourhood(), cellSpace[hyperParams.spaceSize - 1, 0].OldState);
+            cellSpace[0, hyperParams.spaceSize - 1].State = nextState;
+            lastSpaceState[0, hyperParams.spaceSize - 1] = nextState;
+
+            nextState = ruleCheck(getUpperRightNeighbourhood(), cellSpace[0, hyperParams.spaceSize - 1].OldState);
+            lastSpaceState[hyperParams.spaceSize - 1, 0] = cellSpace[hyperParams.spaceSize - 1, 0].State;
+            cellSpace[hyperParams.spaceSize - 1, 0].State = nextState;
+
+            nextState = ruleCheck(getLowerRightNeighbourhood(), cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].OldState);
+            lastSpaceState[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1] = cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].State;
+            cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].State = nextState;
 
             foreach (FloatCell cell in cellSpace)
             {

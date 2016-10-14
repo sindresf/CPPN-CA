@@ -25,6 +25,7 @@ namespace CACPPN.Program
                 if (experiment.IsSuccessState())
                 {
                     successFinish = true;
+                    Console.WriteLine(experiment.SpaceStateToString());
                     Console.WriteLine("\ndone through success");
                     break;
                 }
