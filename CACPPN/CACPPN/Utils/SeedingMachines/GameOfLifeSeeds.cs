@@ -1,16 +1,13 @@
 ﻿using System;
 using CACPPN.CA.BaseTypes;
+using CACPPN.CA.DerivedTypes.CellTypes;
 using CACPPN.CA.Enums;
 
 namespace CACPPN.Utils.SeedingMachines
 {
     static class GameOfLifeSeeds
     {
-        public static void lol()
-        {
-
-        }
-        public static void SpawnCrossOscillator(int iMid, int jMid, Cell[,] cellSpace, Orientation orientation)
+        public static void SpawnCrossOscillator(int iMid, int jMid, AbstractCell[,] cellSpace, Orientation orientation)
         {
             //in case of future orientation possibilities
             if (orientation != Orientation.HORISONTAL && orientation != Orientation.VERTICAL)
@@ -29,7 +26,6 @@ namespace CACPPN.Utils.SeedingMachines
                 throw new ArgumentOutOfRangeException(midpointTooCloseToEdgeErrorMessage);
 
             cellSpace[iMid, jMid].State = 1;
-            cellSpace[iMid, jMid].OldState = 1;
 
             int iFirst = iMid;
             int jFirst = jMid;
@@ -47,12 +43,27 @@ namespace CACPPN.Utils.SeedingMachines
                     iLast += 1;
                     break;
             }
-
             cellSpace[iFirst, jFirst].State = 1;
-            cellSpace[iFirst, jFirst].OldState = 1;
-
             cellSpace[iLast, jLast].State = 1;
-            cellSpace[iLast, jLast].OldState = 1;
+        }
+
+        //TODO these are not fixed up
+        public static void SpawnRPentomino(int midIndex, Cell[,] cellSpace)
+        {
+            cellSpace[midIndex, midIndex].State = 1;
+            cellSpace[midIndex, midIndex - 1].State = 1;
+            cellSpace[midIndex + 1, midIndex].State = 1;
+            cellSpace[midIndex - 1, midIndex].State = 1;
+            cellSpace[midIndex - 1, midIndex + 1].State = 1;
+        }
+
+        public static void SpawnRandom(int randMax, Cell[,] cellSpace)
+        {
+            Random rand = new Random();
+            int indexI = rand.Next(1, randMax);
+            int indexJ = rand.Next(1, randMax);
+            cellSpace[indexI, indexJ].State = 1;
+
         }
     }
 }

@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using CACPPN.CA.BaseTypes;
 namespace CACPPN.CA.DerivedTypes.CellTypes
 {
-    class BooleanCell : Cell
+    class BooleanCell : AbstractCell
     {
         private bool _state;
         private bool _oldState;
 
-        public BooleanCell(double value) : base(value)
+        public BooleanCell(double value)
         {
             State = value;
-            OldState = value;
         }
 
-        public override double State
+        public override double? State
         {
             get
             {
@@ -33,13 +32,13 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public override double OldState
+        public override double? OldState
         {
             get
             {
                 return _oldState ? 1 : 0;
             }
-            set
+            /*set TODO to be part of State set
             {   //TODO decide if I should enforce some kind of "determinism" on the system by defining 0 as < 0.2 and 1 as > 0.8 ? or whatever
                 if (value <= 1.00 && value >= 0.500001)
                     _oldState = true;
@@ -49,10 +48,10 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
                 {
                     throw new ArgumentException("negative double value unacceptable!");
                 }
-            }
+            }*/
         }
 
-        public override List<Cell> Neighbourhood
+        public override List<AbstractCell> Neighbourhood
         {
             get
             {

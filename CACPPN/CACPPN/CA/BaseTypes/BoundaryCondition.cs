@@ -8,7 +8,7 @@ namespace CACPPN.CA.BaseTypes
 {
     class BoundaryCondition
     {
-        public virtual void HandleBoundaryCellCase(Cell cell)
+        public virtual void HandleBoundaryCellCase(AbstractCell cell)
         {
             throw new Exception("Base boundary case don't do shitt!");
         }

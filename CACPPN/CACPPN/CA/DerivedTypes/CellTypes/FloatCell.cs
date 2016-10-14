@@ -4,12 +4,34 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.CellTypes
 {
-    class FloatCell : Cell
+    class Cell : AbstractCell //any name for this one that's more specific?!?
     {
-        public override double State { get; set; }
-        public override double OldState { get; set; }
+        private int states;
 
-        public override List<Cell> Neighbourhood
+        public Cell(double value, int states)
+        {
+            this.states = states;
+            _state = value;
+        }
+
+        public override double? State
+        {
+            get { return _state.GetValueOrDefault(); }
+            set
+            {
+                _oldstate = _oldstate == null ? value : _state;
+                _state = value;
+            }
+        }
+        public override double? OldState
+        {
+            get
+            {
+                return _oldstate ?? _state;
+            }
+        }
+
+        public override List<AbstractCell> Neighbourhood
         {
             get
             {
@@ -20,15 +42,6 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             {
                 throw new NotImplementedException();
             }
-        }
-
-        private int states;
-
-        public FloatCell(double value, int states) : base(value)
-        {
-            this.states = states;
-            State = value;
-            OldState = value;
         }
     }
 }

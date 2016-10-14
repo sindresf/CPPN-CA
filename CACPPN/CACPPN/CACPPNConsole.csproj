@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CA\BaseTypes\BoundaryCondition.cs" />
-    <Compile Include="CA\BaseTypes\Cell.cs" />
+    <Compile Include="CA\BaseTypes\AbstractCell.cs" />
     <Compile Include="CA\BaseTypes\CellularSpace.cs" />
     <Compile Include="CA\BaseTypes\InitialCondition.cs" />
     <Compile Include="CA\BaseTypes\Neighbourhood.cs" />

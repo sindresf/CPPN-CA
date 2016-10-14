@@ -4,9 +4,9 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.CellTypes
 {
-    class TreeCell : Cell
+    class TreeCell : AbstractCell
     {
-        public override List<Cell> Neighbourhood
+        public override List<AbstractCell> Neighbourhood
         {
             get
             {
@@ -19,20 +19,15 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public override double OldState
+        public override double? OldState
         {
             get
             {
                 throw new NotImplementedException();
             }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
-        public override double State
+        public override double? State
         {
             get
             {

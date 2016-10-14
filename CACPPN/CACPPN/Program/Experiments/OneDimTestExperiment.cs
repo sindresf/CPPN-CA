@@ -33,11 +33,9 @@ namespace CACPPN.Program.Experiments
             Random rand = new Random();
             int index = rand.Next(hyperParams.spaceSize);
             cellSpace[index].State = 1;
-            cellSpace[index].OldState = 1;
 
             index = rand.Next(hyperParams.spaceSize);
             cellSpace[index].State = 1;
-            cellSpace[index].OldState = 1;
             setupMapping();
         }
 
@@ -64,7 +62,7 @@ namespace CACPPN.Program.Experiments
         {
             for (int i = 0; i < hyperParams.spaceSize; i++)
             {
-                List<double> neighbourhoodState = new List<double>();
+                List<double?> neighbourhoodState = new List<double?>();
                 if (i == 0)
                 {
                     neighbourhoodState.Add(cellSpace.Last().OldState);
@@ -86,13 +84,9 @@ namespace CACPPN.Program.Experiments
 
                 cellSpace[i].State = ruleCheck(neighbourhoodState);
             }
-            foreach (BooleanCell cell in cellSpace)
-            {
-                cell.OldState = cell.State;
-            }
         }
 
-        private double ruleCheck(List<double> neighbourhoodState)
+        private double? ruleCheck(List<double?> neighbourhoodState)
         {
             foreach (List<double> rule in mapping)
             {
@@ -123,7 +117,7 @@ namespace CACPPN.Program.Experiments
             space = space.Substring(0, space.Length - 1) + "|";
             return space;
         }
-        private char StateToString(double state)
+        private char StateToString(double? state)
         {
             if (state == 0)
             {
