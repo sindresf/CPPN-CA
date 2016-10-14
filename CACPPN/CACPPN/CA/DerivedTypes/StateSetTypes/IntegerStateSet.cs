@@ -7,7 +7,7 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.StateSetTypes
 {
-	class IntegerStateSet : StateSet
-	{
-	}
+    class IntegerStateSet
+    {
+    }
 }

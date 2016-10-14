@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CACPPN.CA.TypeEnums;
-using CACPPN.CA.Interfaces;
+using System.Threading;
+using CACPPN.Program.Experiments;
 
 namespace CACPPN.Program
 {
@@ -16,20 +14,24 @@ namespace CACPPN.Program
 
         public void Run()
         {
-            Experiment experiment = new BasicExperiment();
+            Experiment experiment = new TwoDimTestExperiment();
+            Console.WriteLine(experiment.SpaceStateToString());
             bool successFinish = false;
             for (int i = 0; i < experiment.hyperParams.generations; i++)
             {
                 experiment.NextState();
+                Thread.Sleep(50);
+                Console.Clear();
                 if (experiment.IsSuccessState())
                 {
                     successFinish = true;
-                    Console.WriteLine("done through success");
+                    Console.WriteLine("\ndone through success");
                     break;
                 }
+                Console.WriteLine(experiment.SpaceStateToString());
             }
             if (!successFinish)
-                Console.WriteLine("all generations done.");
+                Console.WriteLine("\nall generations done.");
         }
     }
 }

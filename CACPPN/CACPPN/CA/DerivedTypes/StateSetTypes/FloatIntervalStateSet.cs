@@ -7,7 +7,7 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.StateSetTypes
 {
-	class FloatIntervalStateSet : StateSet
+	class FloatIntervalStateSet
 	{
 	}
 }

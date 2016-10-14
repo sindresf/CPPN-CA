@@ -8,15 +8,18 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
     class BooleanCell : Cell
     {
         private bool _state;
+        private bool _oldState;
 
         public BooleanCell(ICoordinate coords, double initialValue) : base(coords)
         {
             State = initialValue;
+            oldState = initialValue;
         }
 
         public BooleanCell(double value) : base(value)
         {
             State = value;
+            oldState = value;
         }
 
         public override double State
@@ -27,10 +30,29 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
             set
             {   //TODO decide if I should enforce some kind of "determinism" on the system by defining 0 as < 0.2 and 1 as > 0.8 ? or whatever
-                if (value < 1.00 && value >= 0.500001)
+                if (value <= 1.00 && value >= 0.500001)
                     _state = true;
-                else if (value > 0.00 && value <= 0.5000009)
+                else if (value >= 0.00 && value <= 0.5000009)
                     _state = false;
+                else
+                {
+                    throw new ArgumentException("negative double value unacceptable!");
+                }
+            }
+        }
+
+        public double oldState
+        {
+            get
+            {
+                return _oldState ? 1 : 0;
+            }
+            set
+            {   //TODO decide if I should enforce some kind of "determinism" on the system by defining 0 as < 0.2 and 1 as > 0.8 ? or whatever
+                if (value <= 1.00 && value >= 0.500001)
+                    _oldState = true;
+                else if (value >= 0.00 && value <= 0.5000009)
+                    _oldState = false;
                 else
                 {
                     throw new ArgumentException("negative double value unacceptable!");

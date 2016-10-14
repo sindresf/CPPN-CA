@@ -7,7 +7,7 @@ using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.StateSetTypes
 {
-	class ContinuousStateSet : StateSet
+	class ContinuousStateSet
 	{
 		//This is a thing that's possible with CPPN representation
 		//Almost worth it's own experiment and question a la:

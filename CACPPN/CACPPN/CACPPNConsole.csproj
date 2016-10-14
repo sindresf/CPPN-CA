@@ -108,6 +108,8 @@
     <Compile Include="Program\CAStatisticsProgram.cs" />
     <Compile Include="Program\CABaseProgram.cs" />
     <Compile Include="Program\Experiments\BaseExperiment.cs" />
+    <Compile Include="Program\Experiments\OneDimTestExperiment.cs" />
+    <Compile Include="Program\Experiments\TwoDimTestExperiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
