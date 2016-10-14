@@ -1,25 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using CACPPN.CA.BaseTypes;
-using CACPPN.CA.Interfaces;
 namespace CACPPN.CA.DerivedTypes.CellTypes
 {
-    //The whole boolean concept is actually abstracted away,
-    // interacting with the rest of the program through doubles as everything else.
     class BooleanCell : Cell
     {
         private bool _state;
         private bool _oldState;
 
-        public BooleanCell(ICoordinate coords, double initialValue) : base(coords)
-        {
-            State = initialValue;
-            oldState = initialValue;
-        }
-
         public BooleanCell(double value) : base(value)
         {
             State = value;
-            oldState = value;
+            OldState = value;
         }
 
         public override double State
@@ -41,7 +33,7 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public double oldState
+        public override double OldState
         {
             get
             {
@@ -60,5 +52,17 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
+        public override List<Cell> Neighbourhood
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

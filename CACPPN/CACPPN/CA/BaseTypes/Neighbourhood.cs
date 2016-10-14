@@ -1,27 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using CACPPN.CA.Interfaces;
-using CACPPN.CA.Utils.Coordinates;
 
 namespace CACPPN.CA.BaseTypes
 {
-    class Neighbourhood : INeighbourhood
+    class Neighbourhood
     {
-        ICollection<ICell> _neighbors;
-        public virtual ICollection<ICell> Neighbors
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public virtual void makeNeighbourhoodWithWidth(int stepsFromCell, ICoordinate cellCoordinates, CPPNCoordinateScale coordinateStep)
+        public virtual void makeNeighbourhoodWithWidth(int stepsFromCell)
         {
             throw new NotImplementedException("Each type of neighbourhood needs its own maker");
         }

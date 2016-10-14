@@ -1,38 +1,15 @@
 ﻿using System;
-using CACPPN.CA.Interfaces;
+using System.Collections.Generic;
 
 namespace CACPPN.CA.BaseTypes
 {
-    class Cell : ICell //TODO Cell needs some looking into
+    abstract class Cell
     {
-
-        protected INeighbourhood _neighbourhood;
-        protected ICoordinate _gridPosition;
-
-        public virtual ICoordinate GridPosition
-        {
-            get { return _gridPosition; }
-
-            protected set
-            {
-                _gridPosition = value;
-            }
-        }
-
-        public Cell(ICoordinate coords, double state)
-        {
-            GridPosition = coords;
-            State = state;
-        }
-
-        public Cell(ICoordinate coords)
-        {
-            GridPosition = coords;
-        }
+        protected List<Cell> _neighbourhood;
 
         public Cell(double value)
         {
-
+            State = value;
         }
 
         public Cell()
@@ -40,22 +17,10 @@ namespace CACPPN.CA.BaseTypes
 
         }
 
-        public virtual INeighbourhood Neighbourhood
-        {
-            get
-            {
-                return _neighbourhood;
-            }
+        public abstract List<Cell> Neighbourhood { get; set; }
 
-            set
-            {
-                if (_neighbourhood == null)
-                    _neighbourhood = value;
-                else
-                    throw new ArgumentException("Can't change the neighbourhood!"); //TODO unless random connection or size stuff for laters
-            }
-        }
+        public abstract double State { get; set; }
+        public abstract double OldState { get; set; }
 
-        public virtual double State { get; set; } //Don't know what to do with this one yet
     }
 }

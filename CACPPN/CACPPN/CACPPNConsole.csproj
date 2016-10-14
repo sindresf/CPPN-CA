@@ -86,21 +86,7 @@
     <Compile Include="CA\DerivedTypes\StateSetTypes\ContinuousStateSet.cs" />
     <Compile Include="CA\DerivedTypes\StateSetTypes\FloatIntervalStateSet.cs" />
     <Compile Include="CA\DerivedTypes\StateSetTypes\IntegerStateSet.cs" />
-    <Compile Include="CA\Interfaces\ISituation.cs" />
-    <Compile Include="CA\Interfaces\IBoundaryCondition.cs" />
-    <Compile Include="CA\Interfaces\ICell.cs" />
-    <Compile Include="CA\Interfaces\ICellularSpace.cs" />
-    <Compile Include="CA\Interfaces\ICoordinate.cs" />
-    <Compile Include="CA\Interfaces\IInitialCondition.cs" />
-    <Compile Include="CA\Interfaces\INeighbourhood.cs" />
-    <Compile Include="CA\Interfaces\IStateSet.cs" />
-    <Compile Include="CA\Interfaces\IStateTranslator.cs" />
-    <Compile Include="CA\Interfaces\IStoppingCondition.cs" />
-    <Compile Include="CA\Interfaces\ITimeVariable.cs" />
-    <Compile Include="CA\Interfaces\ITransitioner.cs" />
-    <Compile Include="CA\Interfaces\ITransitionRuleSet.cs" />
     <Compile Include="CA\TypeEnums\CAPartTypes.cs" />
-    <Compile Include="CA\Utils\CellCoordinates.cs" />
     <Compile Include="CA\Utils\Hyperparameters.cs" />
     <Compile Include="CA\Utils\IntervalManager.cs" />
     <Compile Include="Program\CACPPNBaseProgram.cs" />
@@ -118,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CA\FitnessEvaluators\" />
+    <Folder Include="CA\Interfaces\" />
     <Folder Include="CA\Utils\CSInitators\" />
     <Folder Include="CA\Utils\CSMetaCalculations\" />
     <Folder Include="CA\Utils\Logging\Excel\" />

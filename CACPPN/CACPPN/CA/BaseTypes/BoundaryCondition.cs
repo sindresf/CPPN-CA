@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CACPPN.CA.Interfaces;
 
 namespace CACPPN.CA.BaseTypes
 {
-    class BoundaryCondition : IBoundaryCondition
+    class BoundaryCondition
     {
-        public virtual void HandleBoundaryCellCase(ICell cell)
+        public virtual void HandleBoundaryCellCase(Cell cell)
         {
             throw new Exception("Base boundary case don't do shitt!");
         }

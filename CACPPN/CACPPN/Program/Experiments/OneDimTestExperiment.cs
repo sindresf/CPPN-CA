@@ -33,11 +33,11 @@ namespace CACPPN.Program.Experiments
             Random rand = new Random();
             int index = rand.Next(hyperParams.spaceSize);
             cellSpace[index].State = 1;
-            cellSpace[index].oldState = 1;
+            cellSpace[index].OldState = 1;
 
             index = rand.Next(hyperParams.spaceSize);
             cellSpace[index].State = 1;
-            cellSpace[index].oldState = 1;
+            cellSpace[index].OldState = 1;
             setupMapping();
         }
 
@@ -67,28 +67,28 @@ namespace CACPPN.Program.Experiments
                 List<double> neighbourhoodState = new List<double>();
                 if (i == 0)
                 {
-                    neighbourhoodState.Add(cellSpace.Last().oldState);
-                    neighbourhoodState.Add(cellSpace[i].oldState);
-                    neighbourhoodState.Add(cellSpace[i + 1].oldState);
+                    neighbourhoodState.Add(cellSpace.Last().OldState);
+                    neighbourhoodState.Add(cellSpace[i].OldState);
+                    neighbourhoodState.Add(cellSpace[i + 1].OldState);
                 }
                 else if (i == hyperParams.spaceSize - 1)
                 {
-                    neighbourhoodState.Add(cellSpace[i - 1].oldState);
-                    neighbourhoodState.Add(cellSpace[i].oldState);
-                    neighbourhoodState.Add(cellSpace.First().oldState);
+                    neighbourhoodState.Add(cellSpace[i - 1].OldState);
+                    neighbourhoodState.Add(cellSpace[i].OldState);
+                    neighbourhoodState.Add(cellSpace.First().OldState);
                 }
                 else
                 {
-                    neighbourhoodState.Add(cellSpace[i - 1].oldState);
-                    neighbourhoodState.Add(cellSpace[i].oldState);
-                    neighbourhoodState.Add(cellSpace[i + 1].oldState);
+                    neighbourhoodState.Add(cellSpace[i - 1].OldState);
+                    neighbourhoodState.Add(cellSpace[i].OldState);
+                    neighbourhoodState.Add(cellSpace[i + 1].OldState);
                 }
 
                 cellSpace[i].State = ruleCheck(neighbourhoodState);
             }
             foreach (BooleanCell cell in cellSpace)
             {
-                cell.oldState = cell.State;
+                cell.OldState = cell.State;
             }
         }
 

@@ -34,6 +34,8 @@ namespace CACPPN.Program.Experiments
             }
             SpawnRPentomino(hyperParams.spaceSize - 5);
             SpawnRPentomino(5);
+
+            SpawnRPentomino(18);
         }
 
         private void SpawnOscillator(int midIndex)

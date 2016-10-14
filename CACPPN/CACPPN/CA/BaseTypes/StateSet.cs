@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CACPPN.CA.Interfaces;
 using CACPPN.CA.Utils;
 
 namespace CACPPN.CA.BaseTypes
 {
-    class StateSet : IStateSet
+    class StateSet
     {
         public int StateSetSize
         {
