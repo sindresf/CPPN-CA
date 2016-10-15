@@ -7,10 +7,20 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
     {
         private int states;
 
+        public readonly int i, j;
+
         public Cell(double value, int states)
         {
-            this.states = states;
             _state = value;
+            this.states = states;
+        }
+
+        public Cell(double value, int i, int j, int states)
+        {
+            _state = value;
+            this.i = i;
+            this.j = j;
+            this.states = states;
         }
 
         public override double? State
@@ -40,6 +50,19 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             set
             {
                 _neighbourhood = value;
+            }
+        }
+
+        public List<double?> NeighbourhoodState
+        {
+            get
+            {
+                List<double?> neighState = new List<double?>();
+                foreach (Cell cell in _neighbourhood)
+                {
+                    neighState.Add(cell.State);
+                }
+                return neighState;
             }
         }
     }

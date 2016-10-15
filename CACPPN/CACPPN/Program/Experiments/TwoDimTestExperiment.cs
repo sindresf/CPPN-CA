@@ -29,25 +29,30 @@ namespace CACPPN.Program.Experiments
 
         protected override void InitialConditionSetup()
         {
-            InitialiseCells();
-            InitialiseNeighbourhoods();
+            InitializeCells();
+            InitializeNeighbourhoods();
             SeedTheCA();
         }
 
-        private void InitialiseCells()
+        private void InitializeCells()
         {
             for (int i = 0; i < hyperParams.spaceSize; i++)
             {
                 for (int j = 0; j < hyperParams.spaceSize; j++)
                 {
-                    cellSpace[i, j] = new Cell(0, hyperParams.states);
+                    cellSpace[i, j] = new Cell(0, i, j, hyperParams.states);
                 }
             }
         }
-        private void InitialiseNeighbourhoods()
+        private void InitializeNeighbourhoods()
+        {
+            InitializeSafeCellNeighbourhoods();
+            InitializeOutlierCellNeighbourhoods();
+            InitializeCornerCellNeighbourhoods();
+        }
+        private void InitializeSafeCellNeighbourhoods()
         {
             //TODO need a "safe distance calculator" for 2D neighbourhood widths
-            //"inside the space" cells
             for (int i = 1; i < highestIndex; i++)
             {
                 for (int j = 1; j < highestIndex; j++)
@@ -55,7 +60,9 @@ namespace CACPPN.Program.Experiments
                     cellSpace[i, j].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, j, hyperParams.neighbourhoodWidth);
                 }
             }
-            //the four sides
+        }
+        private void InitializeOutlierCellNeighbourhoods()
+        {
             for (int i = 1; i < highestIndex; i++)
             {
                 cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);
@@ -63,7 +70,9 @@ namespace CACPPN.Program.Experiments
                 cellSpace[highestIndex, i].Neighbourhood = NeighbourhoodConstructor.getLowerNeighbourhood(cellSpace, i, hyperParams);
                 cellSpace[i, highestIndex].Neighbourhood = NeighbourhoodConstructor.getRightNeighbourhood(cellSpace, i, hyperParams);
             }
-            //the four corners
+        }
+        private void InitializeCornerCellNeighbourhoods()
+        {
             cellSpace[0, 0].Neighbourhood = NeighbourhoodConstructor.getUpperLeftNeighbourhood(cellSpace, hyperParams);
             cellSpace[0, highestIndex].Neighbourhood = NeighbourhoodConstructor.getUpperRightNeighbourhood(cellSpace, hyperParams);
             cellSpace[highestIndex, 0].Neighbourhood = NeighbourhoodConstructor.getLowerLeftNeighbourhood(cellSpace, hyperParams);
@@ -92,62 +101,13 @@ namespace CACPPN.Program.Experiments
         public override void NextState()
         {
             double? nextState;
-            Cell cell;
-            for (int i = 1; i < highestIndex; i++)
+
+            foreach (Cell cell in cellSpace)
             {
-                for (int j = 1; j < highestIndex; j++)
-                {
-                    cell = cellSpace[i, j];
-                    nextState = ruleCheck(null, FetchCellState(cell));
-                    lastSpaceState[i, j] = cell.State;
-                    cell.State = nextState;
-                }
-            }
-            //the four sides
-            for (int i = 1; i < highestIndex; i++)
-            {
-                //upper row
-                cell = cellSpace[0, i];
-                nextState = ruleCheck(getUpperNeighbourhood(i), FetchCellState(cell));
-                lastSpaceState[0, i] = cell.State;
-                cell.State = nextState;
-                //lower row
-                cell = cellSpace[highestIndex, i];
-                nextState = ruleCheck(getUpperNeighbourhood(i), FetchCellState(cell));
-                lastSpaceState[highestIndex, i] = cell.State;
-                cell.State = nextState;
-                //left handside
-                cell = cellSpace[i, 0];
-                nextState = ruleCheck(getUpperNeighbourhood(i), FetchCellState(cell));
-                lastSpaceState[i, 0] = cell.State;
-                cell.State = nextState;
-                //right handside
-                cell = cellSpace[i, highestIndex];
-                nextState = ruleCheck(getUpperNeighbourhood(i), FetchCellState(cell));
-                lastSpaceState[i, highestIndex] = cell.State;
+                nextState = ruleCheck(cell.NeighbourhoodState, cell.OldState);
+                lastSpaceState[cell.i, cell.j] = cell.OldState;
                 cell.State = nextState;
             }
-            //the four corners
-            cell = cellSpace[0, 0];
-            nextState = ruleCheck(getUpperLeftNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[0, 0] = cell.State;
-            cell.State = nextState;
-
-            cell = cellSpace[highestIndex, 0];
-            nextState = ruleCheck(getLowerLeftNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[highestIndex, 0] = nextState;
-            cell.State = nextState;
-
-            cell = cellSpace[0, highestIndex];
-            nextState = ruleCheck(getUpperRightNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[highestIndex, 0] = cell.State;
-            cell.State = nextState;
-
-            cell = cellSpace[highestIndex, highestIndex];
-            nextState = ruleCheck(getLowerRightNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[highestIndex, highestIndex] = cell.State;
-            cell.State = nextState;
-
         }
 
         private double? ruleCheck(List<double?> neighbourhoodState, double? centreState)
