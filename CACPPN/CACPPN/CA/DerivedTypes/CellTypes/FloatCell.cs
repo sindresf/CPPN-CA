@@ -53,14 +53,14 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public List<double?> NeighbourhoodState
+        public List<double?> NeighbourhoodOldState
         {
             get
             {
                 List<double?> neighState = new List<double?>();
                 foreach (Cell cell in _neighbourhood)
                 {
-                    neighState.Add(cell.State);
+                    neighState.Add(cell.OldState);
                 }
                 return neighState;
             }

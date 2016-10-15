@@ -46,37 +46,7 @@ namespace CACPPN.Program.Experiments
         }
         private void InitializeNeighbourhoods()
         {
-            InitializeSafeCellNeighbourhoods();
-            InitializeOutlierCellNeighbourhoods();
-            InitializeCornerCellNeighbourhoods();
-        }
-        private void InitializeSafeCellNeighbourhoods()
-        {
-            //TODO need a "safe distance calculator" for 2D neighbourhood widths
-            for (int i = 1; i < highestIndex; i++)
-            {
-                for (int j = 1; j < highestIndex; j++)
-                {
-                    cellSpace[i, j].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, j, hyperParams.neighbourhoodWidth);
-                }
-            }
-        }
-        private void InitializeOutlierCellNeighbourhoods()
-        {
-            for (int i = 1; i < highestIndex; i++)
-            {
-                cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);
-                cellSpace[i, 0].Neighbourhood = NeighbourhoodConstructor.getLeftNeighbourhood(cellSpace, i, hyperParams);
-                cellSpace[highestIndex, i].Neighbourhood = NeighbourhoodConstructor.getLowerNeighbourhood(cellSpace, i, hyperParams);
-                cellSpace[i, highestIndex].Neighbourhood = NeighbourhoodConstructor.getRightNeighbourhood(cellSpace, i, hyperParams);
-            }
-        }
-        private void InitializeCornerCellNeighbourhoods()
-        {
-            cellSpace[0, 0].Neighbourhood = NeighbourhoodConstructor.getUpperLeftNeighbourhood(cellSpace, hyperParams);
-            cellSpace[0, highestIndex].Neighbourhood = NeighbourhoodConstructor.getUpperRightNeighbourhood(cellSpace, hyperParams);
-            cellSpace[highestIndex, 0].Neighbourhood = NeighbourhoodConstructor.getLowerLeftNeighbourhood(cellSpace, hyperParams);
-            cellSpace[highestIndex, highestIndex].Neighbourhood = NeighbourhoodConstructor.getLowerRightNeighbourhood(cellSpace, hyperParams);
+            NeighbourhoodInitializor.InitializeNeighbourhoods2D(cellSpace, hyperParams);
         }
 
         private void SeedTheCA()
@@ -104,7 +74,7 @@ namespace CACPPN.Program.Experiments
 
             foreach (Cell cell in cellSpace)
             {
-                nextState = ruleCheck(cell.NeighbourhoodState, cell.OldState);
+                nextState = ruleCheck(cell.NeighbourhoodOldState, cell.OldState);
                 lastSpaceState[cell.i, cell.j] = cell.OldState;
                 cell.State = nextState;
             }

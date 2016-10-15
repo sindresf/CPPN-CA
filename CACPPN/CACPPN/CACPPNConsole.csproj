@@ -89,6 +89,7 @@
     <Compile Include="CA\Enums\CAPartTypes.cs" />
     <Compile Include="CA\Enums\Orientation.cs" />
     <Compile Include="Utils\NeighbourhoodConstructor.cs" />
+    <Compile Include="Utils\NeighbourhoodInitializor.cs" />
     <Compile Include="Utils\SeedingMachines\GameOfLifeSeeds.cs" />
     <Compile Include="Utils\Hyperparameters.cs" />
     <Compile Include="Utils\IntervalManager.cs" />
