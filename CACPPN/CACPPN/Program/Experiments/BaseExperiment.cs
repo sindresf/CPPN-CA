@@ -1,7 +1,7 @@
-﻿using CACPPN.Utils;
+﻿using System;
+using CACPPN.Utils;
 using CACPPN.CA.Enums.Types;
 using CACPPN.CA.DerivedTypes.CellTypes;
-using System;
 
 namespace CACPPN.Program.Experiments
 {

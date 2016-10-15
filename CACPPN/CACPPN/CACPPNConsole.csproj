@@ -59,33 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CA\BaseTypes\BoundaryCondition.cs" />
     <Compile Include="CA\BaseTypes\AbstractCell.cs" />
-    <Compile Include="CA\BaseTypes\CellularSpace.cs" />
-    <Compile Include="CA\BaseTypes\InitialCondition.cs" />
     <Compile Include="CA\BaseTypes\Neighbourhood.cs" />
-    <Compile Include="CA\BaseTypes\StateSet.cs" />
-    <Compile Include="CA\BaseTypes\StoppingCondition.cs" />
     <Compile Include="CA\BaseTypes\TimeVariable.cs" />
     <Compile Include="CA\BaseTypes\TransitionRuleSet.cs" />
-    <Compile Include="CA\CellularSpaces\OneDimensionalCellularSpace.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\BooleanCell.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\FloatCell.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\TreeCell.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Deterministic\FreeFloatDistanceBasedNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Deterministic\OneDimensionalFromCellOutwardsNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Deterministic\ThreeDimensionalFromCellOutwardsNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Deterministic\TwoDimensionalFromCellOutwardsNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Random\FreeFloatingDistanceRandomNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Random\OneDimensionalRandomNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Random\ThreeDimensionalRandomNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\NeighbourhoodTypes\Random\TwoDimensionalRandomNeighbourhood.cs" />
-    <Compile Include="CA\DerivedTypes\RuleSetTypes\ConditionalRules.cs" />
-    <Compile Include="CA\DerivedTypes\RuleSetTypes\TableLookupRules.cs" />
-    <Compile Include="CA\DerivedTypes\StateSetTypes\BooleanStateSet.cs" />
-    <Compile Include="CA\DerivedTypes\StateSetTypes\ContinuousStateSet.cs" />
-    <Compile Include="CA\DerivedTypes\StateSetTypes\FloatIntervalStateSet.cs" />
-    <Compile Include="CA\DerivedTypes\StateSetTypes\IntegerStateSet.cs" />
     <Compile Include="CA\Enums\CAPartTypes.cs" />
     <Compile Include="CA\Enums\Orientation.cs" />
     <Compile Include="Utils\NeighbourhoodConstructor.cs" />
@@ -110,8 +90,6 @@
     <Folder Include="CA\FitnessEvaluators\" />
     <Folder Include="CA\Interfaces\" />
     <Folder Include="Program\CPPN\" />
-    <Folder Include="Utils\CSMetaCalculations\" />
-    <Folder Include="Utils\Logging\Excel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
