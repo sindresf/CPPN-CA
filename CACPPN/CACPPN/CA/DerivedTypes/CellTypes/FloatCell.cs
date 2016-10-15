@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CACPPN.CA.BaseTypes;
 
 namespace CACPPN.CA.DerivedTypes.CellTypes
@@ -35,12 +34,12 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
         {
             get
             {
-                throw new NotImplementedException();
+                return _neighbourhood;
             }
 
             set
             {
-                throw new NotImplementedException();
+                _neighbourhood = value;
             }
         }
     }

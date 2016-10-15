@@ -1,29 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CACPPN.CA.DerivedTypes.CellTypes;
 using CACPPN.Utils.SeedingMachines;
 using CACPPN.CA.Enums.Types;
 using CACPPN.CA.Enums;
+using CACPPN.Utils;
 
 namespace CACPPN.Program.Experiments
 {
     class TwoDimTestExperiment : Experiment
     {
         Cell[,] cellSpace;
-        double?[,] lastSpaceState;
-        private bool firstGeneration = true;
+        double?[,] lastSpaceState; //expanded into proper storage
+        private readonly int highestIndex;
         public TwoDimTestExperiment()
         {
             hyperParams.spaceSize = 27;
+            highestIndex = hyperParams.spaceSize - 1;
             hyperParams.generations = 100;
             cellType = CellType.STEP_VALUED;
             hyperParams.states = 2;
+            hyperParams.neighbourhoodWidth = 2;
+
             cellSpace = new Cell[hyperParams.spaceSize, hyperParams.spaceSize];
             lastSpaceState = new double?[hyperParams.spaceSize, hyperParams.spaceSize];
+
             InitialConditionSetup();
         }
 
         protected override void InitialConditionSetup()
+        {
+            InitialiseCells();
+            InitialiseNeighbourhoods();
+            SeedTheCA();
+        }
+
+        private void InitialiseCells()
         {
             for (int i = 0; i < hyperParams.spaceSize; i++)
             {
@@ -32,7 +43,35 @@ namespace CACPPN.Program.Experiments
                     cellSpace[i, j] = new Cell(0, hyperParams.states);
                 }
             }
+        }
+        private void InitialiseNeighbourhoods()
+        {
+            //TODO need a "safe distance calculator" for 2D neighbourhood widths
+            //"inside the space" cells
+            for (int i = 1; i < highestIndex; i++)
+            {
+                for (int j = 1; j < highestIndex; j++)
+                {
+                    cellSpace[i, j].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, j, hyperParams.neighbourhoodWidth);
+                }
+            }
+            //the four sides
+            for (int i = 1; i < highestIndex; i++)
+            {
+                cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);
+                cellSpace[i, 0].Neighbourhood = NeighbourhoodConstructor.getLeftNeighbourhood(cellSpace, i, hyperParams);
+                cellSpace[highestIndex, i].Neighbourhood = NeighbourhoodConstructor.getLowerNeighbourhood(cellSpace, i, hyperParams);
+                cellSpace[i, highestIndex].Neighbourhood = NeighbourhoodConstructor.getRightNeighbourhood(cellSpace, i, hyperParams);
+            }
+            //the four corners
+            cellSpace[0, 0].Neighbourhood = NeighbourhoodConstructor.getUpperLeftNeighbourhood(cellSpace, hyperParams);
+            cellSpace[0, highestIndex].Neighbourhood = NeighbourhoodConstructor.getUpperRightNeighbourhood(cellSpace, hyperParams);
+            cellSpace[highestIndex, 0].Neighbourhood = NeighbourhoodConstructor.getLowerLeftNeighbourhood(cellSpace, hyperParams);
+            cellSpace[highestIndex, highestIndex].Neighbourhood = NeighbourhoodConstructor.getLowerRightNeighbourhood(cellSpace, hyperParams);
+        }
 
+        private void SeedTheCA()
+        {
             GameOfLifeSeeds.SpawnCrossOscillator(12, 12, cellSpace, Orientation.VERTICAL);
             GameOfLifeSeeds.SpawnCrossOscillator(16, 16, cellSpace, Orientation.HORISONTAL);
         }
@@ -54,18 +93,18 @@ namespace CACPPN.Program.Experiments
         {
             double? nextState;
             Cell cell;
-            for (int i = 1; i < hyperParams.spaceSize - 1; i++)
+            for (int i = 1; i < highestIndex; i++)
             {
-                for (int j = 1; j < hyperParams.spaceSize - 1; j++)
+                for (int j = 1; j < highestIndex; j++)
                 {
                     cell = cellSpace[i, j];
-                    nextState = ruleCheck(getOKNeighbourhood(i, j), FetchCellState(cell));
+                    nextState = ruleCheck(null, FetchCellState(cell));
                     lastSpaceState[i, j] = cell.State;
                     cell.State = nextState;
                 }
             }
             //the four sides
-            for (int i = 1; i < hyperParams.spaceSize - 1; i++)
+            for (int i = 1; i < highestIndex; i++)
             {
                 //upper row
                 cell = cellSpace[0, i];
@@ -73,9 +112,9 @@ namespace CACPPN.Program.Experiments
                 lastSpaceState[0, i] = cell.State;
                 cell.State = nextState;
                 //lower row
-                cell = cellSpace[hyperParams.spaceSize - 1, i];
+                cell = cellSpace[highestIndex, i];
                 nextState = ruleCheck(getUpperNeighbourhood(i), FetchCellState(cell));
-                lastSpaceState[hyperParams.spaceSize - 1, i] = cell.State;
+                lastSpaceState[highestIndex, i] = cell.State;
                 cell.State = nextState;
                 //left handside
                 cell = cellSpace[i, 0];
@@ -83,9 +122,9 @@ namespace CACPPN.Program.Experiments
                 lastSpaceState[i, 0] = cell.State;
                 cell.State = nextState;
                 //right handside
-                cell = cellSpace[i, hyperParams.spaceSize - 1];
+                cell = cellSpace[i, highestIndex];
                 nextState = ruleCheck(getUpperNeighbourhood(i), FetchCellState(cell));
-                lastSpaceState[i, hyperParams.spaceSize - 1] = cell.State;
+                lastSpaceState[i, highestIndex] = cell.State;
                 cell.State = nextState;
             }
             //the four corners
@@ -94,175 +133,21 @@ namespace CACPPN.Program.Experiments
             lastSpaceState[0, 0] = cell.State;
             cell.State = nextState;
 
-            cell = cellSpace[hyperParams.spaceSize - 1, 0];
+            cell = cellSpace[highestIndex, 0];
             nextState = ruleCheck(getLowerLeftNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[hyperParams.spaceSize - 1, 0] = nextState;
+            lastSpaceState[highestIndex, 0] = nextState;
             cell.State = nextState;
 
-            cell = cellSpace[0, hyperParams.spaceSize - 1];
+            cell = cellSpace[0, highestIndex];
             nextState = ruleCheck(getUpperRightNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[hyperParams.spaceSize - 1, 0] = cell.State;
+            lastSpaceState[highestIndex, 0] = cell.State;
             cell.State = nextState;
 
-            cell = cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1];
+            cell = cellSpace[highestIndex, highestIndex];
             nextState = ruleCheck(getLowerRightNeighbourhood(), FetchCellState(cell));
-            lastSpaceState[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1] = cell.State;
+            lastSpaceState[highestIndex, highestIndex] = cell.State;
             cell.State = nextState;
 
-            firstGeneration = false;
-        }
-
-        private double? FetchCellState(Cell cell)
-        {
-            return firstGeneration ? cell.State : cell.OldState;
-        }
-
-        private List<double?> getOKNeighbourhood(int i, int j)
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-            neighbourhoodState.Add(cellSpace[i - 1, j - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i - 1, j].OldState);
-            neighbourhoodState.Add(cellSpace[i - 1, j + 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[i, j - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i, j + 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[i + 1, j - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i + 1, j].OldState);
-            neighbourhoodState.Add(cellSpace[i + 1, j + 1].OldState);
-            return neighbourhoodState;
-        }
-        private List<double?> getUpperNeighbourhood(int i)
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, i].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, i - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, i + 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[0, i - 1].OldState);
-            neighbourhoodState.Add(cellSpace[0, i + 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[1, i - 1].OldState);
-            neighbourhoodState.Add(cellSpace[1, i].OldState);
-            neighbourhoodState.Add(cellSpace[1, i + 1].OldState);
-            return neighbourhoodState;
-        }
-        private List<double?> getLowerNeighbourhood(int i)
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[0, i].OldState);
-            neighbourhoodState.Add(cellSpace[0, i - 1].OldState);
-            neighbourhoodState.Add(cellSpace[0, i + 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, i - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, i + 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, i - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, i].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, i + 1].OldState);
-            return neighbourhoodState;
-        }
-        private List<double?> getRightNeighbourhood(int i)
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[i - 1, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[i - 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i - 1, 0].OldState);
-
-            neighbourhoodState.Add(cellSpace[i, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[i, 0].OldState);
-
-            neighbourhoodState.Add(cellSpace[i + 1, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[i + 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i + 1, 0].OldState);
-            return neighbourhoodState;
-        }
-        private List<double?> getLeftNeighbourhood(int i)
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[i - 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i - 1, 0].OldState);
-            neighbourhoodState.Add(cellSpace[i - 1, 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[i, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i, 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[i + 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[i + 1, 0].OldState);
-            neighbourhoodState.Add(cellSpace[i + 1, 1].OldState);
-            return neighbourhoodState;
-        }
-
-        private List<double?> getUpperLeftNeighbourhood()
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, 0].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[0, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[0, 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[1, 0].OldState);
-            neighbourhoodState.Add(cellSpace[1, 1].OldState);
-            return neighbourhoodState;
-        }
-
-        private List<double?> getLowerLeftNeighbourhood()
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, 0].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, 1].OldState);
-
-            neighbourhoodState.Add(cellSpace[0, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[0, 0].OldState);
-            neighbourhoodState.Add(cellSpace[0, 1].OldState);
-            return neighbourhoodState;
-        }
-
-        private List<double?> getUpperRightNeighbourhood()
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, 0].OldState);
-
-            neighbourhoodState.Add(cellSpace[0, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[0, 0].OldState);
-
-            neighbourhoodState.Add(cellSpace[1, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[1, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[1, 0].OldState);
-            return neighbourhoodState;
-        }
-
-        private List<double?> getLowerRightNeighbourhood()
-        {
-            List<double?> neighbourhoodState = new List<double?>();
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 2, 0].OldState);
-
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[hyperParams.spaceSize - 1, 0].OldState);
-
-            neighbourhoodState.Add(cellSpace[0, hyperParams.spaceSize - 2].OldState);
-            neighbourhoodState.Add(cellSpace[0, hyperParams.spaceSize - 1].OldState);
-            neighbourhoodState.Add(cellSpace[0, 0].OldState);
-            return neighbourhoodState;
         }
 
         private double? ruleCheck(List<double?> neighbourhoodState, double? centreState)
