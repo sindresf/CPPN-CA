@@ -12,6 +12,5 @@ namespace CACPPN.CA.BaseTypes
 
         public abstract double? State { get; set; }
         public abstract double? OldState { get; }
-
     }
 }

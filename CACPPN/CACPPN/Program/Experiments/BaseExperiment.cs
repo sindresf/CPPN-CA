@@ -29,6 +29,12 @@ namespace CACPPN.Program.Experiments
 
         protected abstract void InitialConditionSetup();
 
+        protected abstract void InitializeCells();
+
+        protected abstract void InitializeCellNeighbourhoods();
+
+        protected abstract void SeedTheCA();
+
         public abstract void NextState();
 
         public abstract bool IsSuccessState(); //for "not looking for a specific space state" this just returns false
@@ -77,6 +83,21 @@ namespace CACPPN.Program.Experiments
         public override string SpaceStateToString()
         {
             return "this is the state now: ";
+        }
+
+        protected override void InitializeCells()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void InitializeCellNeighbourhoods()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SeedTheCA()
+        {
+            throw new NotImplementedException();
         }
     }
 }

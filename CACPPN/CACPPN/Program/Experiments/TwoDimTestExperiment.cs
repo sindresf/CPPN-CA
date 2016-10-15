@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using CACPPN.CA.DerivedTypes.CellTypes;
-using CACPPN.Utils.SeedingMachines;
-using CACPPN.CA.Enums.Types;
 using CACPPN.CA.Enums;
+using CACPPN.CA.Enums.Types;
 using CACPPN.Utils;
+using CACPPN.Utils.SeedingMachines;
 
 namespace CACPPN.Program.Experiments
 {
@@ -11,11 +11,10 @@ namespace CACPPN.Program.Experiments
     {
         Cell[,] cellSpace;
         double?[,] lastSpaceState; //expanded into proper storage
-        private readonly int highestIndex;
+
         public TwoDimTestExperiment()
         {
             hyperParams.spaceSize = 27;
-            highestIndex = hyperParams.spaceSize - 1;
             hyperParams.generations = 100;
             cellType = CellType.STEP_VALUED;
             hyperParams.states = 2;
@@ -30,11 +29,11 @@ namespace CACPPN.Program.Experiments
         protected override void InitialConditionSetup()
         {
             InitializeCells();
-            InitializeNeighbourhoods();
+            InitializeCellNeighbourhoods();
             SeedTheCA();
         }
 
-        private void InitializeCells()
+        protected override void InitializeCells()
         {
             for (int i = 0; i < hyperParams.spaceSize; i++)
             {
@@ -44,15 +43,15 @@ namespace CACPPN.Program.Experiments
                 }
             }
         }
-        private void InitializeNeighbourhoods()
+        protected override void InitializeCellNeighbourhoods()
         {
             NeighbourhoodInitializor.InitializeNeighbourhoods2D(cellSpace, hyperParams);
         }
 
-        private void SeedTheCA()
+        protected override void SeedTheCA()
         {
             GameOfLifeSeeds.SpawnCrossOscillator(12, 12, cellSpace, Orientation.VERTICAL);
-            GameOfLifeSeeds.SpawnCrossOscillator(16, 16, cellSpace, Orientation.HORISONTAL);
+            GameOfLifeSeeds.SpawnCrossOscillator(14, 19, cellSpace, Orientation.HORISONTAL);
         }
 
         public override bool IsSuccessState()

@@ -129,5 +129,20 @@ namespace CACPPN.Program.Experiments
             }
             return 'X';
         }
+
+        protected override void InitializeCells()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void InitializeCellNeighbourhoods()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SeedTheCA()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
