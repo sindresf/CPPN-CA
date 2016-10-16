@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CACPPN.CA.Enums;
+using System.Threading.Tasks;
 using CACPPN.CA.Enums.Types;
 using CACPPN.CA.DerivedTypes.CellTypes;
 using CACPPN.Utils;
@@ -33,8 +33,10 @@ namespace CACPPN.Program.Experiments
         private void AddCellSpaceToLog()
         {
             double[,] logSpace = new double[hyperParams.spaceSize, hyperParams.spaceSize];
-            foreach (Cell cell in cellSpace)
+            Parallel.ForEach(cellSpace.ToEnumerable<Cell>(), cell =>
+            {
                 logSpace[cell.i, cell.j] = cell.CurrentState;
+            });
             loggedSpaceStates.Add(logSpace);
         }
 
@@ -71,29 +73,29 @@ namespace CACPPN.Program.Experiments
 
         public override void NextState()
         {
-            foreach (Cell cell in cellSpace)
+            Parallel.ForEach(cellSpace.ToEnumerable<Cell>(), cell =>
             {
                 futureStates[cell.i, cell.j] = ruleCheck(cell.NeighbourhoodCurrentState, cell.CurrentState);
-            }
-            SwitchCellStates();
+            });
+            StepSpaceIntoTheFuture();
             AddCellSpaceToLog();
         }
 
-        private void SwitchCellStates()
+        private void StepSpaceIntoTheFuture()
         {
-            foreach (Cell cell in cellSpace)
+            Parallel.ForEach(cellSpace.ToEnumerable<Cell>(), cell =>
             {
                 cell.FutureState = futureStates[cell.i, cell.j];
-            }
+            });
         }
 
         private double? ruleCheck(List<double> neighbourhoodState, double? centreState)
         {
             double total = 0;
-            foreach (double state in neighbourhoodState)
+            Parallel.ForEach(neighbourhoodState, val =>
             {
-                total += state;
-            }
+                total += val;
+            });
             if (centreState > 0)
             {
                 if (total < 2)
@@ -110,7 +112,7 @@ namespace CACPPN.Program.Experiments
             }
         }
 
-        public override bool IsSuccessState()
+        public override bool IsSuccessState() //This is the one that could actually use some parallell background checking
         {
             for (int i = 0; i < hyperParams.spaceSize; i++)
             {
