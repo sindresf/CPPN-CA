@@ -20,7 +20,7 @@ namespace CACPPN.Program.Experiments
             cellType = CellType.STEP_VALUED;
             hyperParams.states = 2;
             hyperParams.neighbourhoodWidth = 2;
-            hyperParams.timeStep = 100;
+            hyperParams.timeStep = 140;
 
             cellSpace = new Cell[hyperParams.spaceSize, hyperParams.spaceSize];
             futureStates = new double?[hyperParams.spaceSize, hyperParams.spaceSize];
@@ -112,7 +112,7 @@ namespace CACPPN.Program.Experiments
             }
         }
 
-        public override bool IsSuccessState() //This is the one that could actually use some parallell background checking
+        public override bool IsSuccessState()
         {
             for (int i = 0; i < hyperParams.spaceSize; i++)
             {
