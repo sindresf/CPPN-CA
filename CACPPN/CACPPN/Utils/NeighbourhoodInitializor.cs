@@ -10,18 +10,16 @@ namespace CACPPN.Utils
         {
 
         }
-        //TODO make this
-
-
-
-
+        //TODO make 
         public static void InitializeNeighbourhoods2D(AbstractCell[,] cellSpace, Hyperparameters hyperParams)
         {
             int highestIndex = hyperParams.spaceSize - 1;
             int width = hyperParams.neighbourhoodWidth;
-            InitializeSafeCellNeighbourhoods(cellSpace, highestIndex, width);
-            InitializeOutlierCellNeighbourhoods(cellSpace, highestIndex, hyperParams);
-            InitializeCornerCellNeighbourhoods(cellSpace, highestIndex, hyperParams);
+            Task[] tasks = new Task[3];
+            tasks[0] = Task.Run(() => InitializeSafeCellNeighbourhoods(cellSpace, highestIndex, width));
+            tasks[1] = Task.Run(() => InitializeOutlierCellNeighbourhoods(cellSpace, highestIndex, hyperParams));
+            tasks[2] = Task.Run(() => InitializeCornerCellNeighbourhoods(cellSpace, highestIndex, hyperParams));
+            Task.WaitAll(tasks);
         }
 
         private static void InitializeSafeCellNeighbourhoods(AbstractCell[,] cellSpace, int highestIndex, int width)
