@@ -62,10 +62,10 @@ namespace CACPPN.Program.Experiments
 
         protected override void SeedTheCA()
         {
-            GameOfLifeSeeds.SpawnCrossOscillator(6, 6, cellSpace, Orientation.VERTICAL);
-            GameOfLifeSeeds.SpawnCrossOscillator(20, 9, cellSpace, Orientation.HORISONTAL);
+            //GameOfLifeSeeds.SpawnCrossOscillator(6, 6, cellSpace, Orientation.VERTICAL);
+            //GameOfLifeSeeds.SpawnCrossOscillator(20, 9, cellSpace, Orientation.HORISONTAL);
             GameOfLifeSeeds.SpawnRPentomino(15, 15, cellSpace, Orientation.VERTICAL);
-            GameOfLifeSeeds.SpawnRandoms(cellSpace, hyperParams.spaceSize, 20);
+            //GameOfLifeSeeds.SpawnRandoms(cellSpace, hyperParams.spaceSize, 20);
         }
 
         public override void NextState()

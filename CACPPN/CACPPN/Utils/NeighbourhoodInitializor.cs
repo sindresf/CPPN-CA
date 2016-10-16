@@ -1,4 +1,5 @@
 ﻿using CACPPN.CA.BaseTypes;
+using System.Threading.Tasks;
 
 namespace CACPPN.Utils
 {
@@ -26,23 +27,38 @@ namespace CACPPN.Utils
         private static void InitializeSafeCellNeighbourhoods(AbstractCell[,] cellSpace, int highestIndex, int width)
         {
             //TODO need a "safe distance calculator" for 2D neighbourhood widths
-            for (int i = 1; i < highestIndex; i++)
+            /*for (int i = 1; i < highestIndex; i++)
             {
                 for (int j = 1; j < highestIndex; j++)
                 {
                     cellSpace[i, j].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, j, width);
                 }
-            }
+
+            }*/
+            Parallel.For(1, highestIndex, (int i) =>
+             {
+                 Parallel.For(1, highestIndex, (int j) =>
+                 {
+                     cellSpace[i, j].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, j, width);
+                 });
+             });
         }
         private static void InitializeOutlierCellNeighbourhoods(AbstractCell[,] cellSpace, int highestIndex, Hyperparameters hyperParams)
         {
-            for (int i = 1; i < highestIndex; i++)
+            /*for (int i = 1; i < highestIndex; i++)
             {
                 cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);
                 cellSpace[i, 0].Neighbourhood = NeighbourhoodConstructor.getLeftNeighbourhood(cellSpace, i, hyperParams);
                 cellSpace[highestIndex, i].Neighbourhood = NeighbourhoodConstructor.getLowerNeighbourhood(cellSpace, i, hyperParams);
                 cellSpace[i, highestIndex].Neighbourhood = NeighbourhoodConstructor.getRightNeighbourhood(cellSpace, i, hyperParams);
-            }
+            }*/
+            Parallel.For(1, highestIndex, (int i) =>
+              {
+                  cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);
+                  cellSpace[i, 0].Neighbourhood = NeighbourhoodConstructor.getLeftNeighbourhood(cellSpace, i, hyperParams);
+                  cellSpace[highestIndex, i].Neighbourhood = NeighbourhoodConstructor.getLowerNeighbourhood(cellSpace, i, hyperParams);
+                  cellSpace[i, highestIndex].Neighbourhood = NeighbourhoodConstructor.getRightNeighbourhood(cellSpace, i, hyperParams);
+              });
         }
         private static void InitializeCornerCellNeighbourhoods(AbstractCell[,] cellSpace, int highestIndex, Hyperparameters hyperParams)
         {
