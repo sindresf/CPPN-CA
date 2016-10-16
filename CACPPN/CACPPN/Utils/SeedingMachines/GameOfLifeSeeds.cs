@@ -1,4 +1,6 @@
 ﻿using System;
+using CACPPN.Utils;
+using System.Threading.Tasks;
 using CACPPN.CA.BaseTypes;
 using CACPPN.CA.DerivedTypes.CellTypes;
 using CACPPN.CA.Enums;
@@ -72,6 +74,16 @@ namespace CACPPN.Utils.SeedingMachines
             cellSpace[iMid + 1, jMid].SetFirstState(1);
             cellSpace[iMid - 1, jMid].SetFirstState(1);
             cellSpace[iMid - 1, jMid + 1].SetFirstState(1);
+        }
+
+        public static void RandomFillSpace(AbstractCell[,] cellSpace, double fillAmount)
+        {
+            Random rand = new Random();
+            Parallel.ForEach<AbstractCell>(cellSpace.ToEnumerable<AbstractCell>(), cell =>
+            {
+                if (rand.NextDouble() < fillAmount)
+                    cell.SetFirstState(1);
+            });
         }
 
         public static void SpawnRandoms(AbstractCell[,] cellSpace, int randMax, int count)

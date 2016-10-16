@@ -68,6 +68,7 @@
     <Compile Include="CA\DerivedTypes\CellTypes\TreeCell.cs" />
     <Compile Include="CA\Enums\CAPartTypes.cs" />
     <Compile Include="CA\Enums\Orientation.cs" />
+    <Compile Include="Utils\MultiDimensionalArrayConversion.cs" />
     <Compile Include="Utils\NeighbourhoodConstructor.cs" />
     <Compile Include="Utils\NeighbourhoodInitializor.cs" />
     <Compile Include="Utils\SeedingMachines\GameOfLifeSeeds.cs" />
