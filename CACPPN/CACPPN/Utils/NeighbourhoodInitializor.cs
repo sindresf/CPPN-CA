@@ -6,10 +6,30 @@ namespace CACPPN.Utils
     static class NeighbourhoodInitializor
     {
 
-        public static void InitializeNeighbourhoods1D()
+        public static void InitializeNeighbourhoods1D(AbstractCell[] cellSpace, Hyperparameters hyperParams)
         {
-
+            int width = hyperParams.neighbourhoodWidth;
+            int highestIndex = hyperParams.spaceSize;
+            Task[] tasks = new Task[2];
+            tasks[0] = Task.Run(() => InitializeSafeCellNeigbhourhoods(cellSpace, highestIndex, width));
+            tasks[1] = Task.Run(() => InitializeEdgeNeighbourhoods(cellSpace, highestIndex, width));
+            Task.WaitAll(tasks);
         }
+
+        private static void InitializeSafeCellNeigbhourhoods(AbstractCell[] cellSpace, int highestIndex, int width)
+        {
+            Parallel.For(1, highestIndex, i =>
+             {
+                 cellSpace[i].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, width);
+             });
+        }
+
+        private static void InitializeEdgeNeighbourhoods(AbstractCell[] cellSpace, int highestIndex, int width)
+        {
+            cellSpace[0].Neighbourhood = NeighbourhoodConstructor.getLeftEndNeighbourhood(cellSpace, width);
+            cellSpace[highestIndex - 1].Neighbourhood = NeighbourhoodConstructor.getLeftEndNeighbourhood(cellSpace, width);
+        }
+
         //TODO make 
         public static void InitializeNeighbourhoods2D(AbstractCell[,] cellSpace, Hyperparameters hyperParams)
         {
@@ -25,14 +45,6 @@ namespace CACPPN.Utils
         private static void InitializeSafeCellNeighbourhoods(AbstractCell[,] cellSpace, int highestIndex, int width)
         {
             //TODO need a "safe distance calculator" for 2D neighbourhood widths
-            /*for (int i = 1; i < highestIndex; i++)
-            {
-                for (int j = 1; j < highestIndex; j++)
-                {
-                    cellSpace[i, j].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, j, width);
-                }
-
-            }*/
             Parallel.For(1, highestIndex, (int i) =>
              {
                  Parallel.For(1, highestIndex, (int j) =>
@@ -43,13 +55,6 @@ namespace CACPPN.Utils
         }
         private static void InitializeOutlierCellNeighbourhoods(AbstractCell[,] cellSpace, int highestIndex, Hyperparameters hyperParams)
         {
-            /*for (int i = 1; i < highestIndex; i++)
-            {
-                cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);
-                cellSpace[i, 0].Neighbourhood = NeighbourhoodConstructor.getLeftNeighbourhood(cellSpace, i, hyperParams);
-                cellSpace[highestIndex, i].Neighbourhood = NeighbourhoodConstructor.getLowerNeighbourhood(cellSpace, i, hyperParams);
-                cellSpace[i, highestIndex].Neighbourhood = NeighbourhoodConstructor.getRightNeighbourhood(cellSpace, i, hyperParams);
-            }*/
             Parallel.For(1, highestIndex, (int i) =>
               {
                   cellSpace[0, i].Neighbourhood = NeighbourhoodConstructor.getUpperNeighbourhood(cellSpace, i, hyperParams);

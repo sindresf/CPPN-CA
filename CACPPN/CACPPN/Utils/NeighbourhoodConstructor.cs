@@ -12,8 +12,7 @@ namespace CACPPN.Utils
 
             for (int i = centreIndex - width; i < centreIndex + width; i++)
             {
-                if (i != centreIndex)
-                    neighbourhood.Add(cellSpace[i]);
+                neighbourhood.Add(cellSpace[i]);
             }
 
             return neighbourhood;
@@ -25,7 +24,7 @@ namespace CACPPN.Utils
 
             for (int i = width; i > 0; i--)
                 neighbourhood.Add(cellSpace[cellSpace.Length - width]);
-
+            neighbourhood.Add(cellSpace[0]);
             for (int i = 1; i <= width; i++)
                 neighbourhood.Add(cellSpace[i]);
 
@@ -38,7 +37,7 @@ namespace CACPPN.Utils
 
             for (int i = width + 1; i > 1; i--)
                 neighbourhood.Add(cellSpace[cellSpace.Length - width]);
-
+            neighbourhood.Add(cellSpace[cellSpace.Length]);
             for (int i = 0; i < width; i++)
                 neighbourhood.Add(cellSpace[i]);
 

@@ -7,18 +7,8 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
     {
         private int states;
 
-        public readonly int i, j;
-
-        public Cell(double value, int states)
+        public Cell(int i, int j, int states) : base(i, j)
         {
-            _currentState = value;
-            this.states = states;
-        }
-
-        public Cell(int i, int j, int states)
-        {
-            this.i = i;
-            this.j = j;
             this.states = states;
         }
 
@@ -56,7 +46,8 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
 
             set
             {
-                _neighbourhood = value;
+                if (_neighbourhood == null)
+                    _neighbourhood = value;
             }
         }
 

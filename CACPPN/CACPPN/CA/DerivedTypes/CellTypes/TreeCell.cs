@@ -6,6 +6,10 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
 {
     class TreeCell : AbstractCell
     {
+        public TreeCell() : base(0)
+        {
+
+        }
         public override double CurrentState
         {
             get

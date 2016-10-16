@@ -14,7 +14,7 @@ namespace CACPPN.Program
 
         public void Run()
         {
-            Experiment experiment = new TwoDimTestExperiment();
+            Experiment experiment = new OneDimTestExperiment();
             Console.WriteLine(experiment.SpaceStateToString());
             bool successFinish = false;
             for (int i = 0; i < experiment.hyperParams.generations; i++)

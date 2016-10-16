@@ -49,14 +49,15 @@ namespace CACPPN.Program.Experiments
 
         protected override void InitializeCells()
         {
-            for (int i = 0; i < hyperParams.spaceSize; i++)
-            {
-                for (int j = 0; j < hyperParams.spaceSize; j++)
-                {
-                    cellSpace[i, j] = new Cell(i, j, hyperParams.states).SetFirstState(0) as Cell;
-                }
-            }
+            Parallel.For(0, hyperParams.spaceSize, (int i) =>
+             {
+                 Parallel.For(0, hyperParams.spaceSize, (int j) =>
+                 {
+                     cellSpace[i, j] = new Cell(i, j, hyperParams.states).SetFirstState(0) as Cell;
+                 });
+             });
         }
+
         protected override void InitializeCellNeighbourhoods()
         {
             NeighbourhoodInitializor.InitializeNeighbourhoods2D(cellSpace, hyperParams);

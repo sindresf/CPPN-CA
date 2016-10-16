@@ -5,15 +5,14 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
 {
     class BooleanCell : AbstractCell
     {
-        public BooleanCell(double value)
+        public BooleanCell(int i) : base(i)
         {
-            _currentState = value;
         }
         public override double CurrentState
         {
             get
             {
-                throw new NotImplementedException();
+                return _currentState;
             }
         }
 
@@ -21,12 +20,13 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
         {
             get
             {
-                throw new NotImplementedException();
+                return _futureState;
             }
 
             set
             {
-                throw new NotImplementedException();
+                _currentState = value.GetValueOrDefault();
+                _futureState = null;
             }
         }
 
@@ -34,12 +34,13 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
         {
             get
             {
-                throw new NotImplementedException();
+                return _neighbourhood;
             }
 
             set
             {
-                throw new NotImplementedException();
+                if (_neighbourhood == null)
+                    _neighbourhood = value;
             }
         }
 
@@ -47,13 +48,20 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
         {
             get
             {
-                throw new NotImplementedException();
+                List<double> neighState = new List<double>();
+                foreach (AbstractCell cell in _neighbourhood)
+                {
+                    neighState.Add(cell.CurrentState);
+                }
+                return neighState;
             }
         }
 
         public override AbstractCell SetFirstState(double value)
         {
-            throw new NotImplementedException();
+            _currentState = value;
+            _futureState = value;
+            return this;
         }
     }
 }
