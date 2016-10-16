@@ -7,6 +7,8 @@
         public int neighbourhoodWidth { get; set; }
         public int states { get; set; }
         public double acceptableFitness { get; set; }
+
+        public int timeStep { get; set; }
     }
 
     //TODO do I need a different hyperparameter thing for the evo of the CPPN?

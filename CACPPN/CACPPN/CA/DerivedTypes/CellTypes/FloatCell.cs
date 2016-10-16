@@ -11,32 +11,39 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
 
         public Cell(double value, int states)
         {
-            _state = value;
+            _currentState = value;
             this.states = states;
         }
 
-        public Cell(double value, int i, int j, int states)
+        public Cell(int i, int j, int states)
         {
-            _state = value;
             this.i = i;
             this.j = j;
             this.states = states;
         }
 
-        public override double? State
+        public override AbstractCell SetFirstState(double value)
         {
-            get { return _state.GetValueOrDefault(); }
-            set
-            {
-                _oldstate = _oldstate == null ? value : _state;
-                _state = value;
-            }
+            _currentState = value;
+            _futureState = value;
+            return this;
         }
-        public override double? OldState
+
+        public override double CurrentState
+        {
+            get { return _currentState; }
+        }
+        public override double? FutureState
         {
             get
             {
-                return _oldstate ?? _state;
+                return _futureState;
+            }
+
+            set
+            {
+                _currentState = value.GetValueOrDefault();
+                _futureState = null;
             }
         }
 
@@ -53,14 +60,14 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public List<double?> NeighbourhoodOldState
+        public override List<double> NeighbourhoodCurrentState
         {
             get
             {
-                List<double?> neighState = new List<double?>();
+                List<double> neighState = new List<double>();
                 foreach (Cell cell in _neighbourhood)
                 {
-                    neighState.Add(cell.OldState);
+                    neighState.Add(cell.CurrentState);
                 }
                 return neighState;
             }

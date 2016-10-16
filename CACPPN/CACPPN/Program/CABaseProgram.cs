@@ -20,7 +20,7 @@ namespace CACPPN.Program
             for (int i = 0; i < experiment.hyperParams.generations; i++)
             {
                 experiment.NextState();
-                Thread.Sleep(500);
+                Thread.Sleep(experiment.hyperParams.timeStep);
                 Console.Clear();
                 if (experiment.IsSuccessState())
                 {

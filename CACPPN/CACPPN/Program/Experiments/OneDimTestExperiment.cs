@@ -30,10 +30,10 @@ namespace CACPPN.Program.Experiments
             }
             Random rand = new Random();
             int index = rand.Next(hyperParams.spaceSize);
-            cellSpace[index].State = 1;
+            cellSpace[index].SetFirstState(1);
 
             index = rand.Next(hyperParams.spaceSize);
-            cellSpace[index].State = 1;
+            cellSpace[index].SetFirstState(1);
             setupMapping();
         }
 
@@ -63,24 +63,24 @@ namespace CACPPN.Program.Experiments
                 List<double?> neighbourhoodState = new List<double?>();
                 if (i == 0)
                 {
-                    neighbourhoodState.Add(cellSpace.Last().OldState);
-                    neighbourhoodState.Add(cellSpace[i].OldState);
-                    neighbourhoodState.Add(cellSpace[i + 1].OldState);
+                    neighbourhoodState.Add(cellSpace.Last().FutureState);
+                    neighbourhoodState.Add(cellSpace[i].FutureState);
+                    neighbourhoodState.Add(cellSpace[i + 1].FutureState);
                 }
                 else if (i == hyperParams.spaceSize - 1)
                 {
-                    neighbourhoodState.Add(cellSpace[i - 1].OldState);
-                    neighbourhoodState.Add(cellSpace[i].OldState);
-                    neighbourhoodState.Add(cellSpace.First().OldState);
+                    neighbourhoodState.Add(cellSpace[i - 1].FutureState);
+                    neighbourhoodState.Add(cellSpace[i].FutureState);
+                    neighbourhoodState.Add(cellSpace.First().FutureState);
                 }
                 else
                 {
-                    neighbourhoodState.Add(cellSpace[i - 1].OldState);
-                    neighbourhoodState.Add(cellSpace[i].OldState);
-                    neighbourhoodState.Add(cellSpace[i + 1].OldState);
+                    neighbourhoodState.Add(cellSpace[i - 1].FutureState);
+                    neighbourhoodState.Add(cellSpace[i].FutureState);
+                    neighbourhoodState.Add(cellSpace[i + 1].FutureState);
                 }
 
-                cellSpace[i].State = ruleCheck(neighbourhoodState);
+                cellSpace[i].FutureState = ruleCheck(neighbourhoodState);
             }
         }
 
@@ -110,7 +110,7 @@ namespace CACPPN.Program.Experiments
             string space = "|";
             foreach (BooleanCell cell in cellSpace)
             {
-                space += "" + StateToString(cell.State);
+                space += "" + StateToString(cell.CurrentState);
             }
             space = space.Substring(0, space.Length - 1) + "|";
             return space;

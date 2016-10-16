@@ -6,6 +6,27 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
 {
     class TreeCell : AbstractCell
     {
+        public override double CurrentState
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override double? FutureState
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public override List<AbstractCell> Neighbourhood
         {
             get
@@ -19,7 +40,7 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public override double? OldState
+        public override List<double> NeighbourhoodCurrentState
         {
             get
             {
@@ -27,17 +48,9 @@ namespace CACPPN.CA.DerivedTypes.CellTypes
             }
         }
 
-        public override double? State
+        public override AbstractCell SetFirstState(double value)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,9 +8,14 @@ namespace CACPPN.CA.BaseTypes
 
         public abstract List<AbstractCell> Neighbourhood { get; set; }
 
-        protected double? _state, _oldstate;
+        protected double _currentState;
+        protected double? _futureState;
 
-        public abstract double? State { get; set; }
-        public abstract double? OldState { get; }
+        public abstract double CurrentState { get; }
+        public abstract double? FutureState { get; set; }
+
+        public abstract List<double> NeighbourhoodCurrentState { get; }
+
+        public abstract AbstractCell SetFirstState(double value);
     }
 }

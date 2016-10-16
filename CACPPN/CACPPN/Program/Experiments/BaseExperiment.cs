@@ -25,6 +25,7 @@ namespace CACPPN.Program.Experiments
             hyperParams.states = 2;
             hyperParams.neighbourhoodWidth = 1;
             hyperParams.acceptableFitness = 1;
+            hyperParams.timeStep = 250;
         }
 
         protected abstract void InitialConditionSetup();
@@ -69,7 +70,7 @@ namespace CACPPN.Program.Experiments
             //an "all is true" state
             foreach (BooleanCell cell in cellSpace)
             {
-                if (cell.State == 0)
+                if (cell.CurrentState == 0)
                     return false;
             }
             return true;

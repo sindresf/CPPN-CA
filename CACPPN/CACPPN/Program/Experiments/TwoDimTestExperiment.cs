@@ -10,7 +10,8 @@ namespace CACPPN.Program.Experiments
     class TwoDimTestExperiment : Experiment
     {
         Cell[,] cellSpace;
-        double?[,] lastSpaceState; //expanded into proper storage
+        double?[,] futureStates; //expanded into proper storage
+        List<double[,]> loggedSpaceStates; //expanded into proper storage
 
         public TwoDimTestExperiment()
         {
@@ -19,18 +20,29 @@ namespace CACPPN.Program.Experiments
             cellType = CellType.STEP_VALUED;
             hyperParams.states = 2;
             hyperParams.neighbourhoodWidth = 2;
+            hyperParams.timeStep = 100;
 
             cellSpace = new Cell[hyperParams.spaceSize, hyperParams.spaceSize];
-            lastSpaceState = new double?[hyperParams.spaceSize, hyperParams.spaceSize];
+            futureStates = new double?[hyperParams.spaceSize, hyperParams.spaceSize];
+            loggedSpaceStates = new List<double[,]>();
 
             InitialConditionSetup();
+            AddCellSpaceToLog();
+        }
+
+        private void AddCellSpaceToLog()
+        {
+            double[,] logSpace = new double[hyperParams.spaceSize, hyperParams.spaceSize];
+            foreach (Cell cell in cellSpace)
+                logSpace[cell.i, cell.j] = cell.CurrentState;
+            loggedSpaceStates.Add(logSpace);
         }
 
         protected override void InitialConditionSetup()
         {
             InitializeCells();
-            InitializeCellNeighbourhoods();
             SeedTheCA();
+            InitializeCellNeighbourhoods();
         }
 
         protected override void InitializeCells()
@@ -39,7 +51,7 @@ namespace CACPPN.Program.Experiments
             {
                 for (int j = 0; j < hyperParams.spaceSize; j++)
                 {
-                    cellSpace[i, j] = new Cell(0, i, j, hyperParams.states);
+                    cellSpace[i, j] = new Cell(i, j, hyperParams.states).SetFirstState(0) as Cell;
                 }
             }
         }
@@ -50,36 +62,31 @@ namespace CACPPN.Program.Experiments
 
         protected override void SeedTheCA()
         {
-            GameOfLifeSeeds.SpawnCrossOscillator(12, 12, cellSpace, Orientation.VERTICAL);
-            GameOfLifeSeeds.SpawnCrossOscillator(14, 19, cellSpace, Orientation.HORISONTAL);
-        }
-
-        public override bool IsSuccessState()
-        {
-            for (int i = 0; i < hyperParams.spaceSize; i++)
-            {
-                for (int j = 0; j < hyperParams.spaceSize; j++)
-                {
-                    if (cellSpace[i, j].State != lastSpaceState[i, j])
-                        return false;
-                }
-            }
-            return true;
+            GameOfLifeSeeds.SpawnCrossOscillator(6, 6, cellSpace, Orientation.VERTICAL);
+            GameOfLifeSeeds.SpawnCrossOscillator(20, 9, cellSpace, Orientation.HORISONTAL);
+            GameOfLifeSeeds.SpawnRPentomino(15, 15, cellSpace, Orientation.VERTICAL);
+            GameOfLifeSeeds.SpawnRandoms(cellSpace, hyperParams.spaceSize, 20);
         }
 
         public override void NextState()
         {
-            double? nextState;
-
             foreach (Cell cell in cellSpace)
             {
-                nextState = ruleCheck(cell.NeighbourhoodOldState, cell.OldState);
-                lastSpaceState[cell.i, cell.j] = cell.OldState;
-                cell.State = nextState;
+                futureStates[cell.i, cell.j] = ruleCheck(cell.NeighbourhoodCurrentState, cell.CurrentState);
+            }
+            SwitchCellStates();
+            AddCellSpaceToLog();
+        }
+
+        private void SwitchCellStates()
+        {
+            foreach (Cell cell in cellSpace)
+            {
+                cell.FutureState = futureStates[cell.i, cell.j];
             }
         }
 
-        private double? ruleCheck(List<double?> neighbourhoodState, double? centreState)
+        private double? ruleCheck(List<double> neighbourhoodState, double? centreState)
         {
             double total = 0;
             foreach (double state in neighbourhoodState)
@@ -102,6 +109,18 @@ namespace CACPPN.Program.Experiments
             }
         }
 
+        public override bool IsSuccessState()
+        {
+            for (int i = 0; i < hyperParams.spaceSize; i++)
+            {
+                for (int j = 0; j < hyperParams.spaceSize; j++)
+                {
+                    if (cellSpace[i, j].CurrentState != loggedSpaceStates[loggedSpaceStates.Count - 2][i, j])
+                        return false;
+                }
+            }
+            return true;
+        }
         public override string SpaceStateToString()
         {
             string space = "";
@@ -110,7 +129,7 @@ namespace CACPPN.Program.Experiments
                 space += "|";
                 for (int j = 0; j < hyperParams.spaceSize; j++)
                 {
-                    space += "" + StateToString(cellSpace[i, j].State) + ".";
+                    space += "" + StateToString(cellSpace[i, j].CurrentState) + ".";
                 }
                 space += "|\n";
             }
