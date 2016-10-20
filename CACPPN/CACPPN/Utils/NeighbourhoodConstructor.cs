@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using CACPPN.CA.BaseTypes;
 
+using System;
+
 namespace CACPPN.Utils
 {
     static class NeighbourhoodConstructor
@@ -10,11 +12,10 @@ namespace CACPPN.Utils
         {
             List<AbstractCell> neighbourhood = new List<AbstractCell>();
 
-            for (int i = centreIndex - width; i < centreIndex + width; i++)
+            for (int i = centreIndex - width; i < centreIndex + width + 1; i++)
             {
                 neighbourhood.Add(cellSpace[i]);
             }
-
             return neighbourhood;
         }
 
@@ -23,11 +24,12 @@ namespace CACPPN.Utils
             List<AbstractCell> neighbourhood = new List<AbstractCell>();
 
             for (int i = width; i > 0; i--)
-                neighbourhood.Add(cellSpace[cellSpace.Length - width]);
+                neighbourhood.Add(cellSpace[cellSpace.Length - i]);
             neighbourhood.Add(cellSpace[0]);
-            for (int i = 1; i <= width; i++)
+            for (int i = 1; i < width + 1; i++)
                 neighbourhood.Add(cellSpace[i]);
 
+            Console.WriteLine(neighbourhood.Count);
             return neighbourhood;
         }
 
@@ -35,9 +37,9 @@ namespace CACPPN.Utils
         {
             List<AbstractCell> neighbourhood = new List<AbstractCell>();
 
-            for (int i = width + 1; i > 1; i--)
-                neighbourhood.Add(cellSpace[cellSpace.Length - width]);
-            neighbourhood.Add(cellSpace[cellSpace.Length]);
+            for (int i = width + 1; i > 1; i--) 
+                neighbourhood.Add(cellSpace[cellSpace.Length - i]);
+            neighbourhood.Add(cellSpace[cellSpace.Length - 1]);
             for (int i = 0; i < width; i++)
                 neighbourhood.Add(cellSpace[i]);
 

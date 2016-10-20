@@ -11,14 +11,16 @@ namespace CACPPN.Program.Experiments
     {
         BooleanCell[] cellSpace;
         List<List<double>> mapping;
+        double?[] futureStates; //expanded into proper storage
 
         public OneDimTestExperiment() : base()
         {
             hyperParams.spaceSize = 60;
             hyperParams.generations = 100;
             hyperParams.neighbourhoodWidth = 1;
-            hyperParams.timeStep = 140;
+            hyperParams.timeStep = 100;
             cellSpace = new BooleanCell[hyperParams.spaceSize];
+            futureStates = new double?[hyperParams.spaceSize];
             InitialConditionSetup();
         }
 
@@ -35,11 +37,11 @@ namespace CACPPN.Program.Experiments
             mapping = new List<List<double>>(); //This is why lookup sucks!
             mapping.Add(new List<double> { 0, 0, 0, 0 });
             mapping.Add(new List<double> { 0, 0, 1, 1 });
-            mapping.Add(new List<double> { 0, 1, 0, 0 });
-            mapping.Add(new List<double> { 1, 0, 0, 1 });
+            mapping.Add(new List<double> { 0, 1, 0, 1 });
             mapping.Add(new List<double> { 0, 1, 1, 1 });
-            mapping.Add(new List<double> { 1, 1, 0, 0 });
+            mapping.Add(new List<double> { 1, 0, 0, 1 });
             mapping.Add(new List<double> { 1, 0, 1, 0 });
+            mapping.Add(new List<double> { 1, 1, 0, 0 });
             mapping.Add(new List<double> { 1, 1, 1, 0 });
         }
 
@@ -52,8 +54,12 @@ namespace CACPPN.Program.Experiments
         {
             Parallel.For(0, hyperParams.spaceSize, (int i) =>
             {
-                cellSpace[i].FutureState = ruleCheck(cellSpace[i].NeighbourhoodCurrentState);
+                futureStates[i] = ruleCheck(cellSpace[i].NeighbourhoodCurrentState);
             });
+            Parallel.For(0, hyperParams.spaceSize, (int i) =>
+             {
+                 cellSpace[i].FutureState = futureStates[i];
+             });
         }
 
         private double? ruleCheck(List<double> neighbourhoodState)
@@ -61,14 +67,15 @@ namespace CACPPN.Program.Experiments
             foreach (List<double> rule in mapping)
             {
                 bool ruleMatched = true;
-                Parallel.For(0, rule.Count - 1, (int i) =>
-                  {
-                      if (rule[i] != neighbourhoodState[i])
-                          ruleMatched = false;
-                  });
+                for (int i = 0; i < rule.Count - 1; i++)
+                {
+                    if (rule[i] != neighbourhoodState[i])
+                        ruleMatched = false;
+                }
                 if (ruleMatched)
                     return rule.Last();
             }
+            Console.Write("whaa");
             return 0;
         }
 

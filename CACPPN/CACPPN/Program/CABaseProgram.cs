@@ -21,7 +21,8 @@ namespace CACPPN.Program
             {
                 experiment.NextState();
                 Thread.Sleep(experiment.hyperParams.timeStep);
-                Console.Clear();
+                if (experiment.spaceType != CA.Enums.Types.CellularSpaceType.ONE_DIMENSIONAL)
+                    Console.Clear();
                 if (experiment.IsSuccessState())
                 {
                     successFinish = true;

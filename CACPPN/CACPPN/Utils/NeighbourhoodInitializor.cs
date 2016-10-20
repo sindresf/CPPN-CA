@@ -1,6 +1,8 @@
 ﻿using CACPPN.CA.BaseTypes;
 using System.Threading.Tasks;
 
+using System;
+
 namespace CACPPN.Utils
 {
     static class NeighbourhoodInitializor
@@ -18,16 +20,16 @@ namespace CACPPN.Utils
 
         private static void InitializeSafeCellNeigbhourhoods(AbstractCell[] cellSpace, int highestIndex, int width)
         {
-            Parallel.For(1, highestIndex, i =>
-             {
-                 cellSpace[i].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, width);
-             });
+            Parallel.For(1, highestIndex - 1, i =>
+               {
+                   cellSpace[i].Neighbourhood = NeighbourhoodConstructor.getOKNeighbourhood(cellSpace, i, width);
+               });
         }
 
         private static void InitializeEdgeNeighbourhoods(AbstractCell[] cellSpace, int highestIndex, int width)
         {
             cellSpace[0].Neighbourhood = NeighbourhoodConstructor.getLeftEndNeighbourhood(cellSpace, width);
-            cellSpace[highestIndex - 1].Neighbourhood = NeighbourhoodConstructor.getLeftEndNeighbourhood(cellSpace, width);
+            cellSpace[highestIndex - 1].Neighbourhood = NeighbourhoodConstructor.getRightEndNeighbourhood(cellSpace, width);
         }
 
         //TODO make 
