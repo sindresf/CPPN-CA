@@ -60,8 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CA\BaseTypes\AbstractCell.cs" />
-    <Compile Include="CA\BaseTypes\Neighbourhood.cs" />
-    <Compile Include="CA\BaseTypes\TimeVariable.cs" />
     <Compile Include="CA\BaseTypes\TransitionRuleSet.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\BooleanCell.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\FloatCell.cs" />
