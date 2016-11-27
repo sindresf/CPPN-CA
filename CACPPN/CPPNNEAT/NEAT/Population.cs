@@ -1,20 +1,27 @@
 ﻿using System.Collections.Generic;
 
+using System.Threading.Tasks;
+
 namespace CPPNNEAT.NEAT
 {
     class Population
     {
-        List<Species> species;
-        public readonly int populationCount;
-        private int newSpeciesID = 0;
-        private int currentIndividualID = 0;
+        public List<Species> species { get; private set; }
 
-        public Population(int populationCount)
+        public Population()
         {
-            this.populationCount = populationCount;
             species = new List<Species>();
-            species.Add(new Species(newSpeciesID++, populationCount, currentIndividualID));
-            currentIndividualID += populationCount;
+        }
+
+        public void Initialize(IDCounters IDs)
+        {
+            species.Add(new Species(IDs.SpeciesID));
+            species[0].Initialize(IDs);
+        }
+
+        public void Evaluate()
+        {
+            Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(); });
         }
     }
 }

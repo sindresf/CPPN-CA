@@ -1,5 +1,4 @@
-﻿using System;
-using CPPNNEAT.CPPN;
+﻿using CPPNNEAT.CPPN;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT
@@ -12,8 +11,6 @@ namespace CPPNNEAT
         public static float ExcessSimilarityWeight = 1.0f;
         public static float DisjointSimilarityWeight = 1.0f;
         public static float WeightDifferenceSimilarityWeight = 0.4f;
-
-        
     }
 
     struct CPPNetworkParameters
@@ -37,6 +34,41 @@ namespace CPPNNEAT
         public static float MutatWeightAmount   = 0.03f;
         public static float ChangeNodeFunction  = 0.0005f;
         //mutation chance of parameters in node functions
+    }
 
+    class IDCounters
+    {
+        private int spID, indID, ngID, cgID;
+
+        public IDCounters()
+        {
+            SpeciesID = 0;
+            IndividualID = 0;
+            NodeGeneID = 0;
+            ConnectionGeneID = 0;
+        }
+
+        public int SpeciesID
+        {
+            get { return spID++; }
+            private set { spID = value; }
+        }
+
+        public int IndividualID
+        {
+            get { return indID++; }
+            private set { indID = value; }
+        }
+        public int NodeGeneID
+        {
+            get { return ngID++; }
+            private set {ngID = value;}
+        }
+        
+        public int ConnectionGeneID
+        {
+            get { return cgID++; }
+            private set { cgID = value; }
+        }
     }
 }
