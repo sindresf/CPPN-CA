@@ -19,7 +19,8 @@ namespace CPPNNEAT.CPPN
 
         public static CPPNetwork GetNetwork(Genome genome)
         {
-            return null;
+
+            return new CPPNetwork(1);
         }
     }
 }
