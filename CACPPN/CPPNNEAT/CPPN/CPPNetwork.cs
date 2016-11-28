@@ -6,6 +6,8 @@ namespace CPPNNEAT.CPPN
 {
 	class CPPNetwork //no recurrent connections as a feature, because of its "once fed forward" nature (until physics might enter)s
 	{
+		//doesn't it say in the paper that the bias is ALWAYS one? so can just add that to any output OH YES, THE WEIGHT FOR IT
+
 		public NetworkNode[] nodes; // to store the activation functions 
 		public float[][] connections;   // to store all the weights
 																		// TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
