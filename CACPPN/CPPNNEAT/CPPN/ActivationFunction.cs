@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.CPPN
 {
 	class ActivationFunction
 	{
-		// all CCPN really is is a collection of functions instead of
-		// a single activation function
-
-		// get randomly initialized activation function based on type function
-
-		public virtual float GetOutput(List<float> input) //delegate or inherited function
+		public virtual float GetOutput(TupleList<float, float> inputs)
 		{
-			return 0.0f;
+			throw new NotImplementedException("base case is not an actual function!");
+		}
+
+		protected float SumWeightedInputs(TupleList<float, float> inputs)
+		{
+			float sum = 0.0f;
+			foreach(Tuple<float, float> input in inputs)
+				sum += input.Item1 * input.Item2;
+			return sum;
 		}
 
 		public static ActivationFunction GetRandomInitializedFunction(ActivationFunctionType type)
@@ -21,27 +24,84 @@ namespace CPPNNEAT.CPPN
 			{
 			case ActivationFunctionType.Sinusodial:
 				return new SinusFunction();
-			case ActivationFunctionType.thisAndThat:
-				return null;
-			case ActivationFunctionType.andOfSuch:
-				return null;
+			case ActivationFunctionType.Gaussian:
+				return new GaussianFunction();
+			case ActivationFunctionType.AbsoluteValue:
+				return new AbsoluteValueFunction();
+			case ActivationFunctionType.Modulo:
+				return new ModuloFunction();
+			case ActivationFunctionType.Linear:
+				return new LinearFunction();
 			default:
 				return null;
 			}
 		}
 	}
 
+	enum ActivationFunctionType
+	{
+		Sinusodial,
+		Gaussian,
+		AbsoluteValue,
+		Modulo,
+		Linear
+	}
+
 	class SinusFunction : ActivationFunction
 	{
 		public SinusFunction() { }
 
-		public override float GetOutput(List<float> input)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
-			float sum = 0.0f;
-			foreach(float inp in input)
-				sum += inp;
+			float sum = SumWeightedInputs(inputs);
+			return (float)Math.Sin(sum);
+		}
+	}
 
-			return (float)Math.Sin(sum); //parameterized point here
+	class GaussianFunction : ActivationFunction
+	{
+		private float mean = 0.0f;
+		private float variance = 1.0f;
+		public GaussianFunction() { }
+
+		public override float GetOutput(TupleList<float, float> inputs)
+		{
+			float sum = SumWeightedInputs(inputs);
+			double exponent = - (Math.Pow((sum - mean),2) / (2*variance));
+			double divide = 1.0 / Math.Sqrt(2*Math.PI*variance);
+
+			return (float)(divide * Math.Pow(Math.E, exponent)); //parameterized point here
+		}
+	}
+	class AbsoluteValueFunction : ActivationFunction
+	{
+		public AbsoluteValueFunction() { }
+
+		public override float GetOutput(TupleList<float, float> inputs)
+		{
+			float sum = SumWeightedInputs(inputs);
+			return Math.Abs(sum);
+		}
+	}
+
+	class ModuloFunction : ActivationFunction
+	{
+		public ModuloFunction() { }
+
+		public override float GetOutput(TupleList<float, float> inputs)
+		{
+			float sum = SumWeightedInputs(inputs);
+			return sum % 1.0f;
+		}
+	}
+
+	class LinearFunction : ActivationFunction
+	{
+		public LinearFunction() { }
+
+		public override float GetOutput(TupleList<float, float> inputs)
+		{
+			return SumWeightedInputs(inputs);
 		}
 	}
 
@@ -49,20 +109,11 @@ namespace CPPNNEAT.CPPN
 	{
 		public OtherFunction() { }
 
-		public override float GetOutput(List<float> input)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
-			float sum = 0.0f;
-			foreach(float inp in input)
-				sum *= inp + 2.3f;
+			float sum = SumWeightedInputs(inputs);
 
-			return (float)Math.Sqrt(sum); //parameterized point here
+			return (float)Math.Sqrt(sum);
 		}
-	}
-
-	enum ActivationFunctionType
-	{
-		Sinusodial,
-		thisAndThat,
-		andOfSuch
 	}
 }

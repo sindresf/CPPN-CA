@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.CPPN
 {
@@ -28,7 +29,7 @@ namespace CPPNNEAT.CPPN
 			this.function = function;
 		}
 
-		public float GetOutput(List<float> input)
+		public float GetOutput(TupleList<float, float> input)
 		{
 			return function.GetOutput(input);
 		}

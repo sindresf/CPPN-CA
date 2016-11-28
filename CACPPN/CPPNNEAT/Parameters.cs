@@ -19,10 +19,11 @@ namespace CPPNNEAT
 		public static int CPPNetworkOutputSize = 1; //for CPPN-CA it would always be 1
 		public static TupleList<ActivationFunctionType,float> functionChances = new TupleList<ActivationFunctionType, float>
 				{
-					{ ActivationFunctionType.Sinusodial,    0.25f },
-					{ ActivationFunctionType.thisAndThat,   0.25f },
-					{ ActivationFunctionType.andOfSuch,     0.25f },
-					{ ActivationFunctionType.Sinusodial,    0.25f }
+					{ ActivationFunctionType.Sinusodial,    0.26f },
+					{ ActivationFunctionType.Gaussian,   0.1f },
+					{ ActivationFunctionType.AbsoluteValue,     0.12f },
+					{ActivationFunctionType.Modulo, 0.26f },
+					{ ActivationFunctionType.Linear,    0.26f }
 				};
 	}
 
