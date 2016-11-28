@@ -5,16 +5,15 @@
 		public Population population;
 		public IDCounters IDs;
 		public int generationCount = 0;
-		//public CA ca, can be a Parameter so I can switch it out there
 
-		public EvolutionaryAlgorithm()
+		public EvolutionaryAlgorithm(PlaceHolderCA ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
 			IDs = new IDCounters();
+			population = new Population(ca);
 		}
 
 		public void InitializePopulation()
 		{
-			population = new Population();
 			population.Initialize(IDs);
 		}
 

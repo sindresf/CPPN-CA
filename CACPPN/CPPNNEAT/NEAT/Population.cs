@@ -8,8 +8,11 @@ namespace CPPNNEAT.NEAT
 		public List<Species> species { get; private set; }
 		private Dictionary<int,float> SpeciesFitnessMap;
 
-		public Population()
+		public readonly PlaceHolderCA ca;
+
+		public Population(PlaceHolderCA ca)
 		{
+			this.ca = ca;
 			species = new List<Species>();
 			SpeciesFitnessMap = new Dictionary<int, float>();
 		}
@@ -25,7 +28,7 @@ namespace CPPNNEAT.NEAT
 
 		public void Evaluate()
 		{
-			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(); });
+			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(ca); });
 			foreach(Species sp in species)
 			{
 				SpeciesFitnessMap[sp.speciesID] = sp.SpeciesFitness;

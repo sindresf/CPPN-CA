@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using CACPPN;
 using CPPNNEAT.NEAT;
 
 namespace CPPNNEAT
@@ -14,15 +9,15 @@ namespace CPPNNEAT
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Creating the CA.");
-			//creates CA
+			PlaceHolderCA ca = new PlaceHolderCA(); //IT IS GONNA BE A ONELINER GOD DAMMITT!
 			Thread.Sleep(250);
 			Console.WriteLine("CA ready to go!");
 			Thread.Sleep(50);
 			Console.WriteLine("initializing NEAT.");
-			EvolutionaryAlgorithm neat = new EvolutionaryAlgorithm(); //takes the CA as argument
+			EvolutionaryAlgorithm neat = new EvolutionaryAlgorithm(ca); //takes the CA as argument
 			Thread.Sleep(100);
 			Console.WriteLine("NEAT ready!");
-			//neat.InitializePopulation();
+			neat.InitializePopulation();
 			Thread.Sleep(250);
 			Console.WriteLine("Population ready!");
 			Console.WriteLine("Population being evaluated for the first time.");
@@ -34,7 +29,7 @@ namespace CPPNNEAT
 			Console.WriteLine("Maximum cycles set to {0}", EAParameters.MaximumRuns);
 			for(int i = 0; i < EAParameters.MaximumRuns; i++)
 			{
-				Console.Write(".");
+				Console.Write("."); //some form of interrupt could be nice if it is to run "all day"
 				Thread.Sleep(30);
 			}
 			Console.Write("\nDone\n");

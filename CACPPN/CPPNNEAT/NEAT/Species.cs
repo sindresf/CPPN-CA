@@ -27,9 +27,9 @@ namespace CPPNNEAT.NEAT
 			}
 		}
 
-		public void EvaluatePopulace()
+		public void EvaluatePopulace(PlaceHolderCA ca)
 		{
-			Parallel.ForEach(populace, indie => { indie.Evaluate(); });
+			Parallel.ForEach(populace, indie => { indie.Evaluate(ca); });
 		}
 
 		public void MakeNextGeneration(IDCounters IDs)

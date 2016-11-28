@@ -14,7 +14,7 @@ namespace CPPNNEAT.NEAT
 		public Individual(IDCounters IDs)
 		{
 			individualID = IDs.IndividualID;
-			Fitness = 0.0f;
+			Fitness = 0.03f;
 		}
 
 		public void Initialize(IDCounters IDs)
@@ -23,7 +23,7 @@ namespace CPPNNEAT.NEAT
 			genome.Initialize(IDs);
 		}
 
-		public void Evaluate()
+		public void Evaluate(PlaceHolderCA ca)
 		{
 			if(network == null)
 				network = new CPPNetwork(genome);
@@ -36,12 +36,8 @@ namespace CPPNNEAT.NEAT
 					//time for a new network based on the old one
 					network = new CPPNetwork(genome); // so this should contain all the information needed for the new network without any loss.
 			}
-
-
-			// Here is where I need a STATIC CA already initialized for the whole run
-			// that's run and then a fitness function call is made
-			// to check the final CA state (if that is all that matters)
-			Fitness = 0.01f; // <- the result of the CA call.
+			ca.RunCA(network);
+			Fitness *= ca.GetCARunFitnessResult();
 		}
 
 		private bool WasGenomeStructuralChange()
