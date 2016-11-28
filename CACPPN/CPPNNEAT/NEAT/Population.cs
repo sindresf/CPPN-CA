@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CPPNNEAT.NEAT
@@ -28,6 +29,7 @@ namespace CPPNNEAT.NEAT
 
 		public void Evaluate()
 		{
+			Console.WriteLine("POPULATIONEVALUATION ONGOING!");
 			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(ca); });
 			foreach(Species sp in species)
 			{

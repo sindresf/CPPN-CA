@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CPPNNEAT.NEAT
@@ -29,8 +30,9 @@ namespace CPPNNEAT.NEAT
 
 		public void EvaluatePopulace(PlaceHolderCA ca)
 		{
-			Parallel.ForEach(populace, indie => { indie.Evaluate(ca); });
-			//needs to sum and divide the fitness
+			Console.WriteLine("EVALUATEPOPULACE ONGOING!!");
+			Parallel.ForEach(populace, indie => { indie.Evaluate(ca); }); //Why you no worky!? BECAUSE PARALLEL WONT WORK WITH SHARED RESOURCES OFCOURSE!! DUH!
+																																		//needs to sum and divide the fitness
 		}
 
 		public void MakeNextGeneration(IDCounters IDs)

@@ -25,8 +25,8 @@ namespace CPPNNEAT.NEAT
 
 		public void Evaluate(PlaceHolderCA ca)
 		{
-			Console.WriteLine("EVALUATION ONGOING FUCK!");
-			if(network == null)
+			Console.WriteLine("EVALUATION ONGOING\tFUCK!!!!!");
+			/*if(network == null)
 				network = new CPPNetwork(genome);
 			else
 			{
@@ -38,7 +38,7 @@ namespace CPPNNEAT.NEAT
 					network = new CPPNetwork(genome); // so this should contain all the information needed for the new network without any loss.
 			}
 			ca.RunCA(network);
-			Fitness *= ca.GetCARunFitnessResult();
+			Fitness *= ca.GetCARunFitnessResult();*/
 		}
 
 		private bool WasGenomeStructuralChange()
