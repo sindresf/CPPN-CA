@@ -26,7 +26,7 @@
 		public void MakeNextGeneration()
 		{
 			generationCount++;
-
+			population.MakeNextGeneration(IDs);
 		}
 	}
 }

@@ -28,6 +28,8 @@ namespace CPPNNEAT.CPPN
 				return new GaussianFunction();
 			case ActivationFunctionType.AbsoluteValue:
 				return new AbsoluteValueFunction();
+			case ActivationFunctionType.PyramidAbsoluteValue:
+				return new PyramidAbsoluteValueFunction();
 			case ActivationFunctionType.Modulo:
 				return new ModuloFunction();
 			case ActivationFunctionType.Linear:
@@ -43,6 +45,7 @@ namespace CPPNNEAT.CPPN
 		Sinusodial,
 		Gaussian,
 		AbsoluteValue,
+		PyramidAbsoluteValue,
 		Modulo,
 		Linear
 	}
@@ -81,6 +84,17 @@ namespace CPPNNEAT.CPPN
 		{
 			float sum = SumWeightedInputs(inputs);
 			return Math.Abs(sum);
+		}
+	}
+
+	class PyramidAbsoluteValueFunction : ActivationFunction
+	{
+		public PyramidAbsoluteValueFunction() { }
+
+		public override float GetOutput(TupleList<float, float> inputs)
+		{
+			float sum = SumWeightedInputs(inputs);
+			return Math.Abs(1.0f - (sum % 1.0f));
 		}
 	}
 
