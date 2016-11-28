@@ -7,6 +7,13 @@ namespace CPPNNEAT.NEAT
 		public List<NodeGene> nodeGenes { get; set; }
 		public List<ConnectionGene> connectionGenes { get; set; }
 
+		public bool hasMutated { get; private set; }
+
+		public Genome()
+		{
+			hasMutated = false;
+		}
+
 		// functions for adding new genes which disables older ones and such
 		public void Initialize(IDCounters IDs)
 		{

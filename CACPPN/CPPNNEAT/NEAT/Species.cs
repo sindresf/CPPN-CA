@@ -23,7 +23,7 @@ namespace CPPNNEAT.NEAT
 			for(int i = 0; i < EAParameters.PopulationSize; i++)
 			{
 				Individual indie = new Individual(IDs);
-				indie.Initialize();
+				indie.Initialize(IDs);
 			}
 		}
 

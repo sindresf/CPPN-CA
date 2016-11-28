@@ -56,10 +56,17 @@
     <Compile Include="NEAT\Population.cs" />
     <Compile Include="NEAT\Species.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemRunner.cs" />
     <Compile Include="Utils\TupleList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CACPPN\CACPPNConsole.csproj">
+      <Project>{1527c23d-3d3c-4de6-879b-7e2e5612811f}</Project>
+      <Name>CACPPNConsole</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

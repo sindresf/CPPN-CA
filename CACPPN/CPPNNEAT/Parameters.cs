@@ -6,7 +6,7 @@ namespace CPPNNEAT
 	struct EAParameters
 	{
 		public static int PopulationSize = 400;
-		public static int MaximumRuns = 150;
+		public static int MaximumRuns = 75;
 
 		public static float ExcessSimilarityWeight = 1.0f;
 		public static float DisjointSimilarityWeight = 1.0f;
