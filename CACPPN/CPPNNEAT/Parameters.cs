@@ -17,6 +17,7 @@ namespace CPPNNEAT
 	{
 		public static int CPPNetworkInputSize = 5;
 		public static int CPPNetworkOutputSize = 1; //for CPPN-CA it would always be 1
+		public static float InitialMaxConnectionWeight = 0.07f;
 		public static TupleList<ActivationFunctionType,float> functionChances = new TupleList<ActivationFunctionType, float>
 				{
 					{ ActivationFunctionType.Sinusodial,    0.2f },

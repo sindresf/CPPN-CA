@@ -1,37 +1,70 @@
 ﻿using System.Collections.Generic;
+using CPPNNEAT.NEAT;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.CPPN
 {
-	class CPPNetwork
+	class CPPNetwork //no recurrent connections as a feature, because of its "once fed forward" nature (until physics might enter)s
 	{
-		List<NetworkNode> nodes; // to store the activation functions
-		float[][] connections;    // to store all the weights
+		public NetworkNode[] nodes; // to store the activation functions 
+		public float[][] connections;   // to store all the weights
+																		// TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
+		private NetworkNode outputNode;
 
-		public CPPNetwork(int nodeCount)
+		public CPPNetwork(Genome genome)
 		{
-			nodes = new List<NetworkNode>();
-			connections = new float[nodeCount][];
+			SetupNodeList(genome);
+			SetupConnectionMatrix(genome);
 		}
 
-		public float GetOutput(List<float> input)
+		private void SetupNodeList(Genome genome)
 		{
-			return 0.0f;
+			nodes = new NetworkNode[genome.nodeGenes.Count];
+
+			for(int i = 0; i < genome.nodeGenes.Count; i++)
+			{
+				nodes[i] = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
+				nodes[i].nodeID = genome.nodeGenes[i].nodeID;
+
+				if(genome.nodeGenes[i].type == NodeType.Output)
+				{
+					outputNode = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
+					outputNode.nodeID = genome.nodeGenes[i].nodeID;
+				}
+			}
+		}
+
+		private void SetupConnectionMatrix(Genome genome)
+		{
+			connections = new float[genome.nodeGenes.Count][];
+
+			for(int i = 0; i < genome.nodeGenes.Count; i++)
+			{
+				int connectionCount = 0;
+
+				foreach(ConnectionGene gene in genome.connectionGenes)
+					if(gene.fromNodeID == genome.nodeGenes[i].nodeID)
+						connectionCount++;
+
+				connections[i] = new float[connectionCount];
+			}
+			foreach(ConnectionGene gene in genome.connectionGenes)
+			{
+			}
+		}
+
+		public float GetOutput(List<float> input) // represents the entirety of the input nodes
+		{                                         // some optimalization here about remove the actual nodes and use this directly as input to hidden
+			TupleList<float,float> outputs = new TupleList<float, float>();
+
+
+
+			return outputNode.GetOutput(outputs);
 		}
 	}
 
-	class NetworkNode
+	class NetworkNode : ActivationFunction
 	{
-		private readonly ActivationFunction function;
-
-		public NetworkNode(ActivationFunction function)
-		{
-			this.function = function;
-		}
-
-		public float GetOutput(TupleList<float, float> input)
-		{
-			return function.GetOutput(input);
-		}
+		public int nodeID { get; set; }
 	}
 }

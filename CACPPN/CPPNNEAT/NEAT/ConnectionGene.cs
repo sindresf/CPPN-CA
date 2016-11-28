@@ -1,6 +1,8 @@
-﻿namespace CPPNNEAT.NEAT
+﻿using System;
+
+namespace CPPNNEAT.NEAT
 {
-	class ConnectionGene // needs a distance function that goes into "toNodeID" to get the activation function params.
+	class ConnectionGene : IComparable // needs a distance function that goes into "toNodeID" to get the activation function params.
 	{
 		public readonly int geneID;
 		public readonly int fromNodeID, toNodeID;
@@ -34,6 +36,11 @@
 		public override int GetHashCode()
 		{
 			return geneID;
+		}
+
+		public int CompareTo(object obj)
+		{
+			return ((ConnectionGene)obj).fromNodeID - fromNodeID;
 		}
 	}
 }
