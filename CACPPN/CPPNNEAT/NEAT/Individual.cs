@@ -45,7 +45,7 @@ namespace CPPNNEAT.NEAT
 		{
 			//yes? this makes sense right?
 			bool isStructurallyChanged = false;
-			isStructurallyChanged = genome.nodeGenes.Count != network.nodes.Length;
+			isStructurallyChanged = genome.nodeGenes.Count != network.hiddenNodes.Length;
 			isStructurallyChanged &= genome.connectionGenes.Count != network.connections.Length;
 			return isStructurallyChanged;
 		}

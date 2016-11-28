@@ -8,77 +8,95 @@ namespace CPPNNEAT.CPPN
 	{
 		//doesn't it say in the paper that the bias is ALWAYS one? so can just add that to any output OH YES, THE WEIGHT FOR IT
 
-		public NetworkNode[] nodes; // to store the activation functions 
-		public float[][] connections;   // to store all the weights
-																		// TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
-		private OutputNode outputNode;
+		private NetworkNode[] hiddenNodes; // to store the activation functions 
+		private float[][] connections;   // to store all the weights
+																		 // TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
+		private NetworkNode outputNode;
+
+		private Dictionary<int, float> nodeOutput; //memoizing the output as they comes. Only for hidden (output node's output is the output)
 
 		public CPPNetwork(Genome genome)
 		{
+			nodeOutput = new Dictionary<int, float>();
 			SetupNodeList(genome);
 			SetupConnectionMatrix(genome);
 		}
 
-		private void SetupNodeList(Genome genome)
+		private void SetupNodeList(Genome genome) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
-			nodes = new NetworkNode[genome.nodeGenes.Count];
-
-			for(int i = 0; i < genome.nodeGenes.Count; i++)
+			int hiddenNodes = genome.nodeGenes.Count - CPPNetworkParameters.CPPNetworkInputSize - CPPNetworkParameters.CPPNetworkOutputSize;
+			if(hiddenNodes >= 1)
 			{
-				switch(genome.nodeGenes[i].type)
+				this.hiddenNodes = new NetworkNode[genome.nodeGenes.Count]; //just - the input and output count to get hidden? yeaa...
+
+				for(int i = 0; i < genome.nodeGenes.Count; i++)
 				{
-				case NodeType.Sensor:
-					nodes[i] = genome.nodeGenes[i].nodeInputFunction as SensorNode;
-					nodes[i].nodeID = genome.nodeGenes[i].nodeID;
-					break;
-				case NodeType.Hidden:
-					nodes[i] = genome.nodeGenes[i].nodeInputFunction as HiddenNode;
-					nodes[i].nodeID = genome.nodeGenes[i].nodeID;
-					break;
-				case NodeType.Output:
-					nodes[i] = genome.nodeGenes[i].nodeInputFunction as OutputNode;
-					if(CPPNetworkParameters.CPPNetworkOutputSize == 1)
-						outputNode = genome.nodeGenes[i].nodeInputFunction as OutputNode;
-					nodes[i].nodeID = genome.nodeGenes[i].nodeID;
-					break;
+					switch(genome.nodeGenes[i].type)
+					{
+					case NodeType.Hidden:
+						this.hiddenNodes[i] = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
+						this.hiddenNodes[i].nodeID = genome.nodeGenes[i].nodeID;
+						break;
+					case NodeType.Output:
+						if(CPPNetworkParameters.CPPNetworkOutputSize == 1)
+						{
+							outputNode = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
+							outputNode.nodeID = genome.nodeGenes[i].nodeID;
+						}
+						break;
+					}
 				}
+			} else
+			{ // so this is how it is in the beginning
+				this.hiddenNodes = new NetworkNode[0];
+				outputNode = genome.nodeGenes[CPPNetworkParameters.CPPNetworkInputSize].nodeInputFunction as NetworkNode;
+				outputNode.nodeID = genome.nodeGenes[CPPNetworkParameters.CPPNetworkInputSize].nodeID;
 			}
 		}
 
 		private void SetupConnectionMatrix(Genome genome)
 		{
-			connections = new float[genome.nodeGenes.Count][];
+			connections = new float[hiddenNodes.Length + 1][]; // +1 for the output node
 
-			for(int i = 0; i < genome.nodeGenes.Count; i++)
+			for(int i = 0; i < connections.Length; i++)
 			{
-				int connectionCount = 0;
-
+				int connectionInCount = 0;
 				foreach(ConnectionGene gene in genome.connectionGenes)
-					if(gene.fromNodeID == genome.nodeGenes[i].nodeID)
-						connectionCount++;
+					if(gene.toNodeID == hiddenNodes[i].nodeID || gene.toNodeID == outputNode.nodeID)
+						connectionInCount++;
+				connections[i] = new float[connectionInCount];
+			}
+			//connections established
+			//now make them be weights
 
-				connections[i] = new float[connectionCount];
-			}
-			foreach(ConnectionGene gene in genome.connectionGenes)
-			{
-			}
 		}
 
 		public float GetOutput(List<float> input) // represents the entirety of the input nodes
 		{
-			TupleList<float,float> outputs = new TupleList<float, float>();
+			if(hiddenNodes.Length == 0)
+			{// means straight up input to output
+			 //for each input get the weight to make the tupleList
+				return outputNode.GetOutput(input);
+			} else
+			{
+				TupleList<float,float> outputs = new TupleList<float, float>();
 
-			//TODO check with the CPPN paper if the way the genes are structured actually takes automatically care of the ordering
+				//TODO check with the CPPN paper if the way the genes are structured actually takes automatically care of the ordering
 
-			//here go through all the nodes
-			//if they're sensor nodes skip (or find away to not store them at all
-			//if they are hidden with only connections to sensor nodes they go first
-			//and then hidden with sensor
-			//and then only hidden
-			//and then the output node(s)
+				//here go through all the nodes
+				//if they're sensor nodes skip (or find away to not store them at all
+				//if they are hidden with only connections to sensor nodes they go first
+				//and then hidden with sensor
+				//and then only hidden
+				//and then the output node(s)
 
-			if(outputNode != null)
-				return outputNode.GetOutput(outputs);
+				//recursive memoized call from the output node?
+				//if sensorNode return input
+
+				if(outputNode != null)
+					return outputNode.GetOutput(outputs);
+
+			}
 			return 0.0f;
 		}
 	}
