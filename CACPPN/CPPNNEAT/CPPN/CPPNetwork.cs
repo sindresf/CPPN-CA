@@ -11,7 +11,7 @@ namespace CPPNNEAT.CPPN
 		public NetworkNode[] nodes; // to store the activation functions 
 		public float[][] connections;   // to store all the weights
 																		// TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
-		private NetworkNode outputNode;
+		private OutputNode outputNode;
 
 		public CPPNetwork(Genome genome)
 		{
@@ -25,13 +25,22 @@ namespace CPPNNEAT.CPPN
 
 			for(int i = 0; i < genome.nodeGenes.Count; i++)
 			{
-				nodes[i] = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
-				nodes[i].nodeID = genome.nodeGenes[i].nodeID;
-
-				if(genome.nodeGenes[i].type == NodeType.Output)
+				switch(genome.nodeGenes[i].type)
 				{
-					outputNode = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
-					outputNode.nodeID = genome.nodeGenes[i].nodeID;
+				case NodeType.Sensor:
+					nodes[i] = genome.nodeGenes[i].nodeInputFunction as SensorNode;
+					nodes[i].nodeID = genome.nodeGenes[i].nodeID;
+					break;
+				case NodeType.Hidden:
+					nodes[i] = genome.nodeGenes[i].nodeInputFunction as HiddenNode;
+					nodes[i].nodeID = genome.nodeGenes[i].nodeID;
+					break;
+				case NodeType.Output:
+					nodes[i] = genome.nodeGenes[i].nodeInputFunction as OutputNode;
+					if(CPPNetworkParameters.CPPNetworkOutputSize == 1)
+						outputNode = genome.nodeGenes[i].nodeInputFunction as OutputNode;
+					nodes[i].nodeID = genome.nodeGenes[i].nodeID;
+					break;
 				}
 			}
 		}
@@ -56,17 +65,21 @@ namespace CPPNNEAT.CPPN
 		}
 
 		public float GetOutput(List<float> input) // represents the entirety of the input nodes
-		{                                         // some optimalization here about remove the actual nodes and use this directly as input to hidden
+		{
 			TupleList<float,float> outputs = new TupleList<float, float>();
 
+			//TODO check with the CPPN paper if the way the genes are structured actually takes automatically care of the ordering
 
+			//here go through all the nodes
+			//if they're sensor nodes skip (or find away to not store them at all
+			//if they are hidden with only connections to sensor nodes they go first
+			//and then hidden with sensor
+			//and then only hidden
+			//and then the output node(s)
 
-			return outputNode.GetOutput(outputs);
+			if(outputNode != null)
+				return outputNode.GetOutput(outputs);
+			return 0.0f;
 		}
-	}
-
-	class NetworkNode : ActivationFunction
-	{
-		public int nodeID { get; set; }
 	}
 }

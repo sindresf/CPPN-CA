@@ -20,7 +20,7 @@ namespace CPPNNEAT.CPPN
 
 		public static ActivationFunction GetRandomInitializedFunction(ActivationFunctionType type)
 		{
-			switch(type)
+			switch(type) //all these constructors is for when "everything" is done and I add function parameter mutation
 			{
 			case ActivationFunctionType.Sinusodial:
 				return new SinusFunction();
