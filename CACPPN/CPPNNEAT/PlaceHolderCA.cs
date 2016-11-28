@@ -24,7 +24,7 @@ namespace CPPNNEAT
 
 		public float GetCARunFitnessResult() //this is where all the different tests comes in, with parameter changes *only* NEAT side
 		{
-			return 1.01f;
+			return 1.1f;
 		}
 
 		private void SeedCA()

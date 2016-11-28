@@ -14,7 +14,7 @@ namespace CPPNNEAT.NEAT
 		public Individual(IDCounters IDs)
 		{
 			individualID = IDs.IndividualID;
-			Fitness = 0.03f;
+			Fitness = 0.3f;
 		}
 
 		public void Initialize(IDCounters IDs)
@@ -25,6 +25,7 @@ namespace CPPNNEAT.NEAT
 
 		public void Evaluate(PlaceHolderCA ca)
 		{
+			Console.WriteLine("EVALUATION ONGOING FUCK!");
 			if(network == null)
 				network = new CPPNetwork(genome);
 			else

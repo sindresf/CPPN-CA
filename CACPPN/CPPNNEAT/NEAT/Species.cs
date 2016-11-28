@@ -30,6 +30,7 @@ namespace CPPNNEAT.NEAT
 		public void EvaluatePopulace(PlaceHolderCA ca)
 		{
 			Parallel.ForEach(populace, indie => { indie.Evaluate(ca); });
+			//needs to sum and divide the fitness
 		}
 
 		public void MakeNextGeneration(IDCounters IDs)

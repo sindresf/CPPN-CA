@@ -27,5 +27,19 @@
 			generationCount++;
 			population.MakeNextGeneration(IDs);
 		}
+
+		public float GetBestFitness()
+		{
+			float best = 0.0f;
+			foreach(Species sp in population.species)
+			{
+				foreach(Individual indie in sp.populace)
+				{
+					if(indie.Fitness > best)
+						best = indie.Fitness;
+				}
+			}
+			return best;
+		}
 	}
 }
