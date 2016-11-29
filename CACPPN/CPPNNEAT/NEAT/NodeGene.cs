@@ -17,7 +17,7 @@ namespace CPPNNEAT.NEAT
 			if(this.type == NodeType.Hidden || this.type == NodeType.Output)
 				this.nodeInputFunction = ActivationFunction.GetRandomInitializedFunction(nodeInputFunction);
 			else
-				this.nodeInputFunction = null;
+				this.nodeInputFunction = null; // Sensor nodes arent really "a thing"
 		}
 
 		public override bool Equals(object other)

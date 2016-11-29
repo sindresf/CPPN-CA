@@ -9,7 +9,7 @@ namespace CPPNNEAT.NEAT
 		public List<Species> species { get; private set; }
 		private Dictionary<int,float> SpeciesFitnessMap;
 
-		public readonly PlaceHolderCA ca;
+		public PlaceHolderCA ca;
 
 		public Population(PlaceHolderCA ca)
 		{

@@ -43,7 +43,9 @@ namespace CPPNNEAT.NEAT
 
 		private bool WasGenomeStructuralChange()
 		{
-			//yes? this makes sense right?
+			//yes? this makes sense right? do i need this? what is the construction time for new networks that "are old networks"  vs. this checking?
+			//constructing networks vs. this check is gonna be done Lots of time
+			//but for CPPNEATCA the CA run is definently the longest running thing yea?
 			bool isStructurallyChanged = false;
 			isStructurallyChanged = genome.nodeGenes.Count != network.hiddenNodes.Length;
 			isStructurallyChanged &= genome.connectionGenes.Count != network.connections.Length;

@@ -62,13 +62,12 @@ namespace CPPNNEAT.CPPN
 			{
 				int connectionInCount = 0;
 				foreach(ConnectionGene gene in genome.connectionGenes)
-					if(gene.toNodeID == hiddenNodes[i].nodeID || gene.toNodeID == outputNode.nodeID)
+					if(gene.toNodeID == hiddenNodes[i].nodeID || gene.toNodeID == outputNode.nodeID) // not how it works though
 						connectionInCount++;
 				connections[i] = new float[connectionInCount];
 			}
 			//connections established
 			//now make them be weights
-
 		}
 
 		public float GetOutput(List<float> input) // represents the entirety of the input nodes
@@ -76,7 +75,7 @@ namespace CPPNNEAT.CPPN
 			if(hiddenNodes.Length == 0)
 			{// means straight up input to output
 			 //for each input get the weight to make the tupleList
-				return outputNode.GetOutput(input);
+				return outputNode.GetOutput(null);// input);
 			} else
 			{
 				TupleList<float,float> outputs = new TupleList<float, float>();
@@ -95,7 +94,6 @@ namespace CPPNNEAT.CPPN
 
 				if(outputNode != null)
 					return outputNode.GetOutput(outputs);
-
 			}
 			return 0.0f;
 		}
