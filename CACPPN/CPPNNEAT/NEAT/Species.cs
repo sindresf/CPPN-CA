@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
-	class Species : IComparer<Individual>
+	class Species
 	{
 		public readonly int speciesID;
 		public List<Individual> populace { get; private set; }
@@ -39,11 +39,6 @@ namespace CPPNNEAT.NEAT
 		{
 			//this is where the compare should come into play for fitness selection.
 			//and "foreach" by the allowed amount
-		}
-
-		public int Compare(Individual x, Individual y)
-		{
-			return x.CompareTo(y);
 		}
 	}
 }

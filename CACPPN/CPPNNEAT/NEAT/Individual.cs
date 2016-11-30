@@ -1,9 +1,8 @@
-﻿using System;
-using CPPNNEAT.CPPN;
+﻿using CPPNNEAT.CPPN;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
-	class Individual : IComparable<Individual>
+	class Individual
 	{
 		public readonly int individualID;
 		public Genome genome;
@@ -39,7 +38,7 @@ namespace CPPNNEAT.NEAT
 			}
 			ca.RunCA(network);
 			Fitness *= ca.GetCARunFitnessResult();*/
-			Fitness *= 1.1f;
+			Fitness *= 1.24f;
 		}
 
 		private bool WasGenomeStructuralChange()
@@ -50,12 +49,6 @@ namespace CPPNNEAT.NEAT
 			*/
 		 // yea, keep it like such for now. returning true means it'll act like this funciton didn't exist, so would be easy to refactor away.
 			return true;
-		}
-
-		public int CompareTo(Individual other)
-		{
-			//needs to be an implementation of the function in the paper.
-			return other.genome.connectionGenes.Count - genome.connectionGenes.Count;
 		}
 	}
 }

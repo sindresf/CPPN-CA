@@ -1,16 +1,16 @@
 ﻿using System;
 using CPPNNEAT.CPPN;
+using CPPNNEAT.EA.Base;
 using CPPNNEAT.Utils;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
-	class NEAT
+	class NEAT : EvolutionaryAlgorithm
 	{
 		public Population population;
 		public IDCounters IDs;
-		public int generationCount = 0;
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNetworkParameters.ActivationFunctionChanceIntervals;
-		public static readonly Random random;// = new Random(); //preprocessor directive for being seeded or no?
+		public static readonly Random random;
 
 		public NEAT(PlaceHolderCARunner ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
@@ -26,23 +26,23 @@ namespace CPPNNEAT.NEAT
 				random = new Random();
 		}
 
-		public void InitializePopulation()
+		public override void InitializePopulation()
 		{
 			population.Initialize(IDs);
 		}
 
-		public void EvaluatePopulation()
+		public override void EvaluatePopulation()
 		{
 			population.Evaluate();
 		}
 
-		public void MakeNextGeneration()
+		public override void NextGeneration()
 		{
-			generationCount++;
+			CurrentGeneration++;
 			population.MakeNextGeneration(IDs);
 		}
 
-		public float GetBestFitness() //placeholder for proper "GetAllTheStatistics" type of func (or class delegating func)
+		public override float GetBestFitness() //placeholder for proper "GetAllTheStatistics" type of func (or class delegating func)
 		{
 			float best = 0.0f;
 			foreach(Species sp in population.species)

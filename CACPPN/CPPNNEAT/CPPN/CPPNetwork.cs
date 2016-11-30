@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEAT.NEAT;
+using CPPNNEAT.EA;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.CPPN

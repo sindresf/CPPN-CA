@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CPPNNEAT.Utils;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
 	class Genome
 	{

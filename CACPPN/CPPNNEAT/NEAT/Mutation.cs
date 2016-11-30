@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CPPNNEAT.Utils;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
 	class Mutation
 	{
@@ -101,28 +101,29 @@ namespace CPPNNEAT.NEAT
 			if(indie1.Fitness.SameWithinReason(indie2.Fitness))
 				return SameFitnessRandomCrossOver(genome1, genome2);
 
-			Genome mostFitGenome = genome1;
-
 			bool parent1HasMostNodes = genome1.nodeGenes.Count > genome2.nodeGenes.Count; //not GENE IDs
-			List<NodeGene> childNodeGenes = new List<NodeGene>();
+
+			bool mostFitIsIndie1 = indie1.Fitness > indie2.Fitness;
+			Genome childGenome = new Genome();
 			if(parent1HasMostNodes)
 			{
-
+				childGenome.nodeGenes.Add(mostFitIsIndie1 ? genome1.nodeGenes[0] : genome2.nodeGenes[0]); //this type of stuff
 			} else
 			{
 
 			}
 
-			return null;
+			return childGenome;
 		}
 
 		private static Genome SameFitnessRandomCrossOver(Genome genome1, Genome genome2)
 		{
-			Genome childGenome = new Genome();
-			//must be heavily redone
+			Genome childGenome = new Genome(); //QUESTION is; given that they have "the same fitness" WITHIN the species can we assume they are "the same", count wise?
+											   //must be heavily redone
 			int shortestNodeGeneList = genome1.nodeGenes.Count < genome2.nodeGenes.Count ?
 									   genome1.nodeGenes.Count :
 									   genome2.nodeGenes.Count;
+
 			for(int i = 0; i < shortestNodeGeneList; i++)
 			{
 				if(NEAT.random.NextBoolean())

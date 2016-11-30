@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
 	class Population
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
 	class ConnectionGene : IComparable // needs a distance function that goes into "toNodeID" to get the activation function params.
 	{

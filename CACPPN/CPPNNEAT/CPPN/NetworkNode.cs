@@ -1,4 +1,4 @@
-﻿using CPPNNEAT.NEAT;
+﻿using CPPNNEAT.EA;
 
 namespace CPPNNEAT.CPPN
 {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using CPPNNEAT.EA;
+using CPPNNEAT.EA.Base;
 
 namespace CPPNNEAT
 {
@@ -19,7 +21,7 @@ namespace CPPNNEAT
 			Console.WriteLine("CA ready to go!");
 			Thread.Sleep(50);
 			Console.WriteLine("initializing NEAT.");
-			NEAT.NEAT neat = new NEAT.NEAT(ca); //takes the CA as argument
+			EvolutionaryAlgorithm neat = new NEAT(ca); //takes the CA as argument
 			Thread.Sleep(100);
 			Console.WriteLine("NEAT ready!");
 			neat.InitializePopulation();

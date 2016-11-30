@@ -1,6 +1,6 @@
 ﻿using CPPNNEAT.CPPN;
 
-namespace CPPNNEAT.NEAT
+namespace CPPNNEAT.EA
 {
 	class NodeGene
 	{

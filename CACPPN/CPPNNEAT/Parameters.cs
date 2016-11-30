@@ -1,6 +1,6 @@
 ﻿using System;
 using CPPNNEAT.CPPN;
-using CPPNNEAT.NEAT;
+using CPPNNEAT.EA;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT
