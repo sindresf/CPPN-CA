@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.NEAT
 {
@@ -48,7 +50,7 @@ namespace CPPNNEAT.NEAT
 					gene.nodeID,
 					nodeGenes.Count - 1,
 					true,
-					CPPNetworkParameters.InitialMaxConnectionWeight)); //needs random init around param
+					NEAT.random.InitialConnectionWeight())); //need a static EARandom
 			}
 		}
 

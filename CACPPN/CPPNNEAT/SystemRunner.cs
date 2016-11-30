@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using CPPNNEAT.NEAT;
 
 namespace CPPNNEAT
 {
@@ -8,13 +7,19 @@ namespace CPPNNEAT
 	{
 		static void Main(string[] args)
 		{
+			MockUpRun();
+			//ProperTestRun();
+		}
+
+		public static void MockUpRun()
+		{
 			Console.WriteLine("Creating the CA.");
 			PlaceHolderCARunner ca = new PlaceHolderCARunner(); //IT IS GONNA BE A ONELINER GOD DAMMITT!
 			Thread.Sleep(250);
 			Console.WriteLine("CA ready to go!");
 			Thread.Sleep(50);
 			Console.WriteLine("initializing NEAT.");
-			EvolutionaryAlgorithm neat = new EvolutionaryAlgorithm(ca); //takes the CA as argument
+			NEAT.NEAT neat = new NEAT.NEAT(ca); //takes the CA as argument
 			Thread.Sleep(100);
 			Console.WriteLine("NEAT ready!");
 			neat.InitializePopulation();
@@ -39,6 +44,11 @@ namespace CPPNNEAT
 			Console.WriteLine("finishing up.");
 			Thread.Sleep(300);
 			Console.WriteLine("Final best fitness individual and intermidiary results can be found in the log file system");
+		}
+
+		public static void ProperTestRun()
+		{
+
 		}
 	}
 }

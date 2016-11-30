@@ -13,13 +13,18 @@ namespace CPPNNEAT
 		public static float ExcessSimilarityWeight = 1.0f;
 		public static float DisjointSimilarityWeight = 1.0f;
 		public static float WeightDifferenceSimilarityWeight = 0.4f;
+		public static bool IsSeededRun = true;
+		public static int RandomSeed = 42;
 	}
 
 	struct CPPNetworkParameters
 	{
+		public static float InitialMaxConnectionWeight = 0.13f;
+		public static float WeightMin = -2.0f, WeightMax = 2.0f;
+
 		public static int CPPNetworkInputSize = 3; //start with 1D
 		public static int CPPNetworkOutputSize = 1;
-		public static float InitialMaxConnectionWeight = 0.13f;
+
 		private static TupleList<ActivationFunctionType,float> FunctionChances = new TupleList<ActivationFunctionType, float>
 				{	// make sure it all sums to 1.0 (100%)
 					{ ActivationFunctionType.Sinusodial,    0.2f },

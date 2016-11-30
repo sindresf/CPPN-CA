@@ -8,42 +8,41 @@ namespace CPPNNEAT.NEAT
 
 		public static Genome Mutate(Genome genome, IDCounters IDs)
 		{
-			Random rand = new Random();
 			Genome newGenome = null;
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 			{
-				if(rand.DoMutation(type))
-					genome = MutateOfType(type, genome, IDs, rand);
+				if(NEAT.random.DoMutation(type))
+					genome = MutateOfType(type, genome, IDs);
 			}
 			newGenome = genome; //TODO a "copy genome type of thing here
 			return newGenome;
 		}
 
-		private static Genome MutateOfType(MutationType type, Genome genome, IDCounters IDs, Random random)
+		private static Genome MutateOfType(MutationType type, Genome genome, IDCounters IDs)
 		{
 			switch(type)
 			{
 			case MutationType.ChangeWeight:
-				return ChangeWeight(genome, random);
+				return ChangeWeight(genome);
 			case MutationType.AddConnection:
-				return AddConnection(genome, IDs, random);
+				return AddConnection(genome, IDs);
 			case MutationType.AddNode:
-				return AddNode(genome, IDs, random);
+				return AddNode(genome, IDs);
 			case MutationType.ChangeFunction: //and then maybe "mutateCurrentFunction type"
-				return ChangeNodeFunction(genome, IDs, random);
+				return ChangeNodeFunction(genome, IDs);
 			default:
 				return genome;
 			}
 		}
 
-		private static Genome AddNode(Genome genome, IDCounters IDs, Random rand)
+		private static Genome AddNode(Genome genome, IDCounters IDs)
 		{
-			ConnectionGene connectionToSplitt = rand.ConnectionGene(genome);
+			ConnectionGene connectionToSplitt = NEAT.random.ConnectionGene(genome);
 
 			NodeGene newNode = new NodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										NodeType.Hidden,
-										rand.ActivationFunctionType());
+										NEAT.random.ActivationFunctionType());
 
 			ConnectionGene firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															connectionToSplitt.fromNodeID,
@@ -55,41 +54,41 @@ namespace CPPNNEAT.NEAT
 															newNode.nodeID,
 															connectionToSplitt.fromNodeID,
 															true,
-															rand.NextFloat()*CPPNetworkParameters.InitialMaxConnectionWeight);
+															NEAT.random.NextFloat()*CPPNetworkParameters.InitialMaxConnectionWeight);
 
-			connectionToSplitt.isEnabled = false; //writeline this to see that it changed
+			connectionToSplitt.isEnabled = false;
 			genome.connectionGenes.Add(firstHalfGene);
 			genome.connectionGenes.Add(secondHalfGene);
 			return genome;
 		}
 
-		private static Genome AddConnection(Genome genome, IDCounters IDs, Random random)
+		private static Genome AddConnection(Genome genome, IDCounters IDs)
 		{
 			//NO RECCURENT BULLSHITT.
 			//CHECK HIS PAPER for any good explanations for this
-			NodeGene fromNode = random.NotOutputNodeGene(genome);
-			NodeGene toNode = random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
+			NodeGene fromNode = NEAT.random.NotOutputNodeGene(genome);
+			NodeGene toNode = NEAT.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
-														random.InitialConnectionWeight());
+														NEAT.random.InitialConnectionWeight());
 			genome.connectionGenes.Add(conGene);
 			return genome;
 		}
 
-		private static Genome ChangeWeight(Genome genome, Random rand)
+		private static Genome ChangeWeight(Genome genome)
 		{
-			//do a writeLine here to see if it changes in the genome to be sure (it should, is all reference)
-			rand.ConnectionGene(genome).connectionWeight += rand.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
-																			- MutationChances.MutatWeightAmount;
+			ConnectionGene connGene = NEAT.random.ConnectionGene(genome);
+			float newWeight = (connGene.connectionWeight + NEAT.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
+																			- MutationChances.MutatWeightAmount).ClampWeight();
 			return genome;
 		}
 
-		private static Genome ChangeNodeFunction(Genome genome, IDCounters IDs, Random random) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
+		private static Genome ChangeNodeFunction(Genome genome, IDCounters IDs) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
 		{
 			//gotta be a new node with the same nodeID but new nodeGeneID
-			random.NotInputNodeGene(genome);
+			NEAT.random.NotInputNodeGene(genome);
 			//genome.nodeGenes[nodeIndex].nodeInputFunction = new CPPN.ActivationFunction(); //"get random function HERE
 			return genome;
 		}

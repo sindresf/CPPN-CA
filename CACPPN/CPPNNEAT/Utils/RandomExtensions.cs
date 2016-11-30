@@ -4,7 +4,7 @@ using CPPNNEAT.NEAT;
 
 namespace CPPNNEAT.Utils
 {
-	static class GetRandom //extension methods for the random class
+	static class RandomExtensions //extension methods for the random class
 	{
 
 		public static float NextFloat(this Random rand)
@@ -19,10 +19,9 @@ namespace CPPNNEAT.Utils
 
 		public static ActivationFunctionType ActivationFunctionType(this Random rand)
 		{
-			//this needs to consider the weights for the individual types
 			float selectorValue = rand.NextFloat();
 			float lastInterval = 0.0f;
-			foreach(Tuple<float, ActivationFunctionType> tuple in EvolutionaryAlgorithm.ActivationFunctionChances)
+			foreach(Tuple<float, ActivationFunctionType> tuple in NEAT.NEAT.ActivationFunctionChances)
 			{
 				if(selectorValue >= lastInterval && selectorValue < tuple.Item1)
 					return tuple.Item2;
