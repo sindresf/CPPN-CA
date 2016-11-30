@@ -7,8 +7,8 @@ namespace CPPNNEAT
 {
 	struct EAParameters
 	{
-		public static int PopulationSize = 400;
-		public static int MaximumRuns = 75;
+		public static int PopulationSize = 200;
+		public static int MaximumRuns = 12;
 
 		public static float ExcessSimilarityWeight = 1.0f;
 		public static float DisjointSimilarityWeight = 1.0f;
@@ -29,6 +29,7 @@ namespace CPPNNEAT
 					{ActivationFunctionType.Modulo, 0.2f },
 					{ ActivationFunctionType.Linear,    0.16f }
 				};
+
 		public static TupleList<float, ActivationFunctionType> ActivationFunctionChanceIntervals
 		{
 			get
@@ -40,71 +41,71 @@ namespace CPPNNEAT
 					compoundedValue += tuple.Item2;
 					intervals.Add(compoundedValue, tuple.Item1);
 				}
-				return intervals; //convert the about "chances" into escalating "buckets";
+				return intervals;
 			}
 		}
 	}
+}
 
-	struct MutationChances //check these up against standard NEAT settings
+struct MutationChances //check these up against standard NEAT settings
+{
+	private const double AddNewNode          = 0.001f;
+	private const double AddNewConnection    = 0.03f;
+	private const double ChangeWeight        = 0.75f;
+	public const float MutatWeightAmount   = 0.1f;
+	private const double ChangeNodeFunction  = 0.0005f;
+	//mutation chance of parameters in node functions
+
+	public static double GetMutationChance(MutationType type)
 	{
-		private const double AddNewNode          = 0.001f;
-		private const double AddNewConnection    = 0.03f;
-		private const double ChangeWeight        = 0.75f;
-		public const float MutatWeightAmount   = 0.1f;
-		private const double ChangeNodeFunction  = 0.0005f;
-		//mutation chance of parameters in node functions
-
-		public static double GetMutationChance(MutationType type)
+		switch(type)
 		{
-			switch(type)
-			{
-			case MutationType.AddNode:
-				return AddNewNode;
-			case MutationType.AddConnection:
-				return AddNewConnection;
-			case MutationType.ChangeWeight:
-				return MutatWeightAmount;
-			case MutationType.ChangeFunction:
-				return ChangeNodeFunction;
-			default:
-				return 0.0;
-			}
+		case MutationType.AddNode:
+			return AddNewNode;
+		case MutationType.AddConnection:
+			return AddNewConnection;
+		case MutationType.ChangeWeight:
+			return MutatWeightAmount;
+		case MutationType.ChangeFunction:
+			return ChangeNodeFunction;
+		default:
+			return 0.0;
 		}
 	}
+}
 
-	class IDCounters
+class IDCounters
+{
+	private int spID, indID, ngID, cgID;
+
+	public IDCounters()
 	{
-		private int spID, indID, ngID, cgID;
+		SpeciesID = 0;
+		IndividualID = 0;
+		NodeGeneID = 0;
+		ConnectionGeneID = 0;
+	}
 
-		public IDCounters()
-		{
-			SpeciesID = 0;
-			IndividualID = 0;
-			NodeGeneID = 0;
-			ConnectionGeneID = 0;
-		}
+	public int SpeciesID
+	{
+		get { return spID++; }
+		private set { spID = value; }
+	}
 
-		public int SpeciesID
-		{
-			get { return spID++; }
-			private set { spID = value; }
-		}
+	public int IndividualID
+	{
+		get { return indID++; }
+		private set { indID = value; }
+	}
+	public int NodeGeneID
+	{
+		get { return ngID++; }
+		private set { ngID = value; }
+	}
 
-		public int IndividualID
-		{
-			get { return indID++; }
-			private set { indID = value; }
-		}
-		public int NodeGeneID
-		{
-			get { return ngID++; }
-			private set { ngID = value; }
-		}
-
-		public int ConnectionGeneID
-		{
-			get { return cgID++; }
-			private set { cgID = value; }
-		}
+	public int ConnectionGeneID
+	{
+		get { return cgID++; }
+		private set { cgID = value; }
 	}
 }

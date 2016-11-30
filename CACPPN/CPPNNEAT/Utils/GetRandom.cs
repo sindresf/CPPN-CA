@@ -22,7 +22,7 @@ namespace CPPNNEAT.Utils
 			//this needs to consider the weights for the individual types
 			float selectorValue = rand.NextFloat();
 			float lastInterval = 0.0f;
-			foreach(Tuple<float, ActivationFunctionType> tuple in CPPNetworkParameters.ActivationFunctionChanceIntervals)
+			foreach(Tuple<float, ActivationFunctionType> tuple in EvolutionaryAlgorithm.ActivationFunctionChances)
 			{
 				if(selectorValue >= lastInterval && selectorValue < tuple.Item1)
 					return tuple.Item2;

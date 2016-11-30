@@ -1,10 +1,14 @@
-﻿namespace CPPNNEAT.NEAT
+﻿using CPPNNEAT.CPPN;
+using CPPNNEAT.Utils;
+
+namespace CPPNNEAT.NEAT
 {
 	class EvolutionaryAlgorithm
 	{
 		public Population population;
 		public IDCounters IDs;
 		public int generationCount = 0;
+		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNetworkParameters.ActivationFunctionChanceIntervals;
 
 		public EvolutionaryAlgorithm(PlaceHolderCARunner ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
