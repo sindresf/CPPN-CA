@@ -8,31 +8,29 @@ namespace CPPNNEAT.NEAT
 
 		public static Genome Mutate(Genome genome, IDCounters IDs)
 		{
-			double doIt;
 			Random rand = new Random();
 			Genome newGenome = null;
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 			{
-				doIt = rand.NextDouble();
-				if(doIt <= MutationChances.GetMutationChance(type))
+				if(rand.DoMutation(type))
 					genome = MutateOfType(type, genome, IDs, rand);
 			}
 			newGenome = genome; //TODO a "copy genome type of thing here
 			return newGenome;
 		}
 
-		private static Genome MutateOfType(MutationType type, Genome genome, IDCounters IDs, Random rand)
+		private static Genome MutateOfType(MutationType type, Genome genome, IDCounters IDs, Random random)
 		{
 			switch(type)
 			{
 			case MutationType.ChangeWeight:
-				return ChangeWeight(genome, rand);
+				return ChangeWeight(genome, random);
 			case MutationType.AddConnection:
-				return AddConnection(genome, IDs, rand);
+				return AddConnection(genome, IDs, random);
 			case MutationType.AddNode:
-				return AddNode(genome, IDs, rand);
+				return AddNode(genome, IDs, random);
 			case MutationType.ChangeFunction: //and then maybe "mutateCurrentFunction type"
-				return ChangeNodeFunction(genome, IDs, rand);
+				return ChangeNodeFunction(genome, IDs, random);
 			default:
 				return genome;
 			}
@@ -57,7 +55,7 @@ namespace CPPNNEAT.NEAT
 															newNode.nodeID,
 															connectionToSplitt.fromNodeID,
 															true,
-															(float)rand.NextDouble()*CPPNetworkParameters.InitialMaxConnectionWeight);
+															rand.NextFloat()*CPPNetworkParameters.InitialMaxConnectionWeight);
 
 			connectionToSplitt.isEnabled = false; //writeline this to see that it changed
 			genome.connectionGenes.Add(firstHalfGene);
@@ -65,17 +63,17 @@ namespace CPPNNEAT.NEAT
 			return genome;
 		}
 
-		private static Genome AddConnection(Genome genome, IDCounters IDs, Random rand)
+		private static Genome AddConnection(Genome genome, IDCounters IDs, Random random)
 		{
 			//NO RECCURENT BULLSHITT.
 			//CHECK HIS PAPER for any good explanations for this
-			NodeGene fromNode = rand.NotOutputNodeGene(genome);
-			NodeGene toNode = rand.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
+			NodeGene fromNode = random.NotOutputNodeGene(genome);
+			NodeGene toNode = random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
-														GetRandom.InitialConnectionWeight(rand));
+														random.InitialConnectionWeight());
 			genome.connectionGenes.Add(conGene);
 			return genome;
 		}
@@ -83,7 +81,7 @@ namespace CPPNNEAT.NEAT
 		private static Genome ChangeWeight(Genome genome, Random rand)
 		{
 			//do a writeLine here to see if it changes in the genome to be sure (it should, is all reference)
-			rand.ConnectionGene(genome).connectionWeight += (float)rand.NextDouble() * 2.0f * MutationChances.MutatWeightAmount
+			rand.ConnectionGene(genome).connectionWeight += rand.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
 																			- MutationChances.MutatWeightAmount;
 			return genome;
 		}

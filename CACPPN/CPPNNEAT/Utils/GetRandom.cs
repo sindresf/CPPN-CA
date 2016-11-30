@@ -4,12 +4,33 @@ using CPPNNEAT.NEAT;
 
 namespace CPPNNEAT.Utils
 {
-	static class GetRandom //extention methods for the random class
+	static class GetRandom //extension methods for the random class
 	{
+
+		public static float NextFloat(this Random rand)
+		{
+			return (float)rand.NextDouble();
+		}
+
+		public static bool DoMutation(this Random rand, MutationType type)
+		{
+			return rand.NextDouble() <= MutationChances.GetMutationChance(type);
+		}
+
 		public static ActivationFunctionType ActivationFunctionType(this Random rand)
 		{
-			return (ActivationFunctionType)rand.Next(Enum.GetValues(typeof(ActivationFunctionType)).Length);
+			//this needs to consider the weights for the individual types
+			float selectorValue = rand.NextFloat();
+			float lastInterval = 0.0f;
+			foreach(Tuple<float, ActivationFunctionType> tuple in CPPNetworkParameters.ActivationFunctionChanceIntervals)
+			{
+				if(selectorValue >= lastInterval && selectorValue < tuple.Item1)
+					return tuple.Item2;
+				lastInterval = tuple.Item1;
+			}
+			return CPPN.ActivationFunctionType.Linear; //this should never occur by the laws of random within 0->1 so doesn't skew the distribution
 		}
+
 
 		public static ConnectionGene ConnectionGene(this Random rand, Genome genome)
 		{
@@ -28,7 +49,7 @@ namespace CPPNNEAT.Utils
 
 		public static float InitialConnectionWeight(this Random rand)
 		{
-			return (float)rand.NextDouble() * CPPNetworkParameters.InitialMaxConnectionWeight;
+			return rand.NextFloat() * CPPNetworkParameters.InitialMaxConnectionWeight;
 		}
 	}
 }

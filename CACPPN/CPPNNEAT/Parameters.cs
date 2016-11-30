@@ -1,4 +1,5 @@
-﻿using CPPNNEAT.CPPN;
+﻿using System;
+using CPPNNEAT.CPPN;
 using CPPNNEAT.NEAT;
 using CPPNNEAT.Utils;
 
@@ -19,8 +20,8 @@ namespace CPPNNEAT
 		public static int CPPNetworkInputSize = 3; //start with 1D
 		public static int CPPNetworkOutputSize = 1;
 		public static float InitialMaxConnectionWeight = 0.13f;
-		public static TupleList<ActivationFunctionType,float> functionChances = new TupleList<ActivationFunctionType, float>
-				{
+		private static TupleList<ActivationFunctionType,float> FunctionChances = new TupleList<ActivationFunctionType, float>
+				{	// make sure it all sums to 1.0 (100%)
 					{ ActivationFunctionType.Sinusodial,    0.2f },
 					{ ActivationFunctionType.Gaussian,   0.14f },
 					{ ActivationFunctionType.AbsoluteValue,     0.13f },
@@ -28,6 +29,20 @@ namespace CPPNNEAT
 					{ActivationFunctionType.Modulo, 0.2f },
 					{ ActivationFunctionType.Linear,    0.16f }
 				};
+		public static TupleList<float, ActivationFunctionType> ActivationFunctionChanceIntervals
+		{
+			get
+			{
+				var intervals = new TupleList<float, ActivationFunctionType>();
+				float compoundedValue = 0.0f;
+				foreach(Tuple<ActivationFunctionType, float> tuple in FunctionChances)
+				{
+					compoundedValue += tuple.Item2;
+					intervals.Add(compoundedValue, tuple.Item1);
+				}
+				return intervals; //convert the about "chances" into escalating "buckets";
+			}
+		}
 	}
 
 	struct MutationChances //check these up against standard NEAT settings
