@@ -62,26 +62,35 @@ namespace CPPNNEAT.Utils
 			float disjointVar = 0.0f;
 			float weightVar = 0.0f;
 
-			int longestGenome = Genome.GetLonger(indie1.genome, indie2.genome).connectionGenes.Count;
-			int shortestGenome = Genome.GetShorter(indie1.genome, indie2.genome).connectionGenes.Count;
+			List<ConnectionGene> longestGeneSequence = Genome.GetLonger(indie1.genome, indie2.genome).connectionGenes;
+			List<ConnectionGene> shortestGeneSequence = Genome.GetShorter(indie1.genome, indie2.genome).connectionGenes;
 
-			int disjointPoint =Math.Min(indie1.genome.GetHighestConnectionGeneID(),
-										indie2.genome.GetHighestConnectionGeneID());
+			int disjointID = shortestGeneSequence[shortestGeneSequence.Count-1].geneID;
 
-			excessVar = longestGenome - disjointPoint; //TODO fix that there is a disparaty between talking about nodeID and geneID
-
-			for(int i = 0; i < shortestGenome; i++)
+			int shortIndex = 0;
+			foreach(ConnectionGene gene in longestGeneSequence)
 			{
-				if(indie1.genome.connectionGenes[i].geneID != indie2.genome.connectionGenes[i].geneID)
-					disjointVar += 1;
-				else
-					weightVar += indie1.genome.connectionGenes[i].GetWeightDifference(indie1.genome.connectionGenes[i]);
-
+				if(shortIndex < shortestGeneSequence.Count)
+				{
+					ConnectionGene shortGene = shortestGeneSequence[shortIndex];
+					if(gene.geneID == shortGene.geneID)
+						weightVar += gene.GetWeightDifference(shortGene);
+					else
+					{
+						if(gene.geneID < disjointID) disjointID++;
+						else if(gene.geneID > disjointID) excessVar++;
+					}
+				} else
+				{
+					if(gene.geneID < disjointID) disjointID++;
+					else if(gene.geneID > disjointID) excessVar++;
+				}
+				shortIndex++;
 			}
 
 			int N = 1;
 			if(!EAParameters.SetNToOneLimit.IsLowerThanLimit(indie1, indie2))
-				N = longestGenome;
+				N = longestGeneSequence.Count;
 			excessVar /= N;
 			disjointVar /= N;
 
