@@ -6,7 +6,7 @@
 		public IDCounters IDs;
 		public int generationCount = 0;
 
-		public EvolutionaryAlgorithm(PlaceHolderCA ca) //to become the wrapper for the CA so NEAT can run exactly the same
+		public EvolutionaryAlgorithm(PlaceHolderCARunner ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
 			IDs = new IDCounters();
 			population = new Population(ca);

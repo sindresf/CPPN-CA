@@ -5,9 +5,9 @@ using CPPNNEAT.CPPN;
 
 namespace CPPNNEAT
 {
-	class PlaceHolderCA
+	class PlaceHolderCARunner
 	{
-		public PlaceHolderCA()
+		public PlaceHolderCARunner()
 		{
 
 		}
@@ -16,6 +16,7 @@ namespace CPPNNEAT
 
 		public void RunCA(CPPNetwork network)
 		{
+			//so this needs to "remake" a simple CA "case" to run per individual
 			lock(_lock)
 			{
 				SeedCA();

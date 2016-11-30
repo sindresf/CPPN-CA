@@ -58,6 +58,7 @@
     <Compile Include="PlaceHolderCA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemRunner.cs" />
+    <Compile Include="Utils\GetRandom.cs" />
     <Compile Include="Utils\TupleList.cs" />
   </ItemGroup>
   <ItemGroup>

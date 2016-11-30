@@ -9,7 +9,7 @@ namespace CPPNNEAT
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Creating the CA.");
-			PlaceHolderCA ca = new PlaceHolderCA(); //IT IS GONNA BE A ONELINER GOD DAMMITT!
+			PlaceHolderCARunner ca = new PlaceHolderCARunner(); //IT IS GONNA BE A ONELINER GOD DAMMITT!
 			Thread.Sleep(250);
 			Console.WriteLine("CA ready to go!");
 			Thread.Sleep(50);

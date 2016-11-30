@@ -1,4 +1,5 @@
 ﻿using CPPNNEAT.CPPN;
+using CPPNNEAT.NEAT;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT
@@ -15,9 +16,9 @@ namespace CPPNNEAT
 
 	struct CPPNetworkParameters
 	{
-		public static int CPPNetworkInputSize = 5;
-		public static int CPPNetworkOutputSize = 1; //for CPPN-CA it would always be 1
-		public static float InitialMaxConnectionWeight = 0.07f;
+		public static int CPPNetworkInputSize = 3; //start with 1D
+		public static int CPPNetworkOutputSize = 1;
+		public static float InitialMaxConnectionWeight = 0.13f;
 		public static TupleList<ActivationFunctionType,float> functionChances = new TupleList<ActivationFunctionType, float>
 				{
 					{ ActivationFunctionType.Sinusodial,    0.2f },
@@ -31,12 +32,29 @@ namespace CPPNNEAT
 
 	struct MutationChances //check these up against standard NEAT settings
 	{
-		public static float AddNewNode          = 0.001f;
-		public static float AddNewConnection    = 0.03f;
-		public static float MutateWeight        = 0.75f;
-		public static float MutatWeightAmount   = 0.03f;
-		public static float ChangeNodeFunction  = 0.0005f;
+		private const double AddNewNode          = 0.001f;
+		private const double AddNewConnection    = 0.03f;
+		private const double ChangeWeight        = 0.75f;
+		public const float MutatWeightAmount   = 0.1f;
+		private const double ChangeNodeFunction  = 0.0005f;
 		//mutation chance of parameters in node functions
+
+		public static double GetMutationChance(MutationType type)
+		{
+			switch(type)
+			{
+			case MutationType.AddNode:
+				return AddNewNode;
+			case MutationType.AddConnection:
+				return AddNewConnection;
+			case MutationType.ChangeWeight:
+				return MutatWeightAmount;
+			case MutationType.ChangeFunction:
+				return ChangeNodeFunction;
+			default:
+				return 0.0;
+			}
+		}
 	}
 
 	class IDCounters

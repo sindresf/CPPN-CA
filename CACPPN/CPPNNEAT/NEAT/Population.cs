@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CPPNNEAT.NEAT
@@ -9,9 +8,9 @@ namespace CPPNNEAT.NEAT
 		public List<Species> species { get; private set; }
 		private Dictionary<int,float> SpeciesFitnessMap;
 
-		public PlaceHolderCA ca;
+		public PlaceHolderCARunner ca;
 
-		public Population(PlaceHolderCA ca)
+		public Population(PlaceHolderCARunner ca)
 		{
 			this.ca = ca;
 			species = new List<Species>();
@@ -25,16 +24,13 @@ namespace CPPNNEAT.NEAT
 			species[0].Initialize(IDs);
 		}
 
-		//TODO needs an ADDSpecies method. Should only happen with one individual, so could just be a constructor with a "individual" argument.
+		//TODO needs an ADDSpecies method. Should only happen with one individual, so could just be almost an Initialize().
 
 		public void Evaluate()
 		{
-			Console.WriteLine("POPULATIONEVALUATION ONGOING!");
 			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(ca); });
 			foreach(Species sp in species)
-			{
 				SpeciesFitnessMap[sp.speciesID] = sp.SpeciesFitness;
-			}
 		}
 
 		public void MakeNextGeneration(IDCounters IDs)

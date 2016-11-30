@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CPPNNEAT.NEAT
@@ -25,14 +24,15 @@ namespace CPPNNEAT.NEAT
 			{
 				Individual indie = new Individual(IDs);
 				indie.Initialize(IDs);
+				populace.Add(indie);
 			}
 		}
 
-		public void EvaluatePopulace(PlaceHolderCA ca)
+		public void EvaluatePopulace(PlaceHolderCARunner ca)
 		{
-			Console.WriteLine("EVALUATEPOPULACE ONGOING!!");
 			Parallel.ForEach(populace, indie => { indie.Evaluate(ca); }); //Why you no worky!? BECAUSE PARALLEL WONT WORK WITH SHARED RESOURCES OFCOURSE!! DUH!
-																																		//needs to sum and divide the fitness
+																		  // needs to sum and divide the fitness
+			SpeciesFitness *= 1.01f;
 		}
 
 		public void MakeNextGeneration(IDCounters IDs)

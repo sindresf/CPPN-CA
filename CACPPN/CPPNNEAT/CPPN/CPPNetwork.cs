@@ -10,7 +10,7 @@ namespace CPPNNEAT.CPPN
 
 		private NetworkNode[] hiddenNodes; // to store the activation functions 
 		private float[][] connections;   // to store all the weights
-																		 // TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
+										 // TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
 		private NetworkNode outputNode;
 
 		private Dictionary<int, float> nodeOutput; //memoizing the output as they comes. Only for hidden (output node's output is the output)
