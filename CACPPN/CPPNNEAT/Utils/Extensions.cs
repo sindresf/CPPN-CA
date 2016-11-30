@@ -60,22 +60,26 @@ namespace CPPNNEAT.Utils
 
 			float excessVar = 0.0f;
 			float disjointVar = 0.0f;
-			float weightVar = 0.0f;
+			float weightDiffSum = 0.0f;
+			int sameGeneCount = 0;
 
 			List<ConnectionGene> longestGeneSequence = Genome.GetLonger(indie1.genome, indie2.genome).connectionGenes;
 			List<ConnectionGene> shortestGeneSequence = Genome.GetShorter(indie1.genome, indie2.genome).connectionGenes;
 
 			int disjointID = shortestGeneSequence[shortestGeneSequence.Count-1].geneID;
 
+
 			int shortIndex = 0;
 			foreach(ConnectionGene gene in longestGeneSequence)
-			{
+			{ // juuust might be able to restructure this for readability O:)
 				if(shortIndex < shortestGeneSequence.Count)
 				{
 					ConnectionGene shortGene = shortestGeneSequence[shortIndex];
 					if(gene.geneID == shortGene.geneID)
-						weightVar += gene.GetWeightDifference(shortGene);
-					else
+					{
+						sameGeneCount++;
+						weightDiffSum += gene.GetWeightDifference(shortGene);
+					} else
 					{
 						if(gene.geneID < disjointID) disjointID++;
 						else if(gene.geneID > disjointID) excessVar++;
@@ -84,6 +88,11 @@ namespace CPPNNEAT.Utils
 				{
 					if(gene.geneID < disjointID) disjointID++;
 					else if(gene.geneID > disjointID) excessVar++;
+					else
+					{
+						sameGeneCount++;
+						weightDiffSum += gene.GetWeightDifference(shortestGeneSequence[shortestGeneSequence.Count - 1]);
+					}
 				}
 				shortIndex++;
 			}
@@ -96,7 +105,7 @@ namespace CPPNNEAT.Utils
 
 			similarity += excessVar * EAParameters.ExcessSimilarityWeight;
 			similarity += disjointVar * EAParameters.DisjointSimilarityWeight;
-			similarity += weightVar * EAParameters.WeightDifferenceSimilarityWeight;
+			similarity += (weightDiffSum / sameGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
 			return similarity;
 		}
 	}
