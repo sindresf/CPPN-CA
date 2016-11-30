@@ -1,10 +1,10 @@
 ﻿using System;
+using CPPNNEAT.NEAT.Base;
 
 namespace CPPNNEAT.EA
 {
-	class ConnectionGene : IComparable // needs a distance function that goes into "toNodeID" to get the activation function params.
+	class ConnectionGene : Gene, IComparable // needs a distance function that goes into "toNodeID" to get the activation function params.
 	{
-		public readonly int geneID;
 		public readonly int fromNodeID, toNodeID;
 		public bool isEnabled;
 		public float connectionWeight { get; set; }

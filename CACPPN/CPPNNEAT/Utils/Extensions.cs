@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPPNNEAT.EA;
+using CPPNNEAT.NEAT.Base;
 
 namespace CPPNNEAT.Utils
 {
@@ -22,10 +24,72 @@ namespace CPPNNEAT.Utils
 		{
 			float sum = 0.0f;
 			foreach(Individual indie in populace)
-			{
 				sum += indie.Fitness;
-			}
 			return sum;
+		}
+
+		public static bool IsLowerThanLimit(this int limit, Individual indie1, Individual indie2)
+		{
+			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
+		}
+
+		public static bool IsLongerThan(this Genome genom1, Genome genome2)
+		{
+			return genom1.connectionGenes.Count > genome2.connectionGenes.Count;
+		}
+
+		public static int GetHighestConnectionGeneID(this Genome genome)
+		{
+			int max = 0;
+			foreach(Gene gene in genome.connectionGenes)
+			{
+				if(gene.geneID > max)
+					max = gene.geneID;
+			}
+			return max;
+		}
+
+		public static float GetWeightDifference(this ConnectionGene gene1, ConnectionGene gene2)
+		{
+			return Math.Abs(gene1.connectionWeight - gene2.connectionWeight);
+		}
+
+		public static float SimilarityTo(this Individual indie1, Individual indie2)
+		{
+			float similarity = 0.0f;
+
+			float excessVar = 0.0f;
+			float disjointVar = 0.0f;
+			float weightVar = 0.0f;
+
+			Genome longestGenome = Genome.GetLonger(indie1.genome, indie2.genome);
+
+			int disjointPoint =Math.Min(indie1.genome.GetHighestConnectionGeneID(),
+										indie2.genome.GetHighestConnectionGeneID());
+
+			excessVar = longestGenome.connectionGenes.Count - disjointPoint;
+
+			for(int i = 0; i < longestGenome.connectionGenes.Count; i++)
+			{
+				if(i < disjointPoint)
+				{
+					if(indie1.genome.connectionGenes[i] != indie2.genome.connectionGenes[i])
+						disjointVar += 1;
+					else
+						weightVar += indie1.genome.connectionGenes[i].GetWeightDifference(indie1.genome.connectionGenes[i]);
+				}
+			}
+
+			int N = 1;
+			if(!EAParameters.SetNToOneLimit.IsLowerThanLimit(indie1, indie2))
+				N = longestGenome.connectionGenes.Count;
+			excessVar /= N;
+			disjointVar /= N;
+
+			similarity += excessVar * EAParameters.ExcessSimilarityWeight;
+			similarity += disjointVar * EAParameters.DisjointSimilarityWeight;
+			similarity += weightVar * EAParameters.WeightDifferenceSimilarityWeight;
+			return similarity;
 		}
 	}
 }

@@ -136,6 +136,8 @@ namespace CPPNNEAT.EA
 									   genome1.connectionGenes.Count :
 									   genome2.connectionGenes.Count;
 
+			var longestGenome = Genome.GetLonger(genome1, genome2);
+
 			for(int i = 0; i < shortestNodeGeneList; i++)
 			{
 				if(NEAT.random.NextBoolean())
@@ -144,6 +146,7 @@ namespace CPPNNEAT.EA
 					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);
 			}
 			//TODO what for the remaining genes?
+			// just add them all from the longestGenome
 
 			return childGenome;
 		}

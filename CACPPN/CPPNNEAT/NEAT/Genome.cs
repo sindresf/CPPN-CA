@@ -64,5 +64,10 @@ namespace CPPNNEAT.EA
 					NEAT.random.InitialConnectionWeight())); //need a static EARandom
 			}
 		}
+
+		public static Genome GetLonger(Genome genome1, Genome genome2)
+		{
+			return genome1.IsLongerThan(genome2) ? genome1 : genome2;
+		}
 	}
 }

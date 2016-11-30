@@ -47,6 +47,7 @@
     <Compile Include="CPPN\CPPNetwork.cs" />
     <Compile Include="CPPN\NetworkNode.cs" />
     <Compile Include="NEAT\Base\EvolutionaryAlgorithm.cs" />
+    <Compile Include="NEAT\Base\Gene.cs" />
     <Compile Include="NEAT\NEAT.cs" />
     <Compile Include="NEAT\Mutation.cs" />
     <Compile Include="Parameters.cs" />

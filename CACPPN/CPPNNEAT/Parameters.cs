@@ -13,6 +13,8 @@ namespace CPPNNEAT
 		public static float ExcessSimilarityWeight = 1.0f;
 		public static float DisjointSimilarityWeight = 1.0f;
 		public static float WeightDifferenceSimilarityWeight = 0.4f;
+		public static int SetNToOneLimit = 12;
+
 		public static bool IsSeededRun = true;
 		public static int RandomSeed = 42;
 

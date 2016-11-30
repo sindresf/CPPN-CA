@@ -1,10 +1,10 @@
 ﻿using CPPNNEAT.CPPN;
+using CPPNNEAT.NEAT.Base;
 
 namespace CPPNNEAT.EA
 {
-	class NodeGene
+	class NodeGene : Gene
 	{
-		public readonly int geneID;
 		public readonly int nodeID;
 		public readonly NodeType type;
 		public readonly ActivationFunction nodeInputFunction;
