@@ -40,12 +40,12 @@ namespace CPPNNEAT.NEAT
 
 		private static Genome AddNode(Genome genome, IDCounters IDs, Random rand)
 		{
-			int connectionIndex = rand.Next(genome.connectionGenes.Count);
-			ConnectionGene connectionToSplitt = genome.connectionGenes[connectionIndex];
+			ConnectionGene connectionToSplitt = rand.ConnectionGene(genome);
+
 			NodeGene newNode = new NodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										NodeType.Hidden,
-										GetRandom.ActivationFunctionType(rand));
+										rand.ActivationFunctionType());
 
 			ConnectionGene firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															connectionToSplitt.fromNodeID,
@@ -59,7 +59,7 @@ namespace CPPNNEAT.NEAT
 															true,
 															(float)rand.NextDouble()*CPPNetworkParameters.InitialMaxConnectionWeight);
 
-			genome.connectionGenes[connectionIndex].isEnabled = false;
+			connectionToSplitt.isEnabled = false; //writeline this to see that it changed
 			genome.connectionGenes.Add(firstHalfGene);
 			genome.connectionGenes.Add(secondHalfGene);
 			return genome;
@@ -69,8 +69,8 @@ namespace CPPNNEAT.NEAT
 		{
 			//NO RECCURENT BULLSHITT.
 			//CHECK HIS PAPER for any good explanations for this
-			NodeGene fromNode = GetRandom.NotOutputNodeGene(genome, rand);
-			NodeGene toNode = GetRandom.NotInputNodeGene(genome, rand); // is it so simple I can just make a "get node from After fromNode" ?
+			NodeGene fromNode = rand.NotOutputNodeGene(genome);
+			NodeGene toNode = rand.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
@@ -83,15 +83,15 @@ namespace CPPNNEAT.NEAT
 		private static Genome ChangeWeight(Genome genome, Random rand)
 		{
 			//do a writeLine here to see if it changes in the genome to be sure (it should, is all reference)
-			GetRandom.ConnectionGene(genome, rand).connectionWeight += (float)rand.NextDouble() * 2.0f * MutationChances.MutatWeightAmount
+			rand.ConnectionGene(genome).connectionWeight += (float)rand.NextDouble() * 2.0f * MutationChances.MutatWeightAmount
 																			- MutationChances.MutatWeightAmount;
 			return genome;
 		}
 
-		private static Genome ChangeNodeFunction(Genome genome, IDCounters IDs, Random rand) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
+		private static Genome ChangeNodeFunction(Genome genome, IDCounters IDs, Random random) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
 		{
 			//gotta be a new node with the same nodeID but new nodeGeneID
-			GetRandom.NotInputNodeGene(genome, rand);
+			random.NotInputNodeGene(genome);
 			//genome.nodeGenes[nodeIndex].nodeInputFunction = new CPPN.ActivationFunction(); //"get random function HERE
 			return genome;
 		}
