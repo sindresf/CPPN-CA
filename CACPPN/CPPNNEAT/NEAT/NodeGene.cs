@@ -1,5 +1,5 @@
 ﻿using CPPNNEAT.CPPN;
-using CPPNNEAT.NEAT.Base;
+using CPPNNEAT.EA.Base;
 
 namespace CPPNNEAT.EA
 {

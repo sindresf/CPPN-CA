@@ -69,5 +69,10 @@ namespace CPPNNEAT.EA
 		{
 			return genome1.IsLongerThan(genome2) ? genome1 : genome2;
 		}
+
+		public static Genome GetShorter(Genome genome1, Genome genome2)
+		{
+			return genome1.IsLongerThan(genome2) ? genome2 : genome1;
+		}
 	}
 }
