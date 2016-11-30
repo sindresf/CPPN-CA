@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.NEAT
@@ -97,10 +98,55 @@ namespace CPPNNEAT.NEAT
 		{
 			Genome genome1 = indie1.genome;
 			Genome genome2 = indie2.genome;
+			if(indie1.Fitness.SameWithinReason(indie2.Fitness))
+				return SameFitnessRandomCrossOver(genome1, genome2);
 
+			Genome mostFitGenome = genome1;
 
+			bool parent1HasMostNodes = genome1.nodeGenes.Count > genome2.nodeGenes.Count; //not GENE IDs
+			List<NodeGene> childNodeGenes = new List<NodeGene>();
+			if(parent1HasMostNodes)
+			{
+
+			} else
+			{
+
+			}
 
 			return null;
+		}
+
+		private static Genome SameFitnessRandomCrossOver(Genome genome1, Genome genome2)
+		{
+			Genome childGenome = new Genome();
+			//must be heavily redone
+			int shortestNodeGeneList = genome1.nodeGenes.Count < genome2.nodeGenes.Count ?
+									   genome1.nodeGenes.Count :
+									   genome2.nodeGenes.Count;
+			for(int i = 0; i < shortestNodeGeneList; i++)
+			{
+				if(NEAT.random.NextBoolean())
+					childGenome.nodeGenes.Add(genome1.nodeGenes[i]);
+				else
+					childGenome.nodeGenes.Add(genome1.nodeGenes[i]);
+			}
+			//TODO what for the remaining genes?
+
+			//must be heavily redone
+			int shortestConnectionGeneList = genome1.connectionGenes.Count < genome2.connectionGenes.Count ?
+									   genome1.connectionGenes.Count :
+									   genome2.connectionGenes.Count;
+
+			for(int i = 0; i < shortestNodeGeneList; i++)
+			{
+				if(NEAT.random.NextBoolean())
+					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);
+				else
+					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);
+			}
+			//TODO what for the remaining genes?
+
+			return childGenome;
 		}
 	}
 

@@ -15,6 +15,8 @@ namespace CPPNNEAT
 		public static float WeightDifferenceSimilarityWeight = 0.4f;
 		public static bool IsSeededRun = true;
 		public static int RandomSeed = 42;
+
+		public static double SameFloatWithinReason = 0.01f; //should be scaled by how variant the fitness is
 	}
 
 	struct CPPNetworkParameters
