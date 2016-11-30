@@ -1,4 +1,7 @@
-﻿namespace CPPNNEAT.Utils
+﻿using System.Collections.Generic;
+using CPPNNEAT.EA;
+
+namespace CPPNNEAT.Utils
 {
 	static class Extensions
 	{
@@ -13,6 +16,16 @@
 		{
 			return val <= compareTo + EAParameters.SameFloatWithinReason
 				&& val >= compareTo - EAParameters.SameFloatWithinReason;
+		}
+
+		public static float SumFitness(this List<Individual> populace)
+		{
+			float sum = 0.0f;
+			foreach(Individual indie in populace)
+			{
+				sum += indie.Fitness;
+			}
+			return sum;
 		}
 	}
 }

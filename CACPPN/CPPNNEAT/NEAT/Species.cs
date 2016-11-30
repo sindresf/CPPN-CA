@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
 {
@@ -30,9 +31,8 @@ namespace CPPNNEAT.EA
 
 		public void EvaluatePopulace(PlaceHolderCARunner ca)
 		{
-			Parallel.ForEach(populace, indie => { indie.Evaluate(ca); }); //Why you no worky!? BECAUSE PARALLEL WONT WORK WITH SHARED RESOURCES OFCOURSE!! DUH!
-																		  // needs to sum and divide the fitness
-			SpeciesFitness *= 1.01f;
+			Parallel.ForEach(populace, indie => { indie.Evaluate(ca, populace.Count); });
+			SpeciesFitness = populace.SumFitness();
 		}
 
 		public void MakeNextGeneration(IDCounters IDs)

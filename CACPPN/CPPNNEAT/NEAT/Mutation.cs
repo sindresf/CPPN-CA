@@ -3,7 +3,7 @@ using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
 {
-	class Mutation
+	class Mutationed
 	{
 
 		public static Genome Mutate(Genome genome, IDCounters IDs)

@@ -22,7 +22,7 @@ namespace CPPNNEAT.EA
 			genome.Initialize(IDs);
 		}
 
-		public void Evaluate(PlaceHolderCARunner CARunner)
+		public void Evaluate(PlaceHolderCARunner CARunner, int speciesCount)
 		{
 			//CACase ca = new CACase(); <- static parameter type of "type of ca". doesn't matter here really.
 			/*if(network == null)
@@ -38,7 +38,7 @@ namespace CPPNNEAT.EA
 			}
 			ca.RunCA(network);
 			Fitness *= ca.GetCARunFitnessResult();*/
-			Fitness *= 1.24f;
+			Fitness *= 1.24f / speciesCount;
 		}
 
 		private bool WasGenomeStructuralChange()
