@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
@@ -9,13 +8,12 @@ namespace CPPNNEAT.EA
 
 		public static Genome Mutate(Genome genome, IDCounters IDs)
 		{
-			Genome newGenome = null;
+			Genome newGenome = new Genome(genome);
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 			{
 				if(NEAT.random.DoMutation(type))
-					genome = MutateOfType(type, genome, IDs);
+					newGenome = MutateOfType(type, newGenome, IDs);
 			}
-			newGenome = genome; //TODO a "copy genome type of thing here
 			return newGenome;
 		}
 

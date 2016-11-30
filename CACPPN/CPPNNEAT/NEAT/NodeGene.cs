@@ -8,14 +8,16 @@ namespace CPPNNEAT.EA
 		public readonly int nodeID;
 		public readonly NodeType type;
 		public readonly ActivationFunction nodeInputFunction;
+		public readonly ActivationFunctionType functionType;
 
 		public NodeGene(int geneID, int nodeID, NodeType type, ActivationFunctionType nodeInputFunction)
 		{
 			this.geneID = geneID;
 			this.nodeID = nodeID;
 			this.type = type;
+			functionType = nodeInputFunction;
 			if(this.type == NodeType.Hidden || this.type == NodeType.Output)
-				this.nodeInputFunction = ActivationFunction.GetRandomInitializedFunction(nodeInputFunction);
+				this.nodeInputFunction = ActivationFunction.GetRandomInitializedFunction(functionType);
 			else
 				this.nodeInputFunction = null; // Sensor nodes arent really "a thing"
 		}

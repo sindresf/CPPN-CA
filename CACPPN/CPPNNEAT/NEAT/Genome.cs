@@ -16,6 +16,17 @@ namespace CPPNNEAT.EA
 			hasMutated = false;
 		}
 
+		public Genome(Genome copyFromGenome)
+		{
+			nodeGenes = new List<NodeGene>();
+			connectionGenes = new List<ConnectionGene>();
+			foreach(NodeGene gene in copyFromGenome.nodeGenes)
+				nodeGenes.Add(new NodeGene(gene.geneID, gene.nodeID, gene.type, gene.functionType));
+			foreach(ConnectionGene gene in copyFromGenome.connectionGenes)
+				connectionGenes.Add(new ConnectionGene(gene.geneID, gene.fromNodeID, gene.toNodeID, gene.isEnabled, gene.connectionWeight));
+			hasMutated = false;
+		}
+
 		// functions for adding new genes which disables older ones and such
 		public void Initialize(IDCounters IDs)
 		{
@@ -51,23 +62,6 @@ namespace CPPNNEAT.EA
 					nodeGenes.Count - 1,
 					true,
 					NEAT.random.InitialConnectionWeight())); //need a static EARandom
-			}
-		}
-
-		public Genome GetMutatedGenome(Genome genome, MutationType mutationType)
-		{
-			switch(mutationType)
-			{
-			case MutationType.AddConnection:
-				return genome;
-			case MutationType.AddNode:
-				return genome;
-			case MutationType.ChangeFunction:
-				return genome;
-			case MutationType.ChangeWeight:
-				return genome;
-			default:
-				return genome;
 			}
 		}
 	}
