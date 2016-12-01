@@ -10,11 +10,30 @@ namespace CPPNNEAT.EA
 		public List<NEATIndividual> populace { get; private set; }
 		public float SpeciesFitness { get; private set; }
 
+		public bool isDead { get; private set; }
+		private float BestFitnessAchieved;
+		private int improvementCount;
+
 		public Species(int speciesID)
 		{
 			this.speciesID = speciesID;
+			Setup();
+		}
+
+		public Species(NEATIndividual indie, int speciesID)
+		{
+			this.speciesID = speciesID;
+			Setup();
+			populace.Add(indie);
+		}
+
+		private void Setup()
+		{
 			SpeciesFitness = 0.0f;
+			BestFitnessAchieved = 0.0f;
 			populace = new List<NEATIndividual>();
+			isDead = false;
+			improvementCount = 0;
 		}
 
 		public void Initialize(IDCounters IDs)
@@ -31,6 +50,15 @@ namespace CPPNNEAT.EA
 		{
 			Parallel.ForEach(populace, indie => { indie.Evaluate(ca, populace.Count); });
 			SpeciesFitness = populace.SumFitness();
+			//hasDieded()
+		}
+
+		private void DiedOffCheck()
+		{
+			if(SpeciesFitness > BestFitnessAchieved)
+				BestFitnessAchieved = SpeciesFitness;
+			else
+				isDead = ++improvementCount > EAParameters.SpeciesImprovementTriesBeforeDeath;
 		}
 
 		public void MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs)

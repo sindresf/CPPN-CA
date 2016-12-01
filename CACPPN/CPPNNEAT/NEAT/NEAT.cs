@@ -7,7 +7,7 @@ namespace CPPNNEAT.EA
 {
 	class Neat : EvolutionaryAlgorithm
 	{
-		public Population population;
+		public Population population { get; private set; }
 		public IDCounters IDs;
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNetworkParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;
@@ -15,7 +15,7 @@ namespace CPPNNEAT.EA
 		public Neat(PlaceHolderCARunner ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
 			IDs = new IDCounters();
-			population = new Population(ca);
+			population = new Population(ca, IDs);
 		}
 
 		static Neat()
@@ -28,7 +28,7 @@ namespace CPPNNEAT.EA
 
 		public override void InitializePopulation()
 		{
-			population.Initialize(IDs);
+			population.Initialize();
 		}
 
 		public override void EvaluatePopulation()
@@ -39,7 +39,7 @@ namespace CPPNNEAT.EA
 		public override void NextGeneration()
 		{
 			CurrentGeneration++;
-			population.MakeNextGeneration(IDs);
+			population.MakeNextGeneration();
 		}
 
 		public override float GetBestFitness()

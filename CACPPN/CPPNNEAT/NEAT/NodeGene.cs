@@ -1,7 +1,6 @@
-﻿using CPPNNEAT.CPPN;
+﻿using System;
+using CPPNNEAT.CPPN;
 using CPPNNEAT.EA.Base;
-using CPPNNEAT.Utils;
-using System;
 
 namespace CPPNNEAT.EA
 {

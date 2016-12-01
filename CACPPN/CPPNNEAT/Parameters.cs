@@ -7,18 +7,19 @@ namespace CPPNNEAT
 {
 	struct EAParameters
 	{
-		public static int PopulationSize = 200;
-		public static int MaximumRuns = 12;
+		public const int PopulationSize = 200;
+		public const int MaximumRuns = 12;
+		public const int SpeciesImprovementTriesBeforeDeath = 15;
 
-		public static float ExcessSimilarityWeight = 1.0f;
-		public static float DisjointSimilarityWeight = 1.0f;
-		public static float WeightDifferenceSimilarityWeight = 0.4f;
-		public static int SetNToOneLimit = 12;
+		public const float ExcessSimilarityWeight = 1.0f;
+		public const float DisjointSimilarityWeight = 1.0f;
+		public const float WeightDifferenceSimilarityWeight = 0.4f;
+		public const int SetNToOneLimit = 12;
 
-		public static bool IsSeededRun = true;
-		public static int RandomSeed = 42;
+		public const bool IsSeededRun = true;
+		public const int RandomSeed = 42;
 
-		public static double SameFloatWithinReason = 0.01f; //should be scaled by how variant the fitness is
+		public const double SameFloatWithinReason = 0.01f; //should be scaled by how variant the fitness is
 	}
 
 	struct CPPNetworkParameters
