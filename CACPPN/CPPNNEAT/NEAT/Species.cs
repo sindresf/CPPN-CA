@@ -50,7 +50,7 @@ namespace CPPNNEAT.EA
 		{
 			Parallel.ForEach(populace, indie => { indie.Evaluate(ca, populace.Count); });
 			SpeciesFitness = populace.SumFitness();
-			//hasDieded()
+			DiedOffCheck();
 		}
 
 		private void DiedOffCheck()

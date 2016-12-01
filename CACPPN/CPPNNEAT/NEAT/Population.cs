@@ -9,8 +9,9 @@ namespace CPPNNEAT.EA
 		private Dictionary<int,float> SpeciesFitnessMap;
 
 		public PlaceHolderCARunner ca;
-
 		public IDCounters IDs;
+
+		private float avgSpeciesFitness;
 
 		public Population(PlaceHolderCARunner ca, IDCounters IDs)
 		{
@@ -18,6 +19,7 @@ namespace CPPNNEAT.EA
 			this.IDs = IDs;
 			species = new List<Species>();
 			SpeciesFitnessMap = new Dictionary<int, float>();
+			avgSpeciesFitness = 0.0f;
 		}
 
 		public void Initialize()
@@ -35,36 +37,55 @@ namespace CPPNNEAT.EA
 			SpeciesFitnessMap.Add(id, sp.SpeciesFitness);
 		}
 
-		public void KillSpecies(Species sp)
+		public void KillSpecies(List<Species> deadSpecies)
 		{
-			species.Remove(sp);
-			SpeciesFitnessMap.Remove(sp.speciesID);
+			foreach(Species sp in deadSpecies)
+			{
+				species.Remove(sp);
+				SpeciesFitnessMap.Remove(sp.speciesID);
+			}
 		}
 
 		public void Evaluate()
 		{
 			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(ca); });
 			CheckForDeadSpecies();
+			avgSpeciesFitness = 0.0f;
 			foreach(Species sp in species)
+			{
 				SpeciesFitnessMap[sp.speciesID] = sp.SpeciesFitness;
+				avgSpeciesFitness += sp.SpeciesFitness;
+			}
+			avgSpeciesFitness /= species.Count;
 		}
 
 		private void CheckForDeadSpecies()
 		{
-			Parallel.ForEach(species, (Species species) =>
-			{
-				if(species.isDead) KillSpecies(species);
-			});
+			List<Species> deadSpecies = new List<Species>();
+			foreach(Species sp in species)
+				if(sp.isDead) deadSpecies.Add(sp);
+			KillSpecies(deadSpecies);
 		}
 
 		public void MakeNextGeneration()
 		{
-			Parallel.ForEach(species, (Species species) => { species.MakeNextGeneration(1, IDs); }); //TODO this needs to be a proper "1"
+			/*int indieSpotsLeft = EAParameters.PopulationSize;
+			foreach(Species sp in species)
+			{
+				int allowedSpaceForSpecies = CalculateSpeciesAllowedPopulaceCount(species);
+			}*/
+			Parallel.ForEach(species, (Species species) =>
+			{
+				species.MakeNextGeneration(CalculateSpeciesAllowedPopulaceCount(species), IDs);
+			});
 		}
 
-		private void CalculateSpeciesAllowedPopulaceCount()
+		private int CalculateSpeciesAllowedPopulaceCount(Species sp)
 		{
-			Parallel.ForEach(species, (Species species) => { });
+			//int allowedSize = 0;
+			//float spStatus = sp.SpeciesFitness - avgSpeciesFitness; //is this positive it is better than avg and vice versa
+
+			return EAParameters.PopulationSize / species.Count;
 		}
 	}
 }
