@@ -5,7 +5,7 @@ namespace CPPNNEAT.EA
 	class Individual
 	{
 		public readonly int individualID;
-		public Genome genome;
+		public NeatGenome genome;
 		public float Fitness { get; private set; }
 
 		public CPPNetwork network;
@@ -18,7 +18,7 @@ namespace CPPNNEAT.EA
 
 		public void Initialize(IDCounters IDs)
 		{
-			genome = new Genome();
+			genome = new NeatGenome();
 			genome.Initialize(IDs);
 		}
 

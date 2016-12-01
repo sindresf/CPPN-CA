@@ -33,12 +33,12 @@ namespace CPPNNEAT.Utils
 			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
 		}
 
-		public static bool IsLongerThan(this Genome genom1, Genome genome2)
+		public static bool IsLongerThan(this NeatGenome genom1, NeatGenome genome2)
 		{
 			return genom1.connectionGenes.Count > genome2.connectionGenes.Count;
 		}
 
-		public static int GetHighestConnectionGeneID(this Genome genome)
+		public static int GetHighestConnectionGeneID(this NeatGenome genome)
 		{
 			int max = 0;
 			foreach(Gene gene in genome.connectionGenes)
@@ -63,8 +63,8 @@ namespace CPPNNEAT.Utils
 			float weightDiffSum = 0.0f;
 			int sameGeneCount = 0;
 
-			List<ConnectionGene> longestGeneSequence = Genome.GetLonger(indie1.genome, indie2.genome).connectionGenes;
-			List<ConnectionGene> shortestGeneSequence = Genome.GetShorter(indie1.genome, indie2.genome).connectionGenes;
+			List<ConnectionGene> longestGeneSequence = NeatGenome.GetLonger(indie1.genome, indie2.genome).connectionGenes;
+			List<ConnectionGene> shortestGeneSequence = NeatGenome.GetShorter(indie1.genome, indie2.genome).connectionGenes;
 
 			int disjointID = shortestGeneSequence[shortestGeneSequence.Count-1].geneID;
 

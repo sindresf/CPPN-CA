@@ -16,14 +16,14 @@ namespace CPPNNEAT.CPPN
 
 		private Dictionary<int, float> nodeOutput; //memoizing the output as they comes. Only for hidden (output node's output is the output)
 
-		public CPPNetwork(Genome genome)
+		public CPPNetwork(NeatGenome genome)
 		{
 			nodeOutput = new Dictionary<int, float>();
 			SetupNodeList(genome);
 			SetupConnectionMatrix(genome);
 		}
 
-		private void SetupNodeList(Genome genome) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
+		private void SetupNodeList(NeatGenome genome) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
 			int hiddenNodes = genome.nodeGenes.Count - CPPNetworkParameters.CPPNetworkInputSize - CPPNetworkParameters.CPPNetworkOutputSize;
 			if(hiddenNodes >= 1)
@@ -55,7 +55,7 @@ namespace CPPNNEAT.CPPN
 			}
 		}
 
-		private void SetupConnectionMatrix(Genome genome)
+		private void SetupConnectionMatrix(NeatGenome genome)
 		{
 			connections = new float[hiddenNodes.Length + 1][]; // +1 for the output node
 

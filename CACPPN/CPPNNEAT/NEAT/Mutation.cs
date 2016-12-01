@@ -6,9 +6,9 @@ namespace CPPNNEAT.EA
 	class Mutator
 	{
 
-		public static Genome Mutate(Genome genome, IDCounters IDs)
+		public static NeatGenome Mutate(NeatGenome genome, IDCounters IDs)
 		{
-			Genome newGenome = new Genome(genome);
+			NeatGenome newGenome = new NeatGenome(genome);
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 			{
 				if(NEAT.random.DoMutation(type))
@@ -17,7 +17,7 @@ namespace CPPNNEAT.EA
 			return newGenome;
 		}
 
-		private static Genome MutateOfType(MutationType type, Genome genome, IDCounters IDs)
+		private static NeatGenome MutateOfType(MutationType type, NeatGenome genome, IDCounters IDs)
 		{
 			switch(type)
 			{
@@ -34,11 +34,11 @@ namespace CPPNNEAT.EA
 			}
 		}
 
-		private static Genome AddNode(Genome genome, IDCounters IDs)
+		private static NeatGenome AddNode(NeatGenome genome, IDCounters IDs)
 		{
 			ConnectionGene connectionToSplitt = NEAT.random.ConnectionGene(genome);
 
-			NodeGene newNode = new NodeGene(IDs.NodeGeneID,
+			InternalNodeGene newNode = new InternalNodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										NodeType.Hidden,
 										NEAT.random.ActivationFunctionType());
@@ -61,12 +61,12 @@ namespace CPPNNEAT.EA
 			return genome;
 		}
 
-		private static Genome AddConnection(Genome genome, IDCounters IDs)
+		private static NeatGenome AddConnection(NeatGenome genome, IDCounters IDs)
 		{
 			//NO RECCURENT BULLSHITT.
 			//CHECK HIS PAPER for any good explanations for this
-			NodeGene fromNode = NEAT.random.NotOutputNodeGene(genome);
-			NodeGene toNode = NEAT.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
+			InternalNodeGene fromNode = NEAT.random.NotOutputNodeGene(genome);
+			InternalNodeGene toNode = NEAT.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
@@ -76,7 +76,7 @@ namespace CPPNNEAT.EA
 			return genome;
 		}
 
-		private static Genome ChangeWeight(Genome genome)
+		private static NeatGenome ChangeWeight(NeatGenome genome)
 		{
 			ConnectionGene connGene = NEAT.random.ConnectionGene(genome);
 			float newWeight = (connGene.connectionWeight + NEAT.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
@@ -85,7 +85,7 @@ namespace CPPNNEAT.EA
 			return genome;
 		}
 
-		private static Genome ChangeNodeFunction(Genome genome, IDCounters IDs) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
+		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
 		{
 			//gotta be a new node with the same nodeID but new nodeGeneID
 			NEAT.random.NotInputNodeGene(genome);
@@ -93,17 +93,17 @@ namespace CPPNNEAT.EA
 			return genome;
 		}
 
-		public static Genome Crossover(Individual indie1, Individual indie2)
+		public static NeatGenome Crossover(Individual indie1, Individual indie2)
 		{
-			Genome genome1 = indie1.genome;
-			Genome genome2 = indie2.genome;
+			NeatGenome genome1 = indie1.genome;
+			NeatGenome genome2 = indie2.genome;
 			if(indie1.Fitness.SameWithinReason(indie2.Fitness))
 				return SameFitnessRandomCrossOver(genome1, genome2);
 
 			bool parent1HasMostNodes = genome1.nodeGenes.Count > genome2.nodeGenes.Count; //not GENE IDs
 
 			bool mostFitIsIndie1 = indie1.Fitness > indie2.Fitness;
-			Genome childGenome = new Genome();
+			NeatGenome childGenome = new NeatGenome();
 			if(parent1HasMostNodes)
 			{
 				childGenome.nodeGenes.Add(mostFitIsIndie1 ? genome1.nodeGenes[0] : genome2.nodeGenes[0]); //this type of stuff
@@ -115,9 +115,9 @@ namespace CPPNNEAT.EA
 			return childGenome;
 		}
 
-		private static Genome SameFitnessRandomCrossOver(Genome genome1, Genome genome2)
+		private static NeatGenome SameFitnessRandomCrossOver(NeatGenome genome1, NeatGenome genome2)
 		{
-			Genome childGenome = new Genome();
+			NeatGenome childGenome = new NeatGenome();
 			int shortestNodeGeneList = genome1.nodeGenes.Count < genome2.nodeGenes.Count ?
 									   genome1.nodeGenes.Count :
 									   genome2.nodeGenes.Count;
@@ -136,7 +136,7 @@ namespace CPPNNEAT.EA
 									   genome1.connectionGenes.Count :
 									   genome2.connectionGenes.Count;
 
-			var longestGenome = Genome.GetLonger(genome1, genome2);
+			var longestGenome = NeatGenome.GetLonger(genome1, genome2);
 
 			for(int i = 0; i < shortestNodeGeneList; i++)
 			{

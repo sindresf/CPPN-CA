@@ -24,8 +24,6 @@ namespace CPPNNEAT.EA
 			species[0].Initialize(IDs);
 		}
 
-		//TODO needs an ADDSpecies method. Should only happen with one individual, so could just be almost an Initialize().
-
 		public void Evaluate()
 		{
 			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(ca); });
@@ -35,7 +33,7 @@ namespace CPPNNEAT.EA
 
 		public void MakeNextGeneration(IDCounters IDs)
 		{
-			Parallel.ForEach(species, (Species species) => { species.MakeNextGeneration(IDs); });
+			Parallel.ForEach(species, (Species species) => { species.MakeNextGeneration(1, IDs); }); //TODO this needs to be a proper "1"
 		}
 
 		private void CalculateSpeciesAllowedPopulaceCount()

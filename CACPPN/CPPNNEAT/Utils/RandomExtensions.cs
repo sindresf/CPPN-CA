@@ -41,17 +41,17 @@ namespace CPPNNEAT.Utils
 		}
 
 
-		public static ConnectionGene ConnectionGene(this Random rand, Genome genome)
+		public static ConnectionGene ConnectionGene(this Random rand, NeatGenome genome)
 		{
 			return genome.connectionGenes[rand.Next(genome.connectionGenes.Count)];
 		}
 
-		public static NodeGene NotInputNodeGene(this Random rand, Genome genome)
+		public static InternalNodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
 			//skips the input node genes, as nothing ever should change there
 			return genome.nodeGenes[rand.Next(CPPNetworkParameters.CPPNetworkInputSize, genome.nodeGenes.Count)];
 		}
-		public static NodeGene NotOutputNodeGene(this Random rand, Genome genome)
+		public static InternalNodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
 			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - CPPNetworkParameters.CPPNetworkOutputSize)];
 		}

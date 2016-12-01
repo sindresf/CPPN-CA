@@ -3,18 +3,13 @@ using CPPNNEAT.EA.Base;
 
 namespace CPPNNEAT.EA
 {
-	class NodeGene : Gene
+	class InternalNodeGene : SensorNodeGene
 	{
-		public readonly int nodeID;
-		public readonly NodeType type;
 		public readonly ActivationFunction nodeInputFunction;
 		public readonly ActivationFunctionType functionType;
 
-		public NodeGene(int geneID, int nodeID, NodeType type, ActivationFunctionType nodeInputFunction)
+		public InternalNodeGene(int geneID, int nodeID, NodeType type, ActivationFunctionType nodeInputFunction) : base(geneID, nodeID, type)
 		{
-			this.geneID = geneID;
-			this.nodeID = nodeID;
-			this.type = type;
 			functionType = nodeInputFunction;
 			if(this.type == NodeType.Hidden || this.type == NodeType.Output)
 				this.nodeInputFunction = ActivationFunction.GetRandomInitializedFunction(functionType);
@@ -22,17 +17,23 @@ namespace CPPNNEAT.EA
 				this.nodeInputFunction = null; // Sensor nodes arent really "a thing"
 		}
 
-		public override bool Equals(object other)
+		public InternalNodeGene(InternalNodeGene gene) : base(gene.geneID, gene.nodeID, gene.type)
 		{
-			return ((NodeGene)other).geneID == geneID;
+			functionType = gene.functionType;
+			nodeInputFunction = gene.nodeInputFunction;
 		}
 
-		public static bool operator ==(NodeGene g1, NodeGene g2)
+		public override bool Equals(object other)
+		{
+			return ((InternalNodeGene)other).geneID == geneID;
+		}
+
+		public static bool operator ==(InternalNodeGene g1, InternalNodeGene g2)
 		{
 			return g1.geneID == g2.geneID;
 		}
 
-		public static bool operator !=(NodeGene g1, NodeGene g2)
+		public static bool operator !=(InternalNodeGene g1, InternalNodeGene g2)
 		{
 			return g1.geneID != g2.geneID;
 		}
