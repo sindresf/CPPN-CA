@@ -123,7 +123,9 @@ namespace CPPNNEAT.CPPN
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = SumWeightedInputs(inputs);
-			return Math.Abs(sum);
+			float x = 1.0f;
+			float y = .0f;
+			return Math.Abs(sum * x) + y;
 		}
 	}
 
@@ -137,7 +139,11 @@ namespace CPPNNEAT.CPPN
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = SumWeightedInputs(inputs);
-			return Math.Abs(1.0f - (sum % 1.0f));
+			float x = 1.0f;
+			float y = .0f;
+			float z = 1.0f;
+			float w = 1.0f;
+			return Math.Abs((w - (sum % z)) * x) + y;
 		}
 	}
 
@@ -151,7 +157,10 @@ namespace CPPNNEAT.CPPN
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = SumWeightedInputs(inputs);
-			return sum % 1.0f;
+			float x = 1.0f;
+			float y = .0f;
+			float mod = 1.0f;
+			return (x * sum + y) % mod;
 		}
 	}
 
@@ -159,12 +168,15 @@ namespace CPPNNEAT.CPPN
 	{
 		public LinearFunction() : base()
 		{
-
+			coefficients.Add('a', new Coefficient(1.0, 0.1, -3.0, 3.0));
+			coefficients.Add('b', new Coefficient(0.0, 0.1, -3.0, 3.0));
 		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
-			return SumWeightedInputs(inputs);
+			double a = coefficients['a'].coValue;
+			double b = coefficients['b'].coValue;
+			return (float)(SumWeightedInputs(inputs) * a + b);
 		}
 	}
 
