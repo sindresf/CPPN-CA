@@ -8,12 +8,12 @@ namespace CPPNNEAT.EA
 		public List<Species> species { get; private set; }
 		private Dictionary<int,float> SpeciesFitnessMap;
 
-		public PlaceHolderCARunner ca;
+		public Evaluator ca;
 		public IDCounters IDs;
 
 		private float avgSpeciesFitness;
 
-		public Population(PlaceHolderCARunner ca, IDCounters IDs)
+		public Population(Evaluator ca, IDCounters IDs)
 		{
 			this.ca = ca;
 			this.IDs = IDs;

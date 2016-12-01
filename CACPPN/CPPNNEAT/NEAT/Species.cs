@@ -46,7 +46,7 @@ namespace CPPNNEAT.EA
 			}
 		}
 
-		public void EvaluatePopulace(PlaceHolderCARunner ca)
+		public void EvaluatePopulace(Evaluator ca)
 		{
 			Parallel.ForEach(populace, indie => { indie.Evaluate(ca, populace.Count); });
 			SpeciesFitness = populace.SumFitness();

@@ -10,6 +10,8 @@ namespace CPPNNEAT
 		public const int PopulationSize = 200;
 		public const int MaximumRuns = 12;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
+		public const EvaluatorStructureType Evaluator = EvaluatorStructureType.OneDimentional;
+		public const Experiment experiment = Experiment.Simplest1D;
 
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;

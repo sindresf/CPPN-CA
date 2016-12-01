@@ -1,8 +1,8 @@
 ﻿namespace CACPPN.CA.Enums
 {
-    enum Orientation
-    {
-        VERTICAL,
-        HORISONTAL
-    }
+	enum Orientation
+	{
+		VERTICAL,
+		HORISONTAL
+	}
 }

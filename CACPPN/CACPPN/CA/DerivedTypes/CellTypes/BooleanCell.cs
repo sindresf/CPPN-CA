@@ -1,67 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CACPPN.CA.BaseTypes;
 namespace CACPPN.CA.DerivedTypes.CellTypes
 {
-    class BooleanCell : AbstractCell
-    {
-        public BooleanCell(int i) : base(i)
-        {
-        }
-        public override double CurrentState
-        {
-            get
-            {
-                return _currentState;
-            }
-        }
+	class BooleanCell : AbstractCell
+	{
+		public BooleanCell(int i) : base(i) { }
 
-        public override double? FutureState
-        {
-            get
-            {
-                return _futureState;
-            }
+		public override double CurrentState
+		{
+			get { return _currentState; }
+		}
 
-            set
-            {
-                _currentState = value.GetValueOrDefault();
-                _futureState = null;
-            }
-        }
+		public override double? FutureState
+		{
+			get { return _futureState; }
 
-        public override List<AbstractCell> Neighbourhood
-        {
-            get
-            {
-                return _neighbourhood;
-            }
+			set
+			{
+				_currentState = value.GetValueOrDefault();
+				_futureState = null;
+			}
+		}
 
-            set
-            {
-                if (_neighbourhood == null)
-                    _neighbourhood = value;
-            }
-        }
+		public override List<AbstractCell> Neighbourhood
+		{
+			get { return _neighbourhood; }
 
-        public override List<double> NeighbourhoodCurrentState
-        {
-            get
-            {
-                List<double> neighState = new List<double>();
-                foreach (AbstractCell cell in _neighbourhood)
-                {
-                    neighState.Add(cell.CurrentState);
-                }
-                return neighState;
-            }
-        }
+			set
+			{
+				if(_neighbourhood == null)
+					_neighbourhood = value;
+			}
+		}
 
-        public override AbstractCell SetFirstState(double value)
-        {
-            _currentState = value;
-            _futureState = value;
-            return this;
-        }
-    }
+		public override List<double> NeighbourhoodCurrentState
+		{
+			get
+			{
+				List<double> neighState = new List<double>();
+				foreach(AbstractCell cell in _neighbourhood)
+				{
+					neighState.Add(cell.CurrentState);
+				}
+				return neighState;
+			}
+		}
+
+		public override AbstractCell SetFirstState(double value)
+		{
+			_currentState = value;
+			_futureState = value;
+			return this;
+		}
+	}
 }

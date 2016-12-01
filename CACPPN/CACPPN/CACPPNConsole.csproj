@@ -60,10 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CA\BaseTypes\AbstractCell.cs" />
-    <Compile Include="CA\BaseTypes\TransitionRuleSet.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\BooleanCell.cs" />
     <Compile Include="CA\DerivedTypes\CellTypes\FloatCell.cs" />
-    <Compile Include="CA\DerivedTypes\CellTypes\TreeCell.cs" />
     <Compile Include="CA\Enums\CAPartTypes.cs" />
     <Compile Include="CA\Enums\Orientation.cs" />
     <Compile Include="Utils\MultiDimensionalArrayConversion.cs" />
@@ -71,10 +69,6 @@
     <Compile Include="Utils\NeighbourhoodInitializor.cs" />
     <Compile Include="Utils\SeedingMachines\GameOfLifeSeeds.cs" />
     <Compile Include="Utils\Hyperparameters.cs" />
-    <Compile Include="Utils\IntervalManager.cs" />
-    <Compile Include="Program\CACPPNBaseProgram.cs" />
-    <Compile Include="Program\CACPPNStatisticsProgram.cs" />
-    <Compile Include="Program\CAStatisticsProgram.cs" />
     <Compile Include="Program\CABaseProgram.cs" />
     <Compile Include="Program\Experiments\BaseExperiment.cs" />
     <Compile Include="Program\Experiments\OneDimTestExperiment.cs" />

@@ -23,7 +23,7 @@ namespace CPPNNEAT.EA
 				Mutator.Mutate(genome, IDs);
 		}
 
-		public override void Evaluate(PlaceHolderCARunner CARunner, int speciesCount)
+		public override void Evaluate(Evaluator CARunner, int speciesCount)
 		{
 			//CACase ca = new CACase(); <- static parameter type of "type of ca". doesn't matter here really.
 			/*if(network == null)

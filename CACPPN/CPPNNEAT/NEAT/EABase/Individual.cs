@@ -11,7 +11,7 @@
 		}
 
 		public abstract void Initialize(IDCounters IDs);
-		public abstract void Evaluate(PlaceHolderCARunner CARunner, int speciesCount);
+		public abstract void Evaluate(Evaluator CARunner, int speciesCount);
 
 	}
 }
