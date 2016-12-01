@@ -34,8 +34,6 @@ namespace CPPNNEAT.CPPN
 				return new ModuloFunction();
 			case ActivationFunctionType.Linear:
 				return new LinearFunction();
-			case ActivationFunctionType.Input:
-				return null;
 			default:
 				return null;
 			}
@@ -49,8 +47,7 @@ namespace CPPNNEAT.CPPN
 		AbsoluteValue,
 		PyramidAbsoluteValue,
 		Modulo,
-		Linear,
-		Input
+		Linear
 	}
 
 	class SinusFunction : ActivationFunction

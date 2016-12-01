@@ -40,7 +40,7 @@ namespace CPPNNEAT.EA
 
 		private void CalculateSpeciesAllowedPopulaceCount()
 		{
-			Parallel.ForEach(species, (Species species) => {/* some "get species fitness * population count / species scaling. maybe some exponential scaling */});
+			Parallel.ForEach(species, (Species species) => { });
 		}
 	}
 }

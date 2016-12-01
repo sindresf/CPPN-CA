@@ -7,6 +7,6 @@
 		public abstract void InitializePopulation();
 		public abstract void EvaluatePopulation();
 		public abstract void NextGeneration();
-		public abstract float GetBestFitness();
+		public abstract float GetBestFitness();//placeholder for proper "GetAllTheStatistics" type of func (or class delegating func)
 	}
 }

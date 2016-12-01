@@ -63,7 +63,7 @@ struct MutationChances //check these up against standard NEAT settings
 	private const double ChangeWeight        = 0.75f;
 	public const float MutatWeightAmount   = 0.1f;
 	private const double ChangeNodeFunction  = 0.0005f;
-	//mutation chance of parameters in node functions
+	public const double CreationMutationChance = 0.05; // <- completely out of my ass, like most of these
 
 	public static double GetMutationChance(MutationType type)
 	{

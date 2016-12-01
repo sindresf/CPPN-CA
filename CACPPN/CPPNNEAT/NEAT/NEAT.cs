@@ -42,7 +42,7 @@ namespace CPPNNEAT.EA
 			population.MakeNextGeneration(IDs);
 		}
 
-		public override float GetBestFitness() //placeholder for proper "GetAllTheStatistics" type of func (or class delegating func)
+		public override float GetBestFitness()
 		{
 			float best = 0.0f;
 			foreach(Species sp in population.species)

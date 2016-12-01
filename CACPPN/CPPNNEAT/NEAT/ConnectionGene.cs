@@ -3,7 +3,7 @@ using CPPNNEAT.EA.Base;
 
 namespace CPPNNEAT.EA
 {
-	class ConnectionGene : Gene, IComparable // needs a distance function that goes into "toNodeID" to get the activation function params.
+	class ConnectionGene : Gene
 	{
 		public readonly int fromNodeID, toNodeID;
 		public bool isEnabled;
@@ -36,11 +36,6 @@ namespace CPPNNEAT.EA
 		public override int GetHashCode()
 		{
 			return geneID;
-		}
-
-		public int CompareTo(object obj)
-		{
-			return ((ConnectionGene)obj).fromNodeID - fromNodeID;
 		}
 	}
 }

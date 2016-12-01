@@ -44,12 +44,12 @@ namespace CPPNNEAT.EA
 					nodeGenes.Add(new NodeGene(IDs.NodeGeneID,
 						i,
 						NodeType.Sensor,
-						CPPN.ActivationFunctionType.Input)); //actually choose this one at random
+						NEAT.random.ActivationFunctionType()));
 				else
 					nodeGenes.Add(new NodeGene(IDs.NodeGeneID,
 						i,
 						NodeType.Sensor,
-						CPPN.ActivationFunctionType.Input));
+						NEAT.random.ActivationFunctionType())); //need input "nodes" to be empty geneID-nodeID shells
 		}
 
 		private void InitializeConnectionGenes(IDCounters IDs)
@@ -61,7 +61,7 @@ namespace CPPNNEAT.EA
 					gene.nodeID,
 					nodeGenes.Count - 1,
 					true,
-					NEAT.random.InitialConnectionWeight())); //need a static EARandom
+					NEAT.random.InitialConnectionWeight()));
 			}
 		}
 

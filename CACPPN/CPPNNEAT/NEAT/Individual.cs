@@ -40,15 +40,5 @@ namespace CPPNNEAT.EA
 			Fitness *= ca.GetCARunFitnessResult();*/
 			Fitness *= 1.24f / speciesCount;
 		}
-
-		private bool WasGenomeStructuralChange()
-		{/*
-			bool isStructurallyChanged = false;
-			isStructurallyChanged = genome.nodeGenes.Count != network.hiddenNodes.Length;
-			isStructurallyChanged &= genome.connectionGenes.Count != network.connections.Length;
-			*/
-		 // yea, keep it like such for now. returning true means it'll act like this funciton didn't exist, so would be easy to refactor away.
-			return true;
-		}
 	}
 }

@@ -94,7 +94,7 @@ namespace CPPNNEAT.CPPN
 				//if sensorNode return input
 
 				if(outputNode != null)
-					return outputNode.GetOutput(outputs);
+					return outputNode.GetOutput(outputs); //this is the ActivationFunction GetOutput function!
 			}
 			return 0.0f;
 		}

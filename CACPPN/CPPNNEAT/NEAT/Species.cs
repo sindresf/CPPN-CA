@@ -9,13 +9,11 @@ namespace CPPNNEAT.EA
 		public readonly int speciesID;
 		public List<Individual> populace { get; private set; }
 		public float SpeciesFitness { get; private set; }
-		public int AllowedPopulaceCount { get; set; }
 
 		public Species(int speciesID)
 		{
 			this.speciesID = speciesID;
 			SpeciesFitness = 0.0f;
-			AllowedPopulaceCount = EAParameters.PopulationSize; //TODO no, not quite
 			populace = new List<Individual>();
 		}
 
@@ -35,7 +33,7 @@ namespace CPPNNEAT.EA
 			SpeciesFitness = populace.SumFitness();
 		}
 
-		public void MakeNextGeneration(IDCounters IDs)
+		public void MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs)
 		{
 			//this is where the compare should come into play for fitness selection.
 			//and "foreach" by the allowed amount

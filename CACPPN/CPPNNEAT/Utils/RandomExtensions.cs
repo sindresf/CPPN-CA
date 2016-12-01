@@ -17,6 +17,11 @@ namespace CPPNNEAT.Utils
 			return rand.NextDouble() > 0.5;
 		}
 
+		public static bool NextBoolean(this Random rand, double probability)
+		{
+			return rand.NextDouble() < probability;
+		}
+
 		public static bool DoMutation(this Random rand, MutationType type)
 		{
 			return rand.NextDouble() <= MutationChances.GetMutationChance(type);

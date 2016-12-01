@@ -3,7 +3,7 @@ using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
 {
-	class Mutationed
+	class Mutator
 	{
 
 		public static Genome Mutate(Genome genome, IDCounters IDs)
@@ -81,6 +81,7 @@ namespace CPPNNEAT.EA
 			ConnectionGene connGene = NEAT.random.ConnectionGene(genome);
 			float newWeight = (connGene.connectionWeight + NEAT.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
 																			- MutationChances.MutatWeightAmount).ClampWeight();
+			connGene.connectionWeight = newWeight;
 			return genome;
 		}
 
@@ -116,8 +117,7 @@ namespace CPPNNEAT.EA
 
 		private static Genome SameFitnessRandomCrossOver(Genome genome1, Genome genome2)
 		{
-			Genome childGenome = new Genome(); //QUESTION is; given that they have "the same fitness" WITHIN the species can we assume they are "the same", count wise?
-											   //must be heavily redone
+			Genome childGenome = new Genome();
 			int shortestNodeGeneList = genome1.nodeGenes.Count < genome2.nodeGenes.Count ?
 									   genome1.nodeGenes.Count :
 									   genome2.nodeGenes.Count;
