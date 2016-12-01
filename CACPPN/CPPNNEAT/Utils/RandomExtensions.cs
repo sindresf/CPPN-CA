@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CPPNNEAT.CPPN;
 using CPPNNEAT.EA;
 
@@ -54,6 +55,24 @@ namespace CPPNNEAT.Utils
 		public static NodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
 			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - CPPNetworkParameters.CPPNetworkOutputSize)];
+		}
+
+		public static double NextGaussianRandom(this Random rand, double mean, double maxChange)
+		{
+			return mean + ((rand.NextDouble() * 2.0 * maxChange) - maxChange);
+		}
+
+		public static Coefficient Coefficient(this Random rand, Dictionary<char, Coefficient> dict)
+		{
+			//a bit of a bias way to go about it but not even supposed to be used so... can look at it properly later
+			ICollection<char> keys = dict.Keys;
+			double chance = 1.0/keys.Count;
+			foreach(char key in keys)
+			{
+				if(rand.NextBoolean(chance))
+					return dict[key];
+			}
+			throw new DllNotFoundException("silly random select failed");
 		}
 
 		public static float InitialConnectionWeight(this Random rand)

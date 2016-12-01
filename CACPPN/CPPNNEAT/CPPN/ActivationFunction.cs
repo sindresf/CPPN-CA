@@ -1,13 +1,26 @@
 ﻿using System;
+using CPPNNEAT.EA;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.CPPN
 {
-	class ActivationFunction
+	abstract class ActivationFunction
 	{
+		protected Coefficients coefficients;
+
+		public ActivationFunction()
+		{
+			coefficients = new Coefficients();
+		}
+
 		public virtual float GetOutput(TupleList<float, float> inputs)
 		{
 			throw new NotImplementedException("base case is not an actual function!");
+		}
+
+		public virtual void MutateCoefficient()
+		{
+			Neat.random.Coefficient(coefficients).Mutate();
 		}
 
 		protected float SumWeightedInputs(TupleList<float, float> inputs)
@@ -55,33 +68,57 @@ namespace CPPNNEAT.CPPN
 
 	class SinusFunction : ActivationFunction
 	{
-		public SinusFunction() { }
+		public SinusFunction() : base()
+		{ //entirely up to user to keep track off and make no "divide by 0" stuff occure
+			coefficients.Add('a', new Coefficient(1.0, 0.1, 0.0, 3.0)); //also, this would be a long ass list of parameters to tune
+			coefficients.Add('b', new Coefficient(1.0, 0.1, -3.0, 3.0));
+			coefficients.Add('c', new Coefficient(1.0, 0.1, 0.01, 3.0));
+			coefficients.Add('d', new Coefficient(1.0, 0.1, 0.5, 1.7));
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = SumWeightedInputs(inputs);
-			return (float)Math.Sin(sum);
+			double a = coefficients['a'].coValue;
+			double b = coefficients['b'].coValue;
+			double c = coefficients['c'].coValue;
+			double d = coefficients['d'].coValue;
+			return (float)(a * Math.Sin(Math.Pow(c * sum, d)) + b);
 		}
 	}
 
 	class GaussianFunction : ActivationFunction
 	{
-		private float mean = 0.0f;
-		private float variance = 1.0f;
-		public GaussianFunction() { }
+		public GaussianFunction() : base()
+		{
+			coefficients.Add('m', new Coefficient(.0, .1, -3.0, 3.0));
+			coefficients.Add('v', new Coefficient(1.0, .05, -.7, 2.0));
+			coefficients.Add('x', new Coefficient(2.0, .02, 1.01, 2.5));
+			coefficients.Add('2', new Coefficient(2.0, .01, 1.9, 2.1));
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = SumWeightedInputs(inputs);
-			double exponent = - (Math.Pow((sum - mean),2) / (2*variance));
-			double divide = 1.0 / Math.Sqrt(2*Math.PI*variance);
 
-			return (float)(divide * Math.Pow(Math.E, exponent)); //parameterized point here
+			double mean = coefficients['m'].coValue;
+			double variance = coefficients['v'].coValue;
+			double power = coefficients['x'].coValue;
+			double two = coefficients['2'].coValue;
+
+			double exponent = - (Math.Pow((sum - mean),power) / (two*variance));
+			double divide = 1.0 / Math.Sqrt(two*Math.PI*variance);
+
+			return (float)(divide * Math.Pow(Math.E, exponent));
 		}
 	}
+
 	class AbsoluteValueFunction : ActivationFunction
 	{
-		public AbsoluteValueFunction() { }
+		public AbsoluteValueFunction() : base()
+		{
+
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
@@ -92,7 +129,10 @@ namespace CPPNNEAT.CPPN
 
 	class PyramidAbsoluteValueFunction : ActivationFunction
 	{
-		public PyramidAbsoluteValueFunction() { }
+		public PyramidAbsoluteValueFunction() : base()
+		{
+
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
@@ -103,7 +143,10 @@ namespace CPPNNEAT.CPPN
 
 	class ModuloFunction : ActivationFunction
 	{
-		public ModuloFunction() { }
+		public ModuloFunction() : base()
+		{
+
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
@@ -114,7 +157,10 @@ namespace CPPNNEAT.CPPN
 
 	class LinearFunction : ActivationFunction
 	{
-		public LinearFunction() { }
+		public LinearFunction() : base()
+		{
+
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
@@ -124,13 +170,17 @@ namespace CPPNNEAT.CPPN
 
 	class OtherFunction : ActivationFunction
 	{
-		public OtherFunction() { }
+		public OtherFunction() : base()
+		{
+			coefficients.Add('x', new Coefficient(1.0, 0.0, 0.0, 1.0));
+		}
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = SumWeightedInputs(inputs);
+			double x = coefficients['x'].coValue;
 
-			return (float)Math.Sqrt(sum);
+			return (float)Math.Sqrt(sum * x);
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using CPPNNEAT.EA;
-
-namespace CPPNNEAT.CPPN
+﻿namespace CPPNNEAT.CPPN
 {
 	class NetworkNode : ActivationFunction
 	{

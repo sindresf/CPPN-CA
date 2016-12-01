@@ -14,6 +14,13 @@ namespace CPPNNEAT.Utils
 			else return val;
 		}
 
+		public static double Clamp(this double val, double min, double max)
+		{
+			if(val.CompareTo(min) < 0) return min;
+			else if(val.CompareTo(max) > 0) return max;
+			else return val;
+		}
+
 		public static bool SameWithinReason(this float val, float compareTo)
 		{
 			return val <= compareTo + EAParameters.SameFloatWithinReason
