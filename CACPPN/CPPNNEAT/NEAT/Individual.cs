@@ -1,28 +1,26 @@
 ﻿using CPPNNEAT.CPPN;
+using CPPNNEAT.EA.Base;
 
 namespace CPPNNEAT.EA
 {
-	class Individual
+	class NEATIndividual : Individual
 	{
-		public readonly int individualID;
 		public NeatGenome genome;
-		public float Fitness { get; private set; }
 
 		public CPPNetwork network;
 
-		public Individual(IDCounters IDs)
+		public NEATIndividual(IDCounters IDs) : base(IDs.IndividualID)
 		{
-			individualID = IDs.IndividualID;
 			Fitness = 0.3f;
 		}
 
-		public void Initialize(IDCounters IDs)
+		public override void Initialize(IDCounters IDs)
 		{
 			genome = new NeatGenome();
 			genome.Initialize(IDs);
 		}
 
-		public void Evaluate(PlaceHolderCARunner CARunner, int speciesCount)
+		public override void Evaluate(PlaceHolderCARunner CARunner, int speciesCount)
 		{
 			//CACase ca = new CACase(); <- static parameter type of "type of ca". doesn't matter here really.
 			/*if(network == null)

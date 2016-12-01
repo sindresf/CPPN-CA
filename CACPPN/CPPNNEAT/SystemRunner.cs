@@ -21,7 +21,7 @@ namespace CPPNNEAT
 			Console.WriteLine("CA ready to go!");
 			Thread.Sleep(50);
 			Console.WriteLine("initializing NEAT.");
-			EvolutionaryAlgorithm neat = new NEAT(ca); //takes the CA as argument
+			EvolutionaryAlgorithm neat = new Neat(ca); //takes the CA as argument
 			Thread.Sleep(100);
 			Console.WriteLine("NEAT ready!");
 			neat.InitializePopulation();

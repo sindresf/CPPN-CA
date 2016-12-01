@@ -31,7 +31,7 @@ namespace CPPNNEAT.Utils
 		{
 			float selectorValue = rand.NextFloat();
 			float lastInterval = 0.0f;
-			foreach(Tuple<float, ActivationFunctionType> tuple in EA.NEAT.ActivationFunctionChances)
+			foreach(Tuple<float, ActivationFunctionType> tuple in EA.Neat.ActivationFunctionChances)
 			{
 				if(selectorValue >= lastInterval && selectorValue < tuple.Item1)
 					return tuple.Item2;

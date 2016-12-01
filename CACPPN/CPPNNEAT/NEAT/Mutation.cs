@@ -11,7 +11,7 @@ namespace CPPNNEAT.EA
 			NeatGenome newGenome = new NeatGenome(genome);
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 			{
-				if(NEAT.random.DoMutation(type))
+				if(Neat.random.DoMutation(type))
 					newGenome = MutateOfType(type, newGenome, IDs);
 			}
 			return newGenome;
@@ -36,12 +36,12 @@ namespace CPPNNEAT.EA
 
 		private static NeatGenome AddNode(NeatGenome genome, IDCounters IDs)
 		{
-			ConnectionGene connectionToSplitt = NEAT.random.ConnectionGene(genome);
+			ConnectionGene connectionToSplitt = Neat.random.ConnectionGene(genome);
 
 			NodeGene newNode = new NodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										NodeType.Hidden,
-										NEAT.random.ActivationFunctionType());
+										Neat.random.ActivationFunctionType());
 
 			ConnectionGene firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															connectionToSplitt.fromNodeID,
@@ -53,7 +53,7 @@ namespace CPPNNEAT.EA
 															newNode.nodeID,
 															connectionToSplitt.fromNodeID,
 															true,
-															NEAT.random.NextFloat()*CPPNetworkParameters.InitialMaxConnectionWeight);
+															Neat.random.NextFloat()*CPPNetworkParameters.InitialMaxConnectionWeight);
 
 			connectionToSplitt.isEnabled = false;
 			genome.connectionGenes.Add(firstHalfGene);
@@ -65,21 +65,21 @@ namespace CPPNNEAT.EA
 		{
 			//NO RECCURENT BULLSHITT.
 			//CHECK HIS PAPER for any good explanations for this
-			NodeGene fromNode = NEAT.random.NotOutputNodeGene(genome);
-			NodeGene toNode = NEAT.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
+			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
+			NodeGene toNode = Neat.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
-														NEAT.random.InitialConnectionWeight());
+														Neat.random.InitialConnectionWeight());
 			genome.connectionGenes.Add(conGene);
 			return genome;
 		}
 
 		private static NeatGenome ChangeWeight(NeatGenome genome)
 		{
-			ConnectionGene connGene = NEAT.random.ConnectionGene(genome);
-			float newWeight = (connGene.connectionWeight + NEAT.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
+			ConnectionGene connGene = Neat.random.ConnectionGene(genome);
+			float newWeight = (connGene.connectionWeight + Neat.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
 																			- MutationChances.MutatWeightAmount).ClampWeight();
 			connGene.connectionWeight = newWeight;
 			return genome;
@@ -88,12 +88,12 @@ namespace CPPNNEAT.EA
 		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
 		{
 			//gotta be a new node with the same nodeID but new nodeGeneID
-			NEAT.random.NotInputNodeGene(genome);
+			Neat.random.NotInputNodeGene(genome);
 			//genome.nodeGenes[nodeIndex].nodeInputFunction = new CPPN.ActivationFunction(); //"get random function HERE
 			return genome;
 		}
 
-		public static NeatGenome Crossover(Individual indie1, Individual indie2)
+		public static NeatGenome Crossover(NEATIndividual indie1, NEATIndividual indie2)
 		{
 			NeatGenome genome1 = indie1.genome;
 			NeatGenome genome2 = indie2.genome;
@@ -124,7 +124,7 @@ namespace CPPNNEAT.EA
 
 			for(int i = 0; i < shortestNodeGeneList; i++)
 			{
-				if(NEAT.random.NextBoolean())
+				if(Neat.random.NextBoolean())
 					childGenome.nodeGenes.Add(genome1.nodeGenes[i]);
 				else
 					childGenome.nodeGenes.Add(genome1.nodeGenes[i]);
@@ -140,7 +140,7 @@ namespace CPPNNEAT.EA
 
 			for(int i = 0; i < shortestNodeGeneList; i++)
 			{
-				if(NEAT.random.NextBoolean())
+				if(Neat.random.NextBoolean())
 					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);
 				else
 					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);

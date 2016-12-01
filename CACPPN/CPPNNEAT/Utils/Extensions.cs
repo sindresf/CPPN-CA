@@ -20,15 +20,15 @@ namespace CPPNNEAT.Utils
 				&& val >= compareTo - EAParameters.SameFloatWithinReason;
 		}
 
-		public static float SumFitness(this List<Individual> populace)
+		public static float SumFitness(this List<NEATIndividual> populace)
 		{
 			float sum = 0.0f;
-			foreach(Individual indie in populace)
+			foreach(NEATIndividual indie in populace)
 				sum += indie.Fitness;
 			return sum;
 		}
 
-		public static bool IsLowerThanLimit(this int limit, Individual indie1, Individual indie2)
+		public static bool IsLowerThanLimit(this int limit, NEATIndividual indie1, NEATIndividual indie2)
 		{
 			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
 		}
@@ -54,7 +54,7 @@ namespace CPPNNEAT.Utils
 			return Math.Abs(gene1.connectionWeight - gene2.connectionWeight);
 		}
 
-		public static float SimilarityTo(this Individual indie1, Individual indie2)
+		public static float SimilarityTo(this NEATIndividual indie1, NEATIndividual indie2)
 		{
 			float similarity = 0.0f;
 

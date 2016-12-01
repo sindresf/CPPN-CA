@@ -1,4 +1,5 @@
 ﻿using CPPNNEAT.EA.Base;
+using CPPNNEAT.NEAT.Base;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
@@ -41,7 +42,7 @@ namespace CPPNNEAT.EA
 				nodeGenes.Add(new NodeGene(IDs.NodeGeneID,
 					i,
 					NodeType.Output,
-					NEAT.random.ActivationFunctionType()));
+					Neat.random.ActivationFunctionType()));
 		}
 
 		private void InitializeConnectionGenes(IDCounters IDs)
@@ -53,7 +54,7 @@ namespace CPPNNEAT.EA
 					gene.nodeID,
 					nodeGenes.Count - 1,
 					true,
-					NEAT.random.InitialConnectionWeight()));
+					Neat.random.InitialConnectionWeight()));
 			}
 		}
 

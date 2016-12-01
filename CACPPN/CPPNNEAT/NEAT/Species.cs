@@ -7,21 +7,21 @@ namespace CPPNNEAT.EA
 	class Species
 	{
 		public readonly int speciesID;
-		public List<Individual> populace { get; private set; }
+		public List<NEATIndividual> populace { get; private set; }
 		public float SpeciesFitness { get; private set; }
 
 		public Species(int speciesID)
 		{
 			this.speciesID = speciesID;
 			SpeciesFitness = 0.0f;
-			populace = new List<Individual>();
+			populace = new List<NEATIndividual>();
 		}
 
 		public void Initialize(IDCounters IDs)
 		{
 			for(int i = 0; i < EAParameters.PopulationSize; i++)
 			{
-				Individual indie = new Individual(IDs);
+				NEATIndividual indie = new NEATIndividual(IDs);
 				indie.Initialize(IDs);
 				populace.Add(indie);
 			}

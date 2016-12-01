@@ -5,20 +5,20 @@ using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
 {
-	class NEAT : EvolutionaryAlgorithm
+	class Neat : EvolutionaryAlgorithm
 	{
 		public Population population;
 		public IDCounters IDs;
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNetworkParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;
 
-		public NEAT(PlaceHolderCARunner ca) //to become the wrapper for the CA so NEAT can run exactly the same
+		public Neat(PlaceHolderCARunner ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
 			IDs = new IDCounters();
 			population = new Population(ca);
 		}
 
-		static NEAT()
+		static Neat()
 		{
 			if(EAParameters.IsSeededRun)
 				random = new Random(EAParameters.RandomSeed);
@@ -47,7 +47,7 @@ namespace CPPNNEAT.EA
 			float best = 0.0f;
 			foreach(Species sp in population.species)
 			{
-				foreach(Individual indie in sp.populace)
+				foreach(NEATIndividual indie in sp.populace)
 				{
 					if(indie.Fitness > best)
 						best = indie.Fitness;
