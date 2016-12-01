@@ -1,6 +1,6 @@
 ﻿namespace CPPNNEAT.EA.Base
 {
-	class NodeGeneSequence : GeneSequence<InternalNodeGene>
+	class NodeGeneSequence : GeneSequence<NodeGene>
 	{
 	}
 }

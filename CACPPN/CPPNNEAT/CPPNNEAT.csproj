@@ -52,14 +52,13 @@
     <Compile Include="NEAT\Base\GeneSequence.cs" />
     <Compile Include="NEAT\Base\Genome.cs" />
     <Compile Include="NEAT\Base\NodeGeneSequence.cs" />
-    <Compile Include="NEAT\Base\SensorNodeGene.cs" />
     <Compile Include="NEAT\NEAT.cs" />
     <Compile Include="NEAT\Mutation.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="NEAT\ConnectionGene.cs" />
     <Compile Include="NEAT\NeatGenome.cs" />
     <Compile Include="NEAT\Individual.cs" />
-    <Compile Include="NEAT\NodeGene.cs" />
+    <Compile Include="NEAT\InternalNodeGene.cs" />
     <Compile Include="NEAT\Population.cs" />
     <Compile Include="NEAT\Species.cs" />
     <Compile Include="PlaceHolderCA.cs" />

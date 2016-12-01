@@ -5,7 +5,7 @@ namespace CPPNNEAT.EA
 {
 	class NeatGenome : Genome
 	{
-		public GeneSequence<InternalNodeGene> nodeGenes { get; set; }
+		public GeneSequence<NodeGene> nodeGenes { get; set; }
 		public GeneSequence<ConnectionGene> connectionGenes { get; set; }
 
 		public NeatGenome()
@@ -17,8 +17,8 @@ namespace CPPNNEAT.EA
 		{
 			nodeGenes = new NodeGeneSequence();
 			connectionGenes = new ConnectionGeneSequence();
-			foreach(InternalNodeGene gene in copyFromGenome.nodeGenes)
-				nodeGenes.Add(new InternalNodeGene(gene));
+			foreach(NodeGene gene in copyFromGenome.nodeGenes)
+				nodeGenes.Add(new NodeGene(gene));
 			foreach(ConnectionGene gene in copyFromGenome.connectionGenes)
 				connectionGenes.Add(new ConnectionGene(gene));
 			hasMutated = false;
@@ -33,25 +33,21 @@ namespace CPPNNEAT.EA
 		private void InitilizeNodeGenes(IDCounters IDs)
 		{
 			nodeGenes = new NodeGeneSequence();
-			//add the input nodes and the output node   <- always minimal start in NEAT
-			int nodeCount = CPPNetworkParameters.CPPNetworkInputSize + CPPNetworkParameters.CPPNetworkOutputSize;
-			for(int i = 0; i < nodeCount; i++)
-				if(i == nodeCount - 1)
-					nodeGenes.Add(new InternalNodeGene(IDs.NodeGeneID,
-						i,
-						NodeType.Sensor,
-						NEAT.random.ActivationFunctionType()));
-				else
-					nodeGenes.Add(new InternalNodeGene(IDs.NodeGeneID,
-						i,
-						NodeType.Sensor,
-						NEAT.random.ActivationFunctionType())); //need input "nodes" to be empty geneID-nodeID shells
+
+			for(int i = 0; i < CPPNetworkParameters.CPPNetworkInputSize; i++)
+				nodeGenes.Add(new NodeGene(IDs.NodeGeneID, i, NodeType.Sensor, CPPN.ActivationFunctionType.AbsoluteValue));
+
+			for(int i = CPPNetworkParameters.CPPNetworkInputSize; i < CPPNetworkParameters.CPPNetworkInputSize + CPPNetworkParameters.CPPNetworkOutputSize; i++)
+				nodeGenes.Add(new NodeGene(IDs.NodeGeneID,
+					i,
+					NodeType.Output,
+					NEAT.random.ActivationFunctionType()));
 		}
 
 		private void InitializeConnectionGenes(IDCounters IDs)
 		{
 			connectionGenes = new ConnectionGeneSequence();
-			foreach(InternalNodeGene gene in nodeGenes)
+			foreach(NodeGene gene in nodeGenes)
 			{
 				connectionGenes.Add(new ConnectionGene(IDs.ConnectionGeneID,
 					gene.nodeID,

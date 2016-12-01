@@ -38,7 +38,7 @@ namespace CPPNNEAT.EA
 		{
 			ConnectionGene connectionToSplitt = NEAT.random.ConnectionGene(genome);
 
-			InternalNodeGene newNode = new InternalNodeGene(IDs.NodeGeneID,
+			NodeGene newNode = new NodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										NodeType.Hidden,
 										NEAT.random.ActivationFunctionType());
@@ -65,8 +65,8 @@ namespace CPPNNEAT.EA
 		{
 			//NO RECCURENT BULLSHITT.
 			//CHECK HIS PAPER for any good explanations for this
-			InternalNodeGene fromNode = NEAT.random.NotOutputNodeGene(genome);
-			InternalNodeGene toNode = NEAT.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
+			NodeGene fromNode = NEAT.random.NotOutputNodeGene(genome);
+			NodeGene toNode = NEAT.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
