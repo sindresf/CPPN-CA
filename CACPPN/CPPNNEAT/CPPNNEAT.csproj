@@ -58,7 +58,7 @@
     <Compile Include="Parameters.cs" />
     <Compile Include="NEAT\ConnectionGene.cs" />
     <Compile Include="NEAT\NeatGenome.cs" />
-    <Compile Include="NEAT\Individual.cs" />
+    <Compile Include="NEAT\NEATIndividual.cs" />
     <Compile Include="NEAT\NodeGene.cs" />
     <Compile Include="NEAT\Population.cs" />
     <Compile Include="NEAT\Species.cs" />

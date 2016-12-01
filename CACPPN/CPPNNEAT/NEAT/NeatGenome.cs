@@ -25,7 +25,7 @@ namespace CPPNNEAT.EA
 			hasMutated = false;
 		}
 
-		public void Initialize(IDCounters IDs)
+		public override void Initialize(IDCounters IDs)
 		{
 			InitilizeNodeGenes(IDs);
 			InitializeConnectionGenes(IDs);

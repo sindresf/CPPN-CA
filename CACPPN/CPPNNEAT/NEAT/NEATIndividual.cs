@@ -1,5 +1,6 @@
 ﻿using CPPNNEAT.CPPN;
 using CPPNNEAT.EA.Base;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
 {
@@ -18,6 +19,8 @@ namespace CPPNNEAT.EA
 		{
 			genome = new NeatGenome();
 			genome.Initialize(IDs);
+			if(Neat.random.NextBoolean(MutationChances.CreationMutationChance))
+				Mutator.Mutate(genome, IDs);
 		}
 
 		public override void Evaluate(PlaceHolderCARunner CARunner, int speciesCount)

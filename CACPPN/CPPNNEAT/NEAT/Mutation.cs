@@ -1,4 +1,5 @@
 ﻿using System;
+using CPPNNEAT.CPPN;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
@@ -85,11 +86,11 @@ namespace CPPNNEAT.EA
 			return genome;
 		}
 
-		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs) //needs to impact the species placement, cus a sinus function contra a gaussian in the same spot makes a hell of a difference!
+		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
 		{
-			//gotta be a new node with the same nodeID but new nodeGeneID
-			Neat.random.NotInputNodeGene(genome);
-			//genome.nodeGenes[nodeIndex].nodeInputFunction = new CPPN.ActivationFunction(); //"get random function HERE
+			var newType = Neat.random.ActivationFunctionType();
+			int geneIndex = Neat.random.Next(CPPNetworkParameters.CPPNetworkInputSize,CPPNetworkParameters.CPPNetworkInputSize + CPPNetworkParameters.CPPNetworkOutputSize);
+			genome.nodeGenes[geneIndex] = genome.nodeGenes[geneIndex].ChangeFunction(newType, IDs.NodeGeneID);
 			return genome;
 		}
 

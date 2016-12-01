@@ -2,6 +2,7 @@
 using System.Threading;
 using CPPNNEAT.EA;
 using CPPNNEAT.EA.Base;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT
 {

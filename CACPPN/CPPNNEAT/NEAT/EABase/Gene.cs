@@ -1,6 +1,6 @@
 ﻿namespace CPPNNEAT.EA.Base
 {
-	class Gene
+	abstract class Gene
 	{
 		public readonly int geneID;
 
