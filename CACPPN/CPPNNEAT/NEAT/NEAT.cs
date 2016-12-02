@@ -43,6 +43,7 @@ namespace CPPNNEAT.EA
 		public override void NextGeneration()
 		{
 			CurrentGeneration++;
+			//don't forget elitism for species with 5+ indies
 			population.MakeNextGeneration();
 		}
 

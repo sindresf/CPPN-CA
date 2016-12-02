@@ -16,6 +16,7 @@ namespace CPPNNEAT
 		public Parameters()
 		{
 			EA = new EAParameters(new ExampleCA());
+
 			CA = new CAParameters(NeighbourHoodSize: 3,
 									CellStateCount: 2,
 									CellWorldWidth: 20);
@@ -25,7 +26,7 @@ namespace CPPNNEAT
 
 	struct EAParameters
 	{
-		public const int PopulationSize = 200;
+		public const int PopulationSize = 150;
 		public const int MaximumRuns = 12;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public static INeatCA CAExperiment;
@@ -33,12 +34,16 @@ namespace CPPNNEAT
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;
 		public const float WeightDifferenceSimilarityWeight = 0.4f;
+		public const float SpeciesInclusionRadius = 3.0f;
+		public const int LowerChampionSpeciesCount = 5;
 		public const int SetNToOneLimit = 12;
+
+		public const float ASexualReproductionQuota = 0.25f;
 
 		public const bool IsSeededRun = true;
 		public const int RandomSeed = 42;
 
-		public const double SameFloatWithinReason = 0.01f; //should be scaled by how variant the fitness is
+		public const double SameFloatWithinReason = 0.01f;
 
 		public EAParameters(INeatCA experimentCA)
 		{
@@ -58,7 +63,7 @@ namespace CPPNNEAT
 			this.NeighbourHoodSize = NeighbourHoodSize;
 			this.CellStateCount = CellStateCount;
 			this.CellWorldWidth = CellWorldWidth;
-			this.CellWorldHeight = CellWorldWidth;
+			CellWorldHeight = CellWorldWidth;
 		}
 	}
 

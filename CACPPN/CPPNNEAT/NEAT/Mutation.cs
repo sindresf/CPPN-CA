@@ -9,10 +9,14 @@ namespace CPPNNEAT.EA
 		public const float MutatWeightAmount   = 0.1f;
 		public const double CreationMutationChance = 0.05; // <- completely out of my ass, like most of these
 
-		private const double AddNewNode          = 0.001f;
-		private const double AddNewConnection    = 0.03f;
-		private const double ChangeWeight        = 0.75f;
-		private const double ChangeNodeFunction  = 0.0005f;
+		private const double AddNewNode          = 0.03;
+		private const double AddNewConnection    = 0.05;
+		private const double ChangeNodeFunction  = 0.01;
+
+		private const double MutateWeights       = 0.8;
+		private const double MutateWeight        = 0.90;
+		private const double RandomResetWeight   = 0.1;
+		private const double DisableInheritedGene = 0.75;
 
 		public static double GetMutationChance(MutationType type)
 		{
@@ -125,7 +129,9 @@ namespace CPPNNEAT.EA
 		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
 		{
 			var newType = Neat.random.ActivationFunctionType();
-			int geneIndex = Neat.random.Next(Neat.parameters.CPPN.InputSize,Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize);
+			int geneIndex = Neat.random.Next(Neat.parameters.CPPN.InputSize,
+						Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize);
+
 			genome.nodeGenes[geneIndex] = genome.nodeGenes[geneIndex].ChangeFunction(newType, IDs.NodeGeneID);
 			return genome;
 		}

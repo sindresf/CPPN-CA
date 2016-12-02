@@ -1,5 +1,4 @@
-﻿using System;
-using CPPNNEAT.EA.Base;
+﻿using CPPNNEAT.EA.Base;
 
 namespace CPPNNEAT.EA
 {
