@@ -1,8 +1,7 @@
-﻿using CPPNNEAT.CA;
-using CPPNNEAT.NEAT.EABase;
-using CPPNNEAT.Utils;
+﻿using CPPNNEATCA.CA;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.EA.Base
+namespace CPPNNEATCA.EA.Base
 {
 	abstract class Individual
 	{
@@ -15,7 +14,7 @@ namespace CPPNNEAT.EA.Base
 		}
 
 		public abstract void Initialize(IDCounters IDs);
-		public abstract void Evaluate(IEvaluator CARunner, int speciesCount);
+		public abstract void Evaluate(INeatCA CARunner, int speciesCount);
 
 	}
 }

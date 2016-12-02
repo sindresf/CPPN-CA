@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CPPNNEAT.CA;
-using CPPNNEAT.Utils;
+using CPPNNEATCA.CA;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.EA
+namespace CPPNNEATCA.EA
 {
 	class Population
 	{

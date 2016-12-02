@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CPPNNEAT.CA.Base
+namespace CPPNNEATCA.CA.Base
 {
 	abstract class BaseNeatCA : INeatCA
 	{

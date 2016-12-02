@@ -1,4 +1,4 @@
-﻿namespace CPPNNEAT.CPPN
+﻿namespace CPPNNEATCA.CPPN.Parts
 {
 	class NetworkNode : ActivationFunction
 	{

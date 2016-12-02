@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CPPNNEAT.CPPN
+namespace CPPNNEATCA.CPPN
 {
 	interface ICPPNetwork
 	{

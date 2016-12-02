@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEAT.NEAT.EABase;
 
-namespace CPPNNEAT.CA
+namespace CPPNNEATCA.CA
 {
-	interface INeatCA : IEvaluator
+	interface INeatCA
 	{
 		//Runs the entire CA based on nothing on a CPPNs return from a list of input states
 		CAParameters GetParameters();

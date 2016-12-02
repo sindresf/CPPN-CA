@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CPPNNEAT.Utils
+namespace CPPNNEATCA.Utils
 {
 	class TupleList<T1, T2> : List<Tuple<T1, T2>>
 	{

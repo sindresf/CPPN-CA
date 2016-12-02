@@ -1,4 +1,4 @@
-﻿namespace CPPNNEAT.CA.Base
+﻿namespace CPPNNEATCA.CA.Base
 {
 	abstract class BaseOneDimentionalExperimentCA : BaseNeatCA
 	{

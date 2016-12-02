@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEAT.EA;
-using CPPNNEAT.EA.Base;
+using CPPNNEATCA.EA;
+using CPPNNEATCA.EA.Base;
 
-namespace CPPNNEAT.Utils
+namespace CPPNNEATCA.Utils
 {
 	static class Extensions
 	{

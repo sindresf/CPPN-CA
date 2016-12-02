@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading;
-using CPPNNEAT.CA;
-using CPPNNEAT.CA.Experiments;
-using CPPNNEAT.EA;
-using CPPNNEAT.EA.Base;
+using CPPNNEATCA.CA;
+using CPPNNEATCA.CA.Experiments;
+using CPPNNEATCA.EA;
+using CPPNNEATCA.EA.Base;
 
-namespace CPPNNEAT
+namespace CPPNNEATCA
 {
 	class SystemRunner
 	{

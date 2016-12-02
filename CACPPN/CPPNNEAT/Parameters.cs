@@ -1,12 +1,11 @@
 ﻿using System;
-using CPPNNEAT.CA;
-using CPPNNEAT.CA.Experiments;
-using CPPNNEAT.CPPN;
-using CPPNNEAT.Utils;
+using CPPNNEATCA.CA;
+using CPPNNEATCA.CA.Experiments;
+using CPPNNEATCA.CPPN.Parts;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT
+namespace CPPNNEATCA
 {
-
 	class Parameters
 	{
 		public EAParameters EA;

@@ -1,7 +1,7 @@
-﻿using CPPNNEAT.EA;
-using CPPNNEAT.EA.Base;
+﻿using CPPNNEATCA.EA;
+using CPPNNEATCA.EA.Base;
 
-namespace CPPNNEAT.NEAT.Base
+namespace CPPNNEATCA.NEAT.Base
 {
 	class ConnectionGeneSequence : GeneSequence<ConnectionGene>
 	{

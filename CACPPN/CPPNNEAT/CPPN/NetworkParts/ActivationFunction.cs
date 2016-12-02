@@ -1,8 +1,8 @@
 ﻿using System;
-using CPPNNEAT.EA;
-using CPPNNEAT.Utils;
+using CPPNNEATCA.EA;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.CPPN
+namespace CPPNNEATCA.CPPN.Parts
 {
 	abstract class ActivationFunction
 	{

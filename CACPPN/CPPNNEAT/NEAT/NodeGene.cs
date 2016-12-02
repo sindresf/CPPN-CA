@@ -1,8 +1,8 @@
 ﻿using System;
-using CPPNNEAT.CPPN;
-using CPPNNEAT.EA.Base;
+using CPPNNEATCA.CPPN.Parts;
+using CPPNNEATCA.EA.Base;
 
-namespace CPPNNEAT.EA
+namespace CPPNNEATCA.EA
 {
 	class NodeGene : Gene
 	{

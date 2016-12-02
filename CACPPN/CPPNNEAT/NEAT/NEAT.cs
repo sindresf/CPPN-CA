@@ -1,10 +1,10 @@
 ﻿using System;
-using CPPNNEAT.CA;
-using CPPNNEAT.CPPN;
-using CPPNNEAT.EA.Base;
-using CPPNNEAT.Utils;
+using CPPNNEATCA.CA;
+using CPPNNEATCA.CPPN.Parts;
+using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.EA
+namespace CPPNNEATCA.EA
 {
 	class Neat : EvolutionaryAlgorithm
 	{

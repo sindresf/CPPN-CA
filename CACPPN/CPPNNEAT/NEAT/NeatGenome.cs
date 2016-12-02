@@ -1,8 +1,9 @@
-﻿using CPPNNEAT.EA.Base;
-using CPPNNEAT.NEAT.Base;
-using CPPNNEAT.Utils;
+﻿using CPPNNEATCA.CPPN.Parts;
+using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT.Base;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.EA
+namespace CPPNNEATCA.EA
 {
 	class NeatGenome : Genome
 	{
@@ -36,7 +37,7 @@ namespace CPPNNEAT.EA
 			nodeGenes = new NodeGeneSequence();
 
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
-				nodeGenes.Add(new NodeGene(IDs.NodeGeneID, i, NodeType.Sensor, CPPN.ActivationFunctionType.AbsoluteValue));
+				nodeGenes.Add(new NodeGene(IDs.NodeGeneID, i, NodeType.Sensor, ActivationFunctionType.AbsoluteValue));
 
 			for(int i = Neat.parameters.CPPN.InputSize; i < Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize; i++)
 				nodeGenes.Add(new NodeGene(IDs.NodeGeneID,

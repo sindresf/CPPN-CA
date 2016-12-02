@@ -1,4 +1,4 @@
-﻿namespace CPPNNEAT.Utils
+﻿namespace CPPNNEATCA.Utils
 {
 	class IDCounters
 	{

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using CPPNNEAT.EA;
-using CPPNNEAT.Utils;
+using CPPNNEATCA.EA;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.CPPN
+namespace CPPNNEATCA.CPPN.Parts
 {
 	class CPPNetwork : ICPPNetwork //no recurrent connections as a feature, because of its "once fed forward" nature (until physics might enter)s
 	{

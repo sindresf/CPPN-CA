@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CPPNNEAT.EA;
+using CPPNNEATCA.EA;
 
-namespace CPPNNEAT.Utils
+namespace CPPNNEATCA.Utils
 {
 	class Coefficient
 	{

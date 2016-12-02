@@ -1,10 +1,10 @@
-﻿using CPPNNEAT.CA;
-using CPPNNEAT.CPPN;
-using CPPNNEAT.EA.Base;
-using CPPNNEAT.NEAT.EABase;
-using CPPNNEAT.Utils;
+﻿using CPPNNEATCA.CA;
+using CPPNNEATCA.CPPN;
+using CPPNNEATCA.CPPN.Parts;
+using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.EA
+namespace CPPNNEATCA.EA
 {
 	class NEATIndividual : Individual
 	{
@@ -25,7 +25,7 @@ namespace CPPNNEAT.EA
 				Mutator.Mutate(genome, IDs);
 		}
 
-		public override void Evaluate(IEvaluator ca, int speciesCount)
+		public override void Evaluate(INeatCA ca, int speciesCount)
 		{
 			network = new CPPNetwork(genome, Neat.parameters.CPPN);
 			Fitness *= ((INeatCA)ca).RunEvaluation(network.GetOutput);

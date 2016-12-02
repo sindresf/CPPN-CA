@@ -1,4 +1,4 @@
-﻿namespace CPPNNEAT.EA.Base
+﻿namespace CPPNNEATCA.EA.Base
 {
 	abstract class EvolutionaryAlgorithm
 	{

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEAT.CPPN;
-using CPPNNEAT.EA;
+using CPPNNEATCA.CPPN.Parts;
+using CPPNNEATCA.EA;
 
-namespace CPPNNEAT.Utils
+namespace CPPNNEATCA.Utils
 {
 	static class RandomExtensions //extension methods for the random class
 	{
@@ -38,7 +38,7 @@ namespace CPPNNEAT.Utils
 					return tuple.Item2;
 				lastInterval = tuple.Item1;
 			}
-			return CPPN.ActivationFunctionType.Linear; //this should never occur by the laws of random within 0->1 so doesn't skew the distribution
+			return CPPN.Parts.ActivationFunctionType.Linear; //this should never occur by the laws of random within 0->1 so doesn't skew the distribution
 		}
 
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEAT.CA.Base;
+using CPPNNEATCA.CA.Base;
 
-namespace CPPNNEAT.CA.Experiments
+namespace CPPNNEATCA.CA.Experiments
 {
 	class Test1DimCA : BaseOneDimentionalExperimentCA
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
-using CPPNNEAT.Utils;
+using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT.EA
+namespace CPPNNEATCA.EA
 {
 
 	struct MutationChances //check these up against standard NEAT settings
