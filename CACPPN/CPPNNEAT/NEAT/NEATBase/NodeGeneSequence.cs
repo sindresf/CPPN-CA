@@ -1,5 +1,5 @@
-﻿using CPPNNEATCA.EA;
-using CPPNNEATCA.EA.Base;
+﻿using CPPNNEATCA.NEAT;
+using CPPNNEATCA.NEAT.Base;
 
 namespace CPPNNEATCA.NEAT.Base
 {

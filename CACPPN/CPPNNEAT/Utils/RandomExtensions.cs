@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CPPNNEATCA.CPPN.Parts;
-using CPPNNEATCA.EA;
+using CPPNNEATCA.NEAT;
 
 namespace CPPNNEATCA.Utils
 {
@@ -32,7 +32,7 @@ namespace CPPNNEATCA.Utils
 		{
 			float selectorValue = rand.NextFloat();
 			float lastInterval = 0.0f;
-			foreach(Tuple<float, ActivationFunctionType> tuple in EA.Neat.ActivationFunctionChances)
+			foreach(Tuple<float, ActivationFunctionType> tuple in NEAT.Neat.ActivationFunctionChances)
 			{
 				if(selectorValue >= lastInterval && selectorValue < tuple.Item1)
 					return tuple.Item2;

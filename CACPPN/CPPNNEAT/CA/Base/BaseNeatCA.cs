@@ -7,10 +7,7 @@ namespace CPPNNEATCA.CA.Base
 	{
 		protected static CAParameters parameters;
 
-		public virtual float RunEvaluation(Func<List<float>, float> TransitionFunction)
-		{
-			return 1.0f;
-		}
+		public abstract float RunEvaluation(Func<List<float>, float> TransitionFunction);
 
 		public CAParameters GetParameters()
 		{

@@ -1,7 +1,7 @@
 ﻿using System;
 using CPPNNEATCA.Utils;
 
-namespace CPPNNEATCA.EA
+namespace CPPNNEATCA.NEAT
 {
 
 	struct MutationChances //check these up against standard NEAT settings
@@ -94,7 +94,7 @@ namespace CPPNNEATCA.EA
 															newNode.nodeID,
 															connectionToSplitt.fromNodeID,
 															true,
-															Neat.random.NextFloat()*CPPNParameters.InitialMaxConnectionWeight);
+															(float)Neat.random.NextGaussianRandom(0.0,CPPNParameters.InitialMaxConnectionWeight));
 
 			connectionToSplitt.isEnabled = false;
 			genome.connectionGenes.Add(firstHalfGene);

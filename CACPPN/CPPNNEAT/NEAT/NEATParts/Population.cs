@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
 
-namespace CPPNNEATCA.EA
+namespace CPPNNEATCA.NEAT
 {
 	class Population
 	{

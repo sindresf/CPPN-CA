@@ -14,7 +14,7 @@ namespace CPPNNEATCA
 
 		public Parameters()
 		{
-			INeatCA experiment = new Test1DimCA(); // this should be the only place you change
+			INeatCA experiment = new Test1DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
 
 			CA = experiment.GetParameters();
 			EA = new EAParameters(experiment);
@@ -28,6 +28,10 @@ namespace CPPNNEATCA
 		public const int MaximumRuns = 12;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public static INeatCA CAExperiment;
+		public EAParameters(INeatCA experimentCA)
+		{
+			CAExperiment = experimentCA;
+		}
 
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;
@@ -42,11 +46,6 @@ namespace CPPNNEATCA
 		public const int RandomSeed = 42;
 
 		public const double SameFloatWithinReason = 0.01f;
-
-		public EAParameters(INeatCA experimentCA)
-		{
-			CAExperiment = experimentCA;
-		}
 	}
 
 	struct CAParameters
@@ -67,8 +66,8 @@ namespace CPPNNEATCA
 
 	struct CPPNParameters
 	{
-		public const float InitialMaxConnectionWeight = 0.13f;
-		public const float WeightMin = -2.0f, WeightMax = 2.0f;
+		public const float InitialMaxConnectionWeight = 0.5f;
+		public const float WeightMin = -1.0f, WeightMax = 1.0f;
 
 		public int InputSize;
 		public int OutputSize;

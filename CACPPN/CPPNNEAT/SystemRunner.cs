@@ -2,8 +2,8 @@
 using System.Threading;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.CA.Experiments;
-using CPPNNEATCA.EA;
-using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT;
+using CPPNNEATCA.NEAT.Base;
 
 namespace CPPNNEATCA
 {

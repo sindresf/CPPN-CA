@@ -1,6 +1,6 @@
-﻿using CPPNNEATCA.EA.Base;
+﻿using CPPNNEATCA.NEAT.Base;
 
-namespace CPPNNEATCA.EA
+namespace CPPNNEATCA.NEAT
 {
 	class ConnectionGene : Gene
 	{

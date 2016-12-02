@@ -19,7 +19,6 @@ namespace CPPNNEATCA.CA.Experiments
 			if(seed.Length != parameters.CellWorldWidth
 			 || goal.Length != parameters.CellWorldWidth)
 				throw new FormatException("seed not compatible with experiment parameters");
-
 		}
 
 		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
@@ -27,10 +26,7 @@ namespace CPPNNEATCA.CA.Experiments
 			float[] currentValues = seed;
 			float[] futureValues = seed;
 
-
-
-
-			return base.RunEvaluation(TransitionFunction);
+			return 1.0f;
 		}
 	}
 }
