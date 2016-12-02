@@ -3,6 +3,7 @@ using CPPNNEAT.CA;
 using CPPNNEAT.CPPN;
 using CPPNNEAT.EA;
 using CPPNNEAT.Utils;
+using CACPPN.CA.Enums.Types;
 
 namespace CPPNNEAT
 {
@@ -24,13 +25,21 @@ namespace CPPNNEAT
 		public const double SameFloatWithinReason = 0.01f; //should be scaled by how variant the fitness is
 	}
 
+	struct CAParameters
+	{
+		public static int NeighbourHoodSize;
+		public static int CellStateCount;
+		public static int CellWorldWidth;
+		public static int CellWorldHeight = CellWorldWidth;
+	}
+
 	struct CPPNetworkParameters
 	{
-		public static float InitialMaxConnectionWeight = 0.13f;
-		public static float WeightMin = -2.0f, WeightMax = 2.0f;
+		public const float InitialMaxConnectionWeight = 0.13f;
+		public const float WeightMin = -2.0f, WeightMax = 2.0f;
 
-		public static int CPPNetworkInputSize = 3; //start with 1D
-		public static int CPPNetworkOutputSize = 1;
+		public static int CPPNetworkInputSize = CAParameters.NeighbourHoodSize;
+		public static int CPPNetworkOutputSize = CAParameters.CellStateCount;
 
 		private static TupleList<ActivationFunctionType,float> FunctionChances = new TupleList<ActivationFunctionType, float>
 				{	// make sure it all sums to 1.0 (100%)

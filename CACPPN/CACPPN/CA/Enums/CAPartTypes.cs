@@ -3,9 +3,7 @@
 	enum CellType
 	{
 		BOOLEAN,
-		STEP_VALUED,
-		SEMI_CONTINUOUS, //like, double step = 0.001 = 1000 states
-		CONTINUOUS // this one only for Actual continuous state space
+		STEP_VALUED
 	}
 
 	enum CellularSpaceType
