@@ -14,6 +14,11 @@ namespace CPPNNEATCA.Utils
 			else return val;
 		}
 
+		public static int NeighbourhoodRadius(this int diameter)
+		{
+			return (diameter - 1) / 2;
+		}
+
 		public static double Clamp(this double val, double min, double max)
 		{
 			if(val.CompareTo(min) < 0) return min;

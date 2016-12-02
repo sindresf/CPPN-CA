@@ -45,9 +45,14 @@
   <ItemGroup>
     <Compile Include="CA\Base\BaseOneDimentionalExperimentCA.cs" />
     <Compile Include="CA\Base\BaseTwoDimentionalExperimentCA.cs" />
+    <Compile Include="CA\Base\ICell.cs" />
     <Compile Include="CA\Experiments\Test1DimCA.cs" />
     <Compile Include="CA\INeatCA.cs" />
     <Compile Include="CA\Base\BaseNeatCA.cs" />
+    <Compile Include="CA\Base\BaseCell.cs" />
+    <Compile Include="CA\Parts\OneDimCell.cs" />
+    <Compile Include="CA\Parts\TwoDimCell.cs" />
+    <Compile Include="CA\Utils\NeighbourhoodInitializor.cs" />
     <Compile Include="CPPN\NetworkParts\ActivationFunction.cs" />
     <Compile Include="CPPN\NetworkParts\CPPNetwork.cs" />
     <Compile Include="CPPN\ICPPNetwork.cs" />
