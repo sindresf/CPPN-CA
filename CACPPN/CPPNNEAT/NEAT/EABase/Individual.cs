@@ -14,7 +14,6 @@ namespace CPPNNEATCA.EA.Base
 		}
 
 		public abstract void Initialize(IDCounters IDs);
-		public abstract void Evaluate(INeatCA CARunner, int speciesCount);
-
+		public abstract void Evaluate(int speciesCount);
 	}
 }

@@ -47,9 +47,9 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 		}
 
-		public void EvaluatePopulace(INeatCA ca)
+		public void EvaluatePopulace()
 		{
-			Parallel.ForEach(populace, indie => { indie.Evaluate(ca, populace.Count); });
+			Parallel.ForEach(populace, indie => { indie.Evaluate(populace.Count); });
 			SpeciesFitness = populace.SumFitness();
 			DiedOffCheck();
 		}

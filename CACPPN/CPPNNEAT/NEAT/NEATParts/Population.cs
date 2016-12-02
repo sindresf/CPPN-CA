@@ -50,7 +50,7 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void Evaluate()
 		{
-			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(ca); });
+			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(); });
 			CheckForDeadSpecies();
 			avgSpeciesFitness = 0.0f;
 			foreach(Species sp in species)

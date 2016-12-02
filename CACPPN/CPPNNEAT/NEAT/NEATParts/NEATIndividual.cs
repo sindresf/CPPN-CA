@@ -25,10 +25,10 @@ namespace CPPNNEATCA.NEAT.Parts
 				Mutator.Mutate(genome, IDs);
 		}
 
-		public override void Evaluate(INeatCA ca, int speciesCount)
+		public override void Evaluate(int speciesCount)
 		{
 			network = new CPPNetwork(genome, Neat.parameters.CPPN);
-			Fitness *= ((INeatCA)ca).RunEvaluation(network.GetOutput);
+			Fitness *= Neat.evaluator.RunEvaluation(network.GetOutput);
 			Fitness *= 1.24f / speciesCount;
 		}
 	}
