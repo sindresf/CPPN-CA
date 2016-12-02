@@ -1,5 +1,7 @@
-﻿using CPPNNEAT.CPPN;
+﻿using CPPNNEAT.CA;
+using CPPNNEAT.CPPN;
 using CPPNNEAT.EA.Base;
+using CPPNNEAT.NEAT.EABase;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
@@ -8,7 +10,7 @@ namespace CPPNNEAT.EA
 	{
 		public NeatGenome genome;
 
-		public CPPNetwork network;
+		public ICPPNetwork network;
 
 		public NEATIndividual(IDCounters IDs) : base(IDs.IndividualID)
 		{
@@ -23,22 +25,10 @@ namespace CPPNNEAT.EA
 				Mutator.Mutate(genome, IDs);
 		}
 
-		public override void Evaluate(Evaluator CARunner, int speciesCount)
+		public override void Evaluate(IEvaluator ca, int speciesCount)
 		{
-			//CACase ca = new CACase(); <- static parameter type of "type of ca". doesn't matter here really.
-			/*if(network == null)
-				network = new CPPNetwork(genome);
-			else
-			{
-				if(genome.hasMutated && !WasGenomeStructuralChange())
-					//correct (asexual none structural change (can be checked through gene counting))
-					network = network;
-				else
-					//time for a new network based on the old one
-					network = new CPPNetwork(genome); // so this should contain all the information needed for the new network without any loss.
-			}
-			ca.RunCA(network);
-			Fitness *= ca.GetCARunFitnessResult();*/
+			network = new CPPNetwork(genome, Neat.parameters.CPPN);
+			Fitness *= ((INeatCA)ca).RunEvaluation(network.GetOutput);
 			Fitness *= 1.24f / speciesCount;
 		}
 	}

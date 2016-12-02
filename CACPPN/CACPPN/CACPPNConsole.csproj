@@ -80,8 +80,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CA\FitnessEvaluators\" />
-    <Folder Include="CA\Interfaces\" />
     <Folder Include="Program\CPPN\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CPPNNEAT.CA;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
@@ -9,12 +10,12 @@ namespace CPPNNEAT.EA
 		public List<Species> species { get; private set; }
 		private Dictionary<int,float> SpeciesFitnessMap;
 
-		public Evaluator ca;
+		public INeatCA ca;
 		public IDCounters IDs;
 
 		private float avgSpeciesFitness;
 
-		public Population(Evaluator ca, IDCounters IDs)
+		public Population(INeatCA ca, IDCounters IDs)
 		{
 			this.ca = ca;
 			this.IDs = IDs;

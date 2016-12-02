@@ -4,7 +4,7 @@ using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.CPPN
 {
-	class CPPNetwork //no recurrent connections as a feature, because of its "once fed forward" nature (until physics might enter)s
+	class CPPNetwork : ICPPNetwork //no recurrent connections as a feature, because of its "once fed forward" nature (until physics might enter)s
 	{
 		//doesn't it say in the paper that the bias is ALWAYS one? so can just add that to any output OH YES, THE WEIGHT FOR IT
 

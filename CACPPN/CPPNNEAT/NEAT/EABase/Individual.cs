@@ -1,4 +1,6 @@
-﻿using CPPNNEAT.Utils;
+﻿using CPPNNEAT.CA;
+using CPPNNEAT.NEAT.EABase;
+using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA.Base
 {
@@ -13,7 +15,7 @@ namespace CPPNNEAT.EA.Base
 		}
 
 		public abstract void Initialize(IDCounters IDs);
-		public abstract void Evaluate(Evaluator CARunner, int speciesCount);
+		public abstract void Evaluate(IEvaluator CARunner, int speciesCount);
 
 	}
 }

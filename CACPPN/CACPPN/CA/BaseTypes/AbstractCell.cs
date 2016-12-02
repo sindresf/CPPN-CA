@@ -11,13 +11,12 @@ namespace CACPPN.CA.BaseTypes
 		protected double _currentState;
 		protected double? _futureState;
 
-		public readonly int i, j, z;
+		public readonly int i, j;
 
 		public AbstractCell(int i, int j, int z)
 		{
 			this.i = i;
 			this.j = j;
-			this.z = z;
 		}
 
 		public AbstractCell(int i, int j)

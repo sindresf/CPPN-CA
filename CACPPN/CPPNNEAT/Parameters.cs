@@ -15,11 +15,10 @@ namespace CPPNNEAT
 
 		public Parameters()
 		{
-			EA = new EAParameters(new ExampleCA());
+			INeatCA experiment = new Test1DimCA(); // this should be the only place you change
 
-			CA = new CAParameters(NeighbourHoodSize: 3,
-									CellStateCount: 2,
-									CellWorldWidth: 20);
+			CA = experiment.GetParameters();
+			EA = new EAParameters(experiment);
 			CPPN = new CPPNParameters(CA);
 		}
 	}

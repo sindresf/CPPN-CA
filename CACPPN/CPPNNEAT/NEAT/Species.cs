@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CPPNNEAT.CA;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
@@ -46,7 +47,7 @@ namespace CPPNNEAT.EA
 			}
 		}
 
-		public void EvaluatePopulace(Evaluator ca)
+		public void EvaluatePopulace(INeatCA ca)
 		{
 			Parallel.ForEach(populace, indie => { indie.Evaluate(ca, populace.Count); });
 			SpeciesFitness = populace.SumFitness();
