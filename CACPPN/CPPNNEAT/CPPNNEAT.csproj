@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CA\Experiments\ExampleCA.cs" />
+    <Compile Include="CA\INeatCA.cs" />
+    <Compile Include="CA\NeatCA.cs" />
     <Compile Include="CPPN\ActivationFunction.cs" />
     <Compile Include="CPPN\CPPNetwork.cs" />
     <Compile Include="CPPN\NetworkNode.cs" />
@@ -79,9 +82,7 @@
       <Name>CACPPNConsole</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CA\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

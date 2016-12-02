@@ -8,7 +8,7 @@ namespace CPPNNEAT.EA
 	class Neat : EvolutionaryAlgorithm
 	{
 		public Population population { get; private set; }
-		public static Evaluator evaluator = Evaluator.GetEvaluator(EAParameters.Evaluator);
+		public static Evaluator evaluator = new Evaluator(EAParameters.neatCA);
 		public IDCounters IDs;
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNetworkParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;

@@ -2,7 +2,6 @@
 using System.Threading;
 using CPPNNEAT.EA;
 using CPPNNEAT.EA.Base;
-using CPPNNEAT.Utils;
 
 namespace CPPNNEAT
 {
@@ -17,7 +16,7 @@ namespace CPPNNEAT
 		public static void MockUpRun()
 		{
 			Console.WriteLine("Creating the CA.");
-			Evaluator ca = new Evaluator(); //IT IS GONNA BE A ONELINER GOD DAMMITT!
+			Evaluator ca = new Evaluator(EAParameters.neatCA); //IT IS GONNA BE A ONELINER GOD DAMMITT!
 			Thread.Sleep(250);
 			Console.WriteLine("CA ready to go!");
 			Thread.Sleep(50);
