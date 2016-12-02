@@ -1,4 +1,6 @@
-﻿namespace CPPNNEAT.EA.Base
+﻿using CPPNNEAT.Utils;
+
+namespace CPPNNEAT.EA.Base
 {
 	abstract class Genome
 	{

@@ -70,6 +70,7 @@
     <Compile Include="SystemRunner.cs" />
     <Compile Include="Utils\Coefficient.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\IDCounters.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
     <Compile Include="Utils\TupleList.cs" />
   </ItemGroup>

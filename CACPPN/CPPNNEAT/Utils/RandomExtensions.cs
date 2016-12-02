@@ -50,11 +50,11 @@ namespace CPPNNEAT.Utils
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
 			//skips the input node genes, as nothing ever should change there
-			return genome.nodeGenes[rand.Next(CPPNetworkParameters.CPPNetworkInputSize, genome.nodeGenes.Count)];
+			return genome.nodeGenes[rand.Next(CPPNParameters.CPPNetworkInputSize, genome.nodeGenes.Count)];
 		}
 		public static NodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
-			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - CPPNetworkParameters.CPPNetworkOutputSize)];
+			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - CPPNParameters.CPPNetworkOutputSize)];
 		}
 
 		public static double NextGaussianRandom(this Random rand, double mean, double maxChange)
@@ -77,7 +77,7 @@ namespace CPPNNEAT.Utils
 
 		public static float InitialConnectionWeight(this Random rand)
 		{
-			return rand.NextFloat() * CPPNetworkParameters.InitialMaxConnectionWeight;
+			return rand.NextFloat() * CPPNParameters.InitialMaxConnectionWeight;
 		}
 	}
 }

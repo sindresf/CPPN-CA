@@ -1,9 +1,45 @@
 ﻿using System;
-using CPPNNEAT.CPPN;
 using CPPNNEAT.Utils;
 
 namespace CPPNNEAT.EA
 {
+
+	struct MutationChances //check these up against standard NEAT settings
+	{
+		public const float MutatWeightAmount   = 0.1f;
+		public const double CreationMutationChance = 0.05; // <- completely out of my ass, like most of these
+
+		private const double AddNewNode          = 0.001f;
+		private const double AddNewConnection    = 0.03f;
+		private const double ChangeWeight        = 0.75f;
+		private const double ChangeNodeFunction  = 0.0005f;
+
+		public static double GetMutationChance(MutationType type)
+		{
+			switch(type)
+			{
+			case MutationType.AddNode:
+				return AddNewNode;
+			case MutationType.AddConnection:
+				return AddNewConnection;
+			case MutationType.ChangeWeight:
+				return MutatWeightAmount;
+			case MutationType.ChangeFunction:
+				return ChangeNodeFunction;
+			default:
+				return 0.0;
+			}
+		}
+	}
+
+	enum MutationType //by ordering this you can order the mutations in case of several for the same genome
+	{// like adding a node and a connection before changing a weight might be nice, so that every weight is present.
+		AddNode,
+		AddConnection,
+		ChangeWeight,
+		ChangeFunction
+	}
+
 	class Mutator
 	{
 
@@ -54,7 +90,7 @@ namespace CPPNNEAT.EA
 															newNode.nodeID,
 															connectionToSplitt.fromNodeID,
 															true,
-															Neat.random.NextFloat()*CPPNetworkParameters.InitialMaxConnectionWeight);
+															Neat.random.NextFloat()*CPPNParameters.InitialMaxConnectionWeight);
 
 			connectionToSplitt.isEnabled = false;
 			genome.connectionGenes.Add(firstHalfGene);
@@ -89,7 +125,7 @@ namespace CPPNNEAT.EA
 		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
 		{
 			var newType = Neat.random.ActivationFunctionType();
-			int geneIndex = Neat.random.Next(CPPNetworkParameters.CPPNetworkInputSize,CPPNetworkParameters.CPPNetworkInputSize + CPPNetworkParameters.CPPNetworkOutputSize);
+			int geneIndex = Neat.random.Next(CPPNParameters.CPPNetworkInputSize,CPPNParameters.CPPNetworkInputSize + CPPNParameters.CPPNetworkOutputSize);
 			genome.nodeGenes[geneIndex] = genome.nodeGenes[geneIndex].ChangeFunction(newType, IDs.NodeGeneID);
 			return genome;
 		}
@@ -151,13 +187,5 @@ namespace CPPNNEAT.EA
 
 			return childGenome;
 		}
-	}
-
-	enum MutationType //by ordering this you can order the mutations in case of several for the same genome
-	{// like adding a node and a connection before changing a weight might be nice, so that every weight is present.
-		AddNode,
-		AddConnection,
-		ChangeWeight,
-		ChangeFunction
 	}
 }

@@ -9,8 +9,8 @@ namespace CPPNNEAT.Utils
 	{
 		public static float ClampWeight(this float val)
 		{
-			if(val.CompareTo(CPPNetworkParameters.WeightMin) < 0) return CPPNetworkParameters.WeightMin;
-			else if(val.CompareTo(CPPNetworkParameters.WeightMax) > 0) return CPPNetworkParameters.WeightMax;
+			if(val.CompareTo(CPPNParameters.WeightMin) < 0) return CPPNParameters.WeightMin;
+			else if(val.CompareTo(CPPNParameters.WeightMax) > 0) return CPPNParameters.WeightMax;
 			else return val;
 		}
 

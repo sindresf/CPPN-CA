@@ -1,12 +1,24 @@
 ﻿using System;
 using CPPNNEAT.CA;
 using CPPNNEAT.CPPN;
-using CPPNNEAT.EA;
 using CPPNNEAT.Utils;
-using CACPPN.CA.Enums.Types;
 
 namespace CPPNNEAT
 {
+
+	class Parameters
+	{
+		public EAParameters EA;
+		public CPPNParameters CPPN;
+		public CAParameters CA;
+
+		public Parameters()
+		{
+			EA = new EAParameters();
+			CPPN = new CPPNParameters();
+			CA = new CAParameters();
+		}
+	}
 	struct EAParameters
 	{
 		public const int PopulationSize = 200;
@@ -27,19 +39,19 @@ namespace CPPNNEAT
 
 	struct CAParameters
 	{
-		public static int NeighbourHoodSize;
-		public static int CellStateCount;
-		public static int CellWorldWidth;
-		public static int CellWorldHeight = CellWorldWidth;
+		public int NeighbourHoodSize;
+		public int CellStateCount;
+		public int CellWorldWidth;
+		public int CellWorldHeight;
 	}
 
-	struct CPPNetworkParameters
+	struct CPPNParameters
 	{
 		public const float InitialMaxConnectionWeight = 0.13f;
 		public const float WeightMin = -2.0f, WeightMax = 2.0f;
 
-		public static int CPPNetworkInputSize = CAParameters.NeighbourHoodSize;
-		public static int CPPNetworkOutputSize = CAParameters.CellStateCount;
+		public static int CPPNetworkInputSize;
+		public static int CPPNetworkOutputSize;
 
 		private static TupleList<ActivationFunctionType,float> FunctionChances = new TupleList<ActivationFunctionType, float>
 				{	// make sure it all sums to 1.0 (100%)
@@ -65,68 +77,5 @@ namespace CPPNNEAT
 				return intervals;
 			}
 		}
-	}
-}
-
-struct MutationChances //check these up against standard NEAT settings
-{
-	private const double AddNewNode          = 0.001f;
-	private const double AddNewConnection    = 0.03f;
-	private const double ChangeWeight        = 0.75f;
-	public const float MutatWeightAmount   = 0.1f;
-	private const double ChangeNodeFunction  = 0.0005f;
-	public const double CreationMutationChance = 0.05; // <- completely out of my ass, like most of these
-
-	public static double GetMutationChance(MutationType type)
-	{
-		switch(type)
-		{
-		case MutationType.AddNode:
-			return AddNewNode;
-		case MutationType.AddConnection:
-			return AddNewConnection;
-		case MutationType.ChangeWeight:
-			return MutatWeightAmount;
-		case MutationType.ChangeFunction:
-			return ChangeNodeFunction;
-		default:
-			return 0.0;
-		}
-	}
-}
-
-class IDCounters
-{
-	private int spID, indID, ngID, cgID;
-
-	public IDCounters()
-	{
-		SpeciesID = 0;
-		IndividualID = 0;
-		NodeGeneID = 0;
-		ConnectionGeneID = 0;
-	}
-
-	public int SpeciesID
-	{
-		get { return spID++; }
-		private set { spID = value; }
-	}
-
-	public int IndividualID
-	{
-		get { return indID++; }
-		private set { indID = value; }
-	}
-	public int NodeGeneID
-	{
-		get { return ngID++; }
-		private set { ngID = value; }
-	}
-
-	public int ConnectionGeneID
-	{
-		get { return cgID++; }
-		private set { cgID = value; }
 	}
 }
