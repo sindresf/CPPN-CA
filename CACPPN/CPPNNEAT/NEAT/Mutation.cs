@@ -125,7 +125,7 @@ namespace CPPNNEAT.EA
 		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
 		{
 			var newType = Neat.random.ActivationFunctionType();
-			int geneIndex = Neat.random.Next(CPPNParameters.CPPNetworkInputSize,CPPNParameters.CPPNetworkInputSize + CPPNParameters.CPPNetworkOutputSize);
+			int geneIndex = Neat.random.Next(Neat.parameters.CPPN.InputSize,Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize);
 			genome.nodeGenes[geneIndex] = genome.nodeGenes[geneIndex].ChangeFunction(newType, IDs.NodeGeneID);
 			return genome;
 		}

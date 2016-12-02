@@ -1,5 +1,6 @@
 ﻿using System;
 using CPPNNEAT.CA;
+using CPPNNEAT.CA.Experiments;
 using CPPNNEAT.CPPN;
 using CPPNNEAT.Utils;
 
@@ -14,17 +15,20 @@ namespace CPPNNEAT
 
 		public Parameters()
 		{
-			EA = new EAParameters();
-			CPPN = new CPPNParameters();
-			CA = new CAParameters();
+			EA = new EAParameters(new ExampleCA());
+			CA = new CAParameters(NeighbourHoodSize: 3,
+									CellStateCount: 2,
+									CellWorldWidth: 20);
+			CPPN = new CPPNParameters(CA);
 		}
 	}
+
 	struct EAParameters
 	{
 		public const int PopulationSize = 200;
 		public const int MaximumRuns = 12;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
-		public static INeatCA neatCA = new BaseNeatCA(); //needs subclasses that "are the experiment" like FloweringCA <- is a growth setup CA
+		public static INeatCA CAExperiment;
 
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;
@@ -35,6 +39,11 @@ namespace CPPNNEAT
 		public const int RandomSeed = 42;
 
 		public const double SameFloatWithinReason = 0.01f; //should be scaled by how variant the fitness is
+
+		public EAParameters(INeatCA experimentCA)
+		{
+			CAExperiment = experimentCA;
+		}
 	}
 
 	struct CAParameters
@@ -43,6 +52,14 @@ namespace CPPNNEAT
 		public int CellStateCount;
 		public int CellWorldWidth;
 		public int CellWorldHeight;
+
+		public CAParameters(int NeighbourHoodSize, int CellStateCount, int CellWorldWidth)
+		{
+			this.NeighbourHoodSize = NeighbourHoodSize;
+			this.CellStateCount = CellStateCount;
+			this.CellWorldWidth = CellWorldWidth;
+			this.CellWorldHeight = CellWorldWidth;
+		}
 	}
 
 	struct CPPNParameters
@@ -50,8 +67,14 @@ namespace CPPNNEAT
 		public const float InitialMaxConnectionWeight = 0.13f;
 		public const float WeightMin = -2.0f, WeightMax = 2.0f;
 
-		public static int CPPNetworkInputSize;
-		public static int CPPNetworkOutputSize;
+		public int InputSize;
+		public int OutputSize;
+
+		public CPPNParameters(CAParameters caParams)
+		{
+			InputSize = caParams.NeighbourHoodSize;
+			OutputSize = caParams.CellStateCount;
+		}
 
 		private static TupleList<ActivationFunctionType,float> FunctionChances = new TupleList<ActivationFunctionType, float>
 				{	// make sure it all sums to 1.0 (100%)

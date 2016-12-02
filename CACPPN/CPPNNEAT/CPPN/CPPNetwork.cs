@@ -15,8 +15,11 @@ namespace CPPNNEAT.CPPN
 
 		private Dictionary<int, float> nodeOutput; //memoizing the output as they comes. Only for hidden (output node's output is the output)
 
-		public CPPNetwork(NeatGenome genome)
+		private CPPNParameters parameters;
+
+		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
+			this.parameters = parameters;
 			nodeOutput = new Dictionary<int, float>();
 			SetupNodeList(genome);
 			SetupConnectionMatrix(genome);
@@ -24,7 +27,7 @@ namespace CPPNNEAT.CPPN
 
 		private void SetupNodeList(NeatGenome genome) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
-			int hiddenNodes = genome.nodeGenes.Count - CPPNParameters.CPPNetworkInputSize - CPPNParameters.CPPNetworkOutputSize;
+			int hiddenNodes = genome.nodeGenes.Count - parameters.InputSize - parameters.OutputSize;
 			if(hiddenNodes >= 1)
 			{
 				this.hiddenNodes = new NetworkNode[genome.nodeGenes.Count]; //just - the input and output count to get hidden? yeaa...
@@ -38,7 +41,7 @@ namespace CPPNNEAT.CPPN
 						this.hiddenNodes[i].nodeID = genome.nodeGenes[i].nodeID;
 						break;
 					case NodeType.Output:
-						if(CPPNParameters.CPPNetworkOutputSize == 1)
+						if(parameters.OutputSize == 1)
 						{
 							outputNode = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
 							outputNode.nodeID = genome.nodeGenes[i].nodeID;
@@ -49,8 +52,8 @@ namespace CPPNNEAT.CPPN
 			} else
 			{ // so this is how it is in the beginning
 				this.hiddenNodes = new NetworkNode[0];
-				outputNode = genome.nodeGenes[CPPNParameters.CPPNetworkInputSize].nodeInputFunction as NetworkNode;
-				outputNode.nodeID = genome.nodeGenes[CPPNParameters.CPPNetworkInputSize].nodeID;
+				outputNode = genome.nodeGenes[parameters.InputSize].nodeInputFunction as NetworkNode;
+				outputNode.nodeID = genome.nodeGenes[parameters.InputSize].nodeID;
 			}
 		}
 

@@ -50,11 +50,11 @@ namespace CPPNNEAT.Utils
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
 			//skips the input node genes, as nothing ever should change there
-			return genome.nodeGenes[rand.Next(CPPNParameters.CPPNetworkInputSize, genome.nodeGenes.Count)];
+			return genome.nodeGenes[rand.Next(Neat.parameters.CPPN.InputSize, genome.nodeGenes.Count)];
 		}
 		public static NodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
-			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - CPPNParameters.CPPNetworkOutputSize)];
+			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - Neat.parameters.CPPN.InputSize)];
 		}
 
 		public static double NextGaussianRandom(this Random rand, double mean, double maxChange)

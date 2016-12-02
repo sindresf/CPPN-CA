@@ -8,14 +8,17 @@ namespace CPPNNEAT.EA
 	class Neat : EvolutionaryAlgorithm
 	{
 		public Population population { get; private set; }
-		public static Evaluator evaluator = new Evaluator(EAParameters.neatCA);
+		public static Evaluator evaluator;
 		public IDCounters IDs;
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;
+		public static Parameters parameters;
 
 		public Neat(Evaluator ca) //to become the wrapper for the CA so NEAT can run exactly the same
 		{
 			IDs = new IDCounters();
+			parameters = new Parameters();
+			evaluator = new Evaluator(null);
 			population = new Population(ca, IDs);
 		}
 

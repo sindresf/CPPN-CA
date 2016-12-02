@@ -35,10 +35,10 @@ namespace CPPNNEAT.EA
 		{
 			nodeGenes = new NodeGeneSequence();
 
-			for(int i = 0; i < CPPNParameters.CPPNetworkInputSize; i++)
+			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
 				nodeGenes.Add(new NodeGene(IDs.NodeGeneID, i, NodeType.Sensor, CPPN.ActivationFunctionType.AbsoluteValue));
 
-			for(int i = CPPNParameters.CPPNetworkInputSize; i < CPPNParameters.CPPNetworkInputSize + CPPNParameters.CPPNetworkOutputSize; i++)
+			for(int i = Neat.parameters.CPPN.InputSize; i < Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize; i++)
 				nodeGenes.Add(new NodeGene(IDs.NodeGeneID,
 					i,
 					NodeType.Output,
