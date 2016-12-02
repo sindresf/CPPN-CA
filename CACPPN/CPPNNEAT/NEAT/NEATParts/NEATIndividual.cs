@@ -1,10 +1,10 @@
 ﻿using CPPNNEATCA.CA;
 using CPPNNEATCA.CPPN;
 using CPPNNEATCA.CPPN.Parts;
-using CPPNNEATCA.NEAT.Base;
+using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.Utils;
 
-namespace CPPNNEATCA.NEAT
+namespace CPPNNEATCA.NEAT.Parts
 {
 	class NEATIndividual : Individual
 	{

@@ -1,6 +1,6 @@
 ﻿using CPPNNEATCA.Utils;
 
-namespace CPPNNEATCA.NEAT.Base
+namespace CPPNNEATCA.EA.Base
 {
 	abstract class Genome
 	{

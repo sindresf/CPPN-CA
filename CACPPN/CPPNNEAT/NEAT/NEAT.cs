@@ -1,7 +1,8 @@
 ﻿using System;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.CPPN.Parts;
-using CPPNNEATCA.NEAT.Base;
+using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT.Parts;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT

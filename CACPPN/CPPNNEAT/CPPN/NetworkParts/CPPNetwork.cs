@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CPPNNEATCA.NEAT;
+using CPPNNEATCA.NEAT.Parts;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CPPN.Parts

@@ -1,9 +1,7 @@
-﻿using CPPNNEATCA.NEAT;
-using CPPNNEATCA.NEAT.Base;
+﻿using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT.Parts;
 
 namespace CPPNNEATCA.NEAT.Base
 {
-	class NodeGeneSequence : GeneSequence<NodeGene>
-	{
-	}
+	class NodeGeneSequence : GeneSequence<NodeGene> { }
 }

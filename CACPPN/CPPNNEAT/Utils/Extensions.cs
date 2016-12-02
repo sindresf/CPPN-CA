@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEATCA.NEAT;
-using CPPNNEATCA.NEAT.Base;
+using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT.Parts;
 
 namespace CPPNNEATCA.Utils
 {
