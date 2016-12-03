@@ -21,33 +21,13 @@ namespace CPPNNEAT.CA.Utils
 
 			bool safeCell = VertMidCell && HoriMidCell;
 
-			if(safeCell)
-				Safe2DInitialize(cell, cells, neighbourhoodWidth);
-			else if(VertMidCell)
-			{
-				if(upperCell)
-					Upper2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-				else if(lowerCell)
-					Lower2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-			} else if(HoriMidCell)
-			{
-				if(leftCell)
-					Left2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-				else if(rightCell)
-					Right2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-			} else
-			{
-				bool URCell = upperCell && rightCell;
-				bool LRCell = rightCell && lowerCell;
-				bool LLCell = lowerCell && leftCell;
-				bool ULCell = leftCell && upperCell;
+			if(safeCell) Safe2DInitialize(cell, cells, neighbourhoodWidth);
 
-				if(URCell) UpperRight2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-				if(LRCell) LowerRight2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-				if(LLCell) LowerLeft2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-				if(ULCell) UpperLeft2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
-			}
+			else if(VertMidCell) InitializeVerticalMiddle(cell, cells, neighbourhoodWidth, cellBoardSize, upperCell, lowerCell);
 
+			else if(HoriMidCell) InitializeHorizontalMiddle(cell, cells, neighbourhoodWidth, cellBoardSize, rightCell, leftCell);
+
+			else InitializeCornerCell(cell, cells, neighbourhoodWidth, cellBoardSize, upperCell, rightCell, lowerCell, leftCell);
 		}
 		private static void Safe2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth)
 		{
@@ -70,14 +50,22 @@ namespace CPPNNEAT.CA.Utils
 			}
 			cell.Neighbourhood = neighbourhood;
 		}
+
+		private static void InitializeVerticalMiddle(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize, bool upperCell, bool lowerCell)
+		{
+			if(upperCell)
+				Upper2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+			else if(lowerCell)
+				Lower2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+		}
 		private static void Upper2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
-			int i = cell.x;
-			int j = cell.y;
+			int i = cell.y;
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 1, i]);
-			neighbourhood.Add(cells[0, i + 1]); //remember this! :O
+			neighbourhood.Add(cells[0, i + 1]);
+			neighbourhood.Add(cells[0, i]);
 			neighbourhood.Add(cells[1, i]);
 			neighbourhood.Add(cells[0, i - 1]);
 			//width == 2
@@ -90,15 +78,42 @@ namespace CPPNNEAT.CA.Utils
 			}
 			cell.Neighbourhood = neighbourhood;
 		}
+		private static void Lower2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
+		{
+			List<ICell> neighbourhood = new List<ICell>();
+			int i = cell.y;
+			//width == 1
+			neighbourhood.Add(cells[cellBoardSize - 2, i]);
+			neighbourhood.Add(cells[cellBoardSize - 1, i + 1]);
+			neighbourhood.Add(cells[cellBoardSize - 1, i]);
+			neighbourhood.Add(cells[0, i]);
+			neighbourhood.Add(cells[cellBoardSize - 1, i - 1]);
+			//width == 2
+			if(neighbourhoodWidth >= 2)
+			{
+				neighbourhood.Add(cells[cellBoardSize - 2, i - 1]);
+				neighbourhood.Add(cells[cellBoardSize - 2, i + 1]);
+				neighbourhood.Add(cells[0, i + 1]);
+				neighbourhood.Add(cells[0, i - 1]);
+			}
+			cell.Neighbourhood = neighbourhood;
+		}
+
+		private static void InitializeHorizontalMiddle(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize, bool rightCell, bool leftCell)
+		{
+			if(leftCell)
+				Left2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+			else if(rightCell)
+				Right2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+		}
 		private static void Right2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
 			int i = cell.x;
-			int j = cell.y;
 			//width == 1
 			neighbourhood.Add(cells[i - 1, cellBoardSize - 1]);
 			neighbourhood.Add(cells[i, 0]);
-			neighbourhood.Add(cells[i, j]);
+			neighbourhood.Add(cells[i, cellBoardSize - 1]);
 			neighbourhood.Add(cells[i + 1, cellBoardSize - 1]);
 			neighbourhood.Add(cells[i, cellBoardSize - 2]);
 			//width == 2
@@ -111,70 +126,114 @@ namespace CPPNNEAT.CA.Utils
 			}
 			cell.Neighbourhood = neighbourhood;
 		}
-		private static void Lower2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
-		{
-			List<ICell> neighbourhood = new List<ICell>();
-			int i = cell.x;
-			int j = cell.y;
-			//width == 1
-
-			//width == 2
-
-			cell.Neighbourhood = neighbourhood;
-		}
 		private static void Left2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
 			int i = cell.x;
-			int j = cell.y;
 			//width == 1
-
+			neighbourhood.Add(cells[i - 1, 0]);
+			neighbourhood.Add(cells[i, 1]);
+			neighbourhood.Add(cells[i, 0]);
+			neighbourhood.Add(cells[i + 1, 0]);
+			neighbourhood.Add(cells[i, cellBoardSize - 1]);
 			//width == 2
-
+			if(neighbourhoodWidth >= 2)
+			{
+				neighbourhood.Add(cells[i - 1, cellBoardSize - 1]);
+				neighbourhood.Add(cells[i - 1, 1]);
+				neighbourhood.Add(cells[i + 1, cellBoardSize - 1]);
+				neighbourhood.Add(cells[i + 1, 1]);
+			}
 			cell.Neighbourhood = neighbourhood;
+		}
+
+
+		private static void InitializeCornerCell(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize, bool upperCell, bool rightCell, bool lowerCell, bool leftCell)
+		{
+			bool URCell = upperCell && rightCell;
+			bool LRCell = rightCell && lowerCell;
+			bool LLCell = lowerCell && leftCell;
+			bool ULCell = leftCell && upperCell;
+
+			if(URCell) UpperRight2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+			if(LRCell) LowerRight2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+			if(LLCell) LowerLeft2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
+			if(ULCell) UpperLeft2DInitialize(cell, cells, neighbourhoodWidth, cellBoardSize);
 		}
 		private static void UpperRight2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
-			int i = cell.x;
-			int j = cell.y;
 			//width == 1
-
+			neighbourhood.Add(cells[cellBoardSize - 1, cellBoardSize - 1]);
+			neighbourhood.Add(cells[0, 0]);
+			neighbourhood.Add(cells[0, cellBoardSize - 1]);
+			neighbourhood.Add(cells[1, cellBoardSize - 1]);
+			neighbourhood.Add(cells[0, cellBoardSize - 2]);
 			//width == 2
-
+			if(neighbourhoodWidth >= 2)
+			{
+				neighbourhood.Add(cells[cellBoardSize - 1, cellBoardSize - 2]);
+				neighbourhood.Add(cells[cellBoardSize - 1, 0]);
+				neighbourhood.Add(cells[1, 0]);
+				neighbourhood.Add(cells[1, cellBoardSize - 2]);
+			}
 			cell.Neighbourhood = neighbourhood;
 		}
 		private static void LowerRight2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
-			int i = cell.x;
-			int j = cell.y;
 			//width == 1
-
+			neighbourhood.Add(cells[cellBoardSize - 2, cellBoardSize - 1]);
+			neighbourhood.Add(cells[cellBoardSize - 1, 0]);
+			neighbourhood.Add(cells[cellBoardSize - 1, cellBoardSize - 1]);
+			neighbourhood.Add(cells[0, cellBoardSize - 1]);
+			neighbourhood.Add(cells[cellBoardSize - 1, cellBoardSize - 2]);
 			//width == 2
-
+			if(neighbourhoodWidth >= 2)
+			{
+				neighbourhood.Add(cells[cellBoardSize - 2, cellBoardSize - 2]);
+				neighbourhood.Add(cells[cellBoardSize - 2, 0]);
+				neighbourhood.Add(cells[0, 0]);
+				neighbourhood.Add(cells[0, cellBoardSize - 2]);
+			}
 			cell.Neighbourhood = neighbourhood;
 		}
 		private static void LowerLeft2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
-			int i = cell.x;
-			int j = cell.y;
 			//width == 1
-
+			neighbourhood.Add(cells[cellBoardSize - 2, 0]);
+			neighbourhood.Add(cells[cellBoardSize - 1, 1]);
+			neighbourhood.Add(cells[cellBoardSize - 1, 0]);
+			neighbourhood.Add(cells[0, 0]);
+			neighbourhood.Add(cells[cellBoardSize - 1, cellBoardSize - 1]);
 			//width == 2
-
+			if(neighbourhoodWidth >= 2)
+			{
+				neighbourhood.Add(cells[cellBoardSize - 2, cellBoardSize - 1]);
+				neighbourhood.Add(cells[cellBoardSize - 2, 1]);
+				neighbourhood.Add(cells[0, 1]);
+				neighbourhood.Add(cells[0, cellBoardSize - 1]);
+			}
 			cell.Neighbourhood = neighbourhood;
 		}
 		private static void UpperLeft2DInitialize(TwoDimCell cell, ICell[,] cells, int neighbourhoodWidth, int cellBoardSize)
 		{
 			List<ICell> neighbourhood = new List<ICell>();
-			int i = cell.x;
-			int j = cell.y;
 			//width == 1
-
+			neighbourhood.Add(cells[cellBoardSize - 1, 0]);
+			neighbourhood.Add(cells[0, 1]);
+			neighbourhood.Add(cells[0, 0]);
+			neighbourhood.Add(cells[1, 0]);
+			neighbourhood.Add(cells[0, cellBoardSize - 1]);
 			//width == 2
-
+			if(neighbourhoodWidth >= 2)
+			{
+				neighbourhood.Add(cells[cellBoardSize - 1, cellBoardSize - 1]);
+				neighbourhood.Add(cells[cellBoardSize - 1, 1]);
+				neighbourhood.Add(cells[1, 1]);
+				neighbourhood.Add(cells[1, cellBoardSize - 1]);
+			}
 			cell.Neighbourhood = neighbourhood;
 		}
 	}
