@@ -18,6 +18,8 @@ namespace CPPNNEATCA.CA.Experiments
 										  CellWorldWidth: 10,
 										  MaxGeneration: 15);
 
+			MakeStates(parameters.CellStateCount);
+
 			seed = new float[] { 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 };
 			goal = new float[] { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
 
@@ -48,7 +50,7 @@ namespace CPPNNEATCA.CA.Experiments
 				Console.WriteLine(i);
 				Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
 			   {
-				   futureValues[cell.x] = TransitionFunction(cell.GetNeighbourhoodCurrentState());
+				   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState()));
 			   });
 				currentScore = CurrentVSGoalDifference(futureValues);
 				if(IsDeadSpace(futureValues))

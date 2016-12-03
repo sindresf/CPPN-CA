@@ -1,5 +1,4 @@
-﻿using System;
-using CPPNNEAT.CA.Base;
+﻿using CPPNNEAT.CA.Base;
 using CPPNNEAT.CA.Base.Interface;
 using CPPNNEAT.CA.Utils;
 
@@ -8,15 +7,13 @@ namespace CPPNNEAT.CA.Parts
 	class TwoDimCell : BaseCell
 	{
 		public readonly int y;
-		private readonly float[,] cellBoard;
+		private float[,] cellBoard;
 		private readonly ICell[,] cells;
 
-		public TwoDimCell(int x, int y, float[,] cellBoard, ICell[,] cells, int neighbourhoodSize) : base(x, neighbourhoodSize)
+		public TwoDimCell(int x, int y, ICell[,] cells, int neighbourhoodSize) : base(x, neighbourhoodSize)
 		{
 			this.y = y;
-			this.cellBoard = cellBoard;
 			this.cells = cells;
-			InitializeNeighbourhood();
 		}
 
 		public override float GetState()
@@ -24,9 +21,14 @@ namespace CPPNNEAT.CA.Parts
 			return cellBoard[x, y];
 		}
 
-		protected override void InitializeNeighbourhood()
+		public void ReferenceCurrentCellStates(float[,] currentCellStates)
 		{
-			NeighbourhoodInitializor.InitializeNeighbourhood2D(this, cells, cellBoard.Length);
+			cellBoard = currentCellStates;
+		}
+
+		public override void InitializeNeighbourhood()
+		{
+			NeighbourhoodInitializor.InitializeNeighbourhood2D(this, cells);
 		}
 	}
 }
