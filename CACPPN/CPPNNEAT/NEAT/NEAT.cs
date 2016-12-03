@@ -10,7 +10,7 @@ namespace CPPNNEATCA.NEAT
 	class Neat : EvolutionaryAlgorithm
 	{
 		public Population population { get; private set; }
-		public static Parameters parameters;
+		public static Parameters parameters = new Parameters();
 		public static INeatCA evaluator;
 		public IDCounters IDs;
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNParameters.ActivationFunctionChanceIntervals;
@@ -19,7 +19,6 @@ namespace CPPNNEATCA.NEAT
 		public Neat() //to become the wrapper for the CA so NEAT can run exactly the same
 		{
 			IDs = new IDCounters();
-			parameters = new Parameters();
 			evaluator = parameters.experiment;
 			population = new Population(evaluator, IDs);
 		}
@@ -52,12 +51,16 @@ namespace CPPNNEATCA.NEAT
 		public override float GetBestFitness()
 		{
 			float best = 0.0f;
+			int bestID = 0;
 			foreach(Species sp in population.species)
 			{
 				foreach(NEATIndividual indie in sp.populace)
 				{
 					if(indie.Fitness > best)
+					{
 						best = indie.Fitness;
+						bestID = indie.individualID;
+					}
 				}
 			}
 			return best;

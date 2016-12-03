@@ -24,10 +24,11 @@ namespace CPPNNEATCA
 
 	struct EAParameters
 	{
-		public const int PopulationSize = 150;
-		public const int MaximumRuns = 12;
+		public const int PopulationSize = 120;
+		public const int MaximumRuns = 100;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public static INeatCA CAExperiment;
+
 		public EAParameters(INeatCA experimentCA)
 		{
 			CAExperiment = experimentCA;
@@ -45,7 +46,7 @@ namespace CPPNNEATCA
 		public const bool IsSeededRun = true;
 		public const int RandomSeed = 42;
 
-		public const double SameFloatWithinReason = 0.01f;
+		public const double SameFloatWithinReason = 0.0001f;
 	}
 
 	struct CAParameters

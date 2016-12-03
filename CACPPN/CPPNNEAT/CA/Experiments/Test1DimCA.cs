@@ -15,13 +15,15 @@ namespace CPPNNEATCA.CA.Experiments
 		{ //needs to setup everything that needs to be (and can be) exactly the same per individual
 			parameters = new CAParameters(NeighbourHoodSize: 3,
 										  CellStateCount: 2,
-										  CellWorldWidth: 10,
-										  MaxGeneration: 15);
+										  CellWorldWidth: 5,
+										  MaxGeneration: 4);
 
 			MakeStates(parameters.CellStateCount);
 
-			seed = new float[] { 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 };
-			goal = new float[] { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
+			//seed = new float[] { 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 };
+			//goal = new float[] { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
+			seed = new float[] { 0, 0, 1, 0, 0 };
+			goal = new float[] { 0, 1, 1, 1, 0 };
 
 			if(seed.Length != parameters.CellWorldWidth
 			 || goal.Length != parameters.CellWorldWidth)
@@ -42,27 +44,19 @@ namespace CPPNNEATCA.CA.Experiments
 			foreach(OneDimCell cell in cells)
 				cell.ReferenceCurrentCellStates(currentValues);
 
-			Console.WriteLine("Running CA generation:");
 			float bestStateScore = 2.0f*parameters.CellWorldWidth;
 			float currentScore = 0.0f;
 			for(int i = 0; i < parameters.MaxGeneration; i++)
 			{
-				Console.WriteLine(i);
 				Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
 			   {
 				   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState()));
 			   });
 				currentScore = CurrentVSGoalDifference(futureValues);
 				if(IsDeadSpace(futureValues))
-				{
-					Console.WriteLine("dead space.");
-					break;
-				}
+					return 1337;
 				if(currentScore.SameWithinReason(0.0f))
-				{
-					Console.WriteLine("Success!");
 					break;
-				}
 				PushBack(futureValues, currentValues);
 			}
 			return bestStateScore;
@@ -79,7 +73,7 @@ namespace CPPNNEATCA.CA.Experiments
 		{
 			float diff = 0.0f;
 			for(int i = 0; i < parameters.CellWorldWidth; i++)
-				diff += goal[i] - current[i];
+				diff += Math.Abs(goal[i] - current[i]);
 			return diff;
 		}
 

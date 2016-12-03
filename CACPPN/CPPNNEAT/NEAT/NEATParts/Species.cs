@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts

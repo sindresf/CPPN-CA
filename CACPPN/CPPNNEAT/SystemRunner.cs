@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
-using CPPNNEATCA.CA;
 using CPPNNEATCA.CA.Experiments;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
@@ -19,6 +19,7 @@ namespace CPPNNEATCA
 		{
 			Console.WriteLine("initializing NEAT.");
 			EvolutionaryAlgorithm neat = new Neat(); //takes the CA as argument
+			Test1DimCA ca = Neat.evaluator as Test1DimCA;
 			Thread.Sleep(100);
 			Console.WriteLine("NEAT ready!");
 			neat.InitializePopulation();
@@ -30,14 +31,22 @@ namespace CPPNNEATCA
 			Console.WriteLine("All ready!");
 			Thread.Sleep(50);
 			Console.WriteLine("Starting evolutionary cycle!");
-			Console.WriteLine("Maximum cycles set to {0}", EAParameters.MaximumRuns);
+			Stopwatch timePieceTotal = new Stopwatch();
+			Stopwatch timePiecePerRun = new Stopwatch();
+			timePieceTotal.Start();
+			double runAvg = 0.0;
 			for(int i = 0; i < EAParameters.MaximumRuns; i++)
 			{
-				Console.Write("."); //some form of interrupt could be nice if it is to run "all day"
+				timePiecePerRun.Start();
 				neat.EvaluatePopulation();
 				//what's MISSING more than the rest is the MakingLoveMachine
-				Thread.Sleep(30);
+				timePiecePerRun.Stop();
+				runAvg += timePiecePerRun.ElapsedTicks;
 			}
+			runAvg /= EAParameters.MaximumRuns;
+			timePieceTotal.Stop();
+			Console.WriteLine("the runs took: {0} ms on average", runAvg);
+			Console.WriteLine("they took: {0} ms total", timePieceTotal.ElapsedTicks);
 			Console.Write("\nDone\n");
 			Console.Write("best fitness: {0}\n", neat.GetBestFitness()); //not exaclty how i want it to work but..
 			Console.WriteLine("finishing up.");
