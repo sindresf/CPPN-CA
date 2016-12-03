@@ -1,4 +1,5 @@
-﻿using CPPNNEATCA.CA;
+﻿using System;
+using CPPNNEATCA.CA;
 using CPPNNEATCA.CPPN;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;

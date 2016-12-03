@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.NEAT.Parts;
 using CPPNNEATCA.Utils;
 
@@ -27,7 +28,7 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		private void SetupNodeList(NeatGenome genome) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
-			int hiddenNodes = genome.nodeGenes.Count - parameters.InputSize - parameters.OutputSize;
+			int hiddenNodes = (genome.nodeGenes.Count - parameters.InputSize - parameters.OutputSize);
 			if(hiddenNodes >= 1)
 			{
 				this.hiddenNodes = new NetworkNode[genome.nodeGenes.Count]; //just - the input and output count to get hidden? yeaa...
@@ -52,6 +53,8 @@ namespace CPPNNEATCA.CPPN.Parts
 			} else
 			{ // so this is how it is in the beginning
 				this.hiddenNodes = new NetworkNode[0];
+
+				Console.Write(genome.nodeGenes[parameters.InputSize].nodeInputFunction);// SENSOR NODE TYPE RETURNS NULL!!!! :O :'(
 				outputNode = genome.nodeGenes[parameters.InputSize].nodeInputFunction as NetworkNode;
 				outputNode.nodeID = genome.nodeGenes[parameters.InputSize].nodeID;
 			}
@@ -75,6 +78,7 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		public float GetOutput(List<float> input) // represents the entirety of the input nodes
 		{
+			return 0.4f;/*
 			if(hiddenNodes.Length == 0)
 			{// means straight up input to output
 			 //for each input get the weight to make the tupleList
@@ -98,7 +102,7 @@ namespace CPPNNEATCA.CPPN.Parts
 				if(outputNode != null)
 					return outputNode.GetOutput(outputs); //this is the ActivationFunction GetOutput function!
 			}
-			return 0.0f;
+			return 0.0f;*/
 		}
 	}
 }

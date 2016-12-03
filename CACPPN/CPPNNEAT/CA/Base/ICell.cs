@@ -6,5 +6,6 @@ namespace CPPNNEAT.CA.Base.Interface
 	{
 		float GetState();
 		List<float> GetNeighbourhoodCurrentState(); //CPPN input list
+		void InitializeNeighbourhood();
 	}
 }

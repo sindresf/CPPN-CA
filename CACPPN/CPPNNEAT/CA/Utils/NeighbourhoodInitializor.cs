@@ -6,7 +6,7 @@ namespace CPPNNEAT.CA.Utils
 {
 	static class NeighbourhoodInitializor
 	{
-		public static void InitializeNeighbourhood1D(BaseCell cell, ICell[] cells)	
+		public static void InitializeNeighbourhood1D(BaseCell cell, ICell[] cells)
 		{
 			NeighbourhoodInitializer1D.InitializeNeighbourhood(cell, cells, cells.Length);
 		}

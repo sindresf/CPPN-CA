@@ -17,13 +17,8 @@ namespace CPPNNEATCA
 
 		public static void MockUpRun()
 		{
-			Console.WriteLine("Creating the CA.");
-			INeatCA ca = new Test1DimCA(); //IT IS GONNA BE A ONELINER GOD DAMMITT!
-			Thread.Sleep(250);
-			Console.WriteLine("CA ready to go!");
-			Thread.Sleep(50);
 			Console.WriteLine("initializing NEAT.");
-			EvolutionaryAlgorithm neat = new Neat(ca); //takes the CA as argument
+			EvolutionaryAlgorithm neat = new Neat(); //takes the CA as argument
 			Thread.Sleep(100);
 			Console.WriteLine("NEAT ready!");
 			neat.InitializePopulation();

@@ -8,14 +8,14 @@ namespace CPPNNEATCA
 {
 	class Parameters
 	{
-		public EAParameters EA;
-		public CPPNParameters CPPN;
-		public CAParameters CA;
+		public readonly EAParameters EA;
+		public readonly CPPNParameters CPPN;
+		public readonly CAParameters CA;
+		public INeatCA experiment;
 
 		public Parameters()
 		{
-			INeatCA experiment = new Test1DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
-
+			experiment = new Test1DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
 			CA = experiment.GetParameters();
 			EA = new EAParameters(experiment);
 			CPPN = new CPPNParameters(CA);

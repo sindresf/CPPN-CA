@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
@@ -14,6 +15,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		public IDCounters IDs;
 
 		private float avgSpeciesFitness;
+		private static object _lock;
 
 		public Population(INeatCA ca, IDCounters IDs)
 		{
@@ -71,11 +73,6 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void MakeNextGeneration()
 		{
-			/*int indieSpotsLeft = EAParameters.PopulationSize;
-			foreach(Species sp in species)
-			{
-				int allowedSpaceForSpecies = CalculateSpeciesAllowedPopulaceCount(species);
-			}*/
 			Parallel.ForEach(species, (Species species) =>
 			{
 				species.MakeNextGeneration(CalculateSpeciesAllowedPopulaceCount(species), IDs);
