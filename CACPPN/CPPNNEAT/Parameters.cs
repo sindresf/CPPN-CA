@@ -54,13 +54,15 @@ namespace CPPNNEATCA
 		public int CellStateCount;
 		public int CellWorldWidth;
 		public int CellWorldHeight;
+		public int MaxGeneration;
 
-		public CAParameters(int NeighbourHoodSize, int CellStateCount, int CellWorldWidth)
+		public CAParameters(int NeighbourHoodSize, int CellStateCount, int CellWorldWidth, int MaxGeneration)
 		{
 			this.NeighbourHoodSize = NeighbourHoodSize;
 			this.CellStateCount = CellStateCount;
 			this.CellWorldWidth = CellWorldWidth;
 			CellWorldHeight = CellWorldWidth;
+			this.MaxGeneration = MaxGeneration;
 		}
 	}
 

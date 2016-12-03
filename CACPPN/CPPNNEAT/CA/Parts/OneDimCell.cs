@@ -1,5 +1,4 @@
-﻿using System;
-using CPPNNEAT.CA.Base;
+﻿using CPPNNEAT.CA.Base;
 using CPPNNEAT.CA.Base.Interface;
 using CPPNNEAT.CA.Utils;
 
@@ -7,13 +6,12 @@ namespace CPPNNEAT.CA.Parts
 {
 	class OneDimCell : BaseCell
 	{
-		private readonly float[] cellBoard; //as a reference can the CA change this between checks and it works because There it is not "readonly"?
+		private float[] cellBoard;
 		private readonly ICell[] cells;
 
-		public OneDimCell(int x, float[] cellBoard, ICell[] cells, int neighbourhoodSize) : base(x, neighbourhoodSize)
+		public OneDimCell(int x, ICell[] cells, int neighbourhoodSize) : base(x, neighbourhoodSize)
 		{
-			this.cellBoard = cellBoard;
-			InitializeNeighbourhood();
+			this.cells = cells;
 		}
 
 		public override float GetState()
@@ -21,9 +19,14 @@ namespace CPPNNEAT.CA.Parts
 			return cellBoard[x];
 		}
 
-		protected override void InitializeNeighbourhood()
+		public void ReferenceCurrentCellStates(float[] currentCellStates)
 		{
-			NeighbourhoodInitializor.InitializeNeighbourhood1D(this, cells, cellBoard.Length);
+			cellBoard = currentCellStates;
+		}
+
+		public override void InitializeNeighbourhood()
+		{
+			NeighbourhoodInitializor.InitializeNeighbourhood1D(this, cells);
 		}
 	}
 }

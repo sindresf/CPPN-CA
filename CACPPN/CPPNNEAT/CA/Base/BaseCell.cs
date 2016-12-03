@@ -37,6 +37,6 @@ namespace CPPNNEAT.CA.Base
 		}
 
 		public abstract float GetState();
-		protected abstract void InitializeNeighbourhood();
+		public abstract void InitializeNeighbourhood();
 	}
 }

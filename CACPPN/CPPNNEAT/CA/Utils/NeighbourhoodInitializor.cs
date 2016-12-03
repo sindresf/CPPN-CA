@@ -6,13 +6,13 @@ namespace CPPNNEAT.CA.Utils
 {
 	static class NeighbourhoodInitializor
 	{
-		public static void InitializeNeighbourhood1D(BaseCell cell, ICell[] cells, int cellBoardLength)
+		public static void InitializeNeighbourhood1D(BaseCell cell, ICell[] cells)	
 		{
-			NeighbourhoodInitializer1D.InitializeNeighbourhood(cell, cells, cellBoardLength);
+			NeighbourhoodInitializer1D.InitializeNeighbourhood(cell, cells, cells.Length);
 		}
-		public static void InitializeNeighbourhood2D(TwoDimCell cell, ICell[,] cells, int cellBoardSize)
+		public static void InitializeNeighbourhood2D(TwoDimCell cell, ICell[,] cells)
 		{
-			NeighbourhoodInitializor2D.InitializeNeighbourhood2D(cell, cells, cellBoardSize);
+			NeighbourhoodInitializor2D.InitializeNeighbourhood2D(cell, cells, cells.Length);
 		}
 	}
 }
