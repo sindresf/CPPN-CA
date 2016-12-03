@@ -12,7 +12,7 @@ namespace CPPNNEATCA.CA.Experiments
 	{
 
 		public Test1DimCA() : base()
-		{ //needs to setup everything that needs to be (and can be) exactly the same per individual
+		{
 			parameters = new CAParameters(NeighbourHoodSize: 3,
 										  CellStateCount: 2,
 										  CellWorldWidth: 5,
