@@ -52,7 +52,9 @@
     <Compile Include="CA\Base\BaseCell.cs" />
     <Compile Include="CA\Parts\OneDimCell.cs" />
     <Compile Include="CA\Parts\TwoDimCell.cs" />
+    <Compile Include="CA\Utils\NeighbourhoodInitializer1D.cs" />
     <Compile Include="CA\Utils\NeighbourhoodInitializor.cs" />
+    <Compile Include="CA\Utils\NeighbourhoodInitializor2D.cs" />
     <Compile Include="CPPN\NetworkParts\ActivationFunction.cs" />
     <Compile Include="CPPN\NetworkParts\CPPNetwork.cs" />
     <Compile Include="CPPN\ICPPNetwork.cs" />
