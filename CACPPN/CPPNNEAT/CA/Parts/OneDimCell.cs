@@ -8,19 +8,10 @@ namespace CPPNNEAT.CA.Parts
 	{
 		private float[] cellBoard;
 		private readonly ICell[] cells;
-		private int i;
-		private ICell[,] cells1;
 
 		public OneDimCell(int x, ICell[] cells, int neighbourhoodSize) : base(x, neighbourhoodSize)
 		{
 			this.cells = cells;
-		}
-
-		public OneDimCell(int i, ICell[,] cells1, int neighbourHoodSize)
-		{
-			this.i = i;
-			this.cells1 = cells1;
-			neighbourhoodSize = neighbourHoodSize;
 		}
 
 		public override float GetState()

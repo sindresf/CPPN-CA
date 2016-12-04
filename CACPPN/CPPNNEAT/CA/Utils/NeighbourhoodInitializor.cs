@@ -12,7 +12,7 @@ namespace CPPNNEAT.CA.Utils
 		}
 		public static void InitializeNeighbourhood2D(TwoDimCell cell, ICell[,] cells)
 		{
-			NeighbourhoodInitializor2D.InitializeNeighbourhood2D(cell, cells, cells.Length);
+			NeighbourhoodInitializor2D.InitializeNeighbourhood2D(cell, cells, cells.GetLength(0));
 		}
 	}
 }

@@ -6,9 +6,9 @@ using CPPNNEATCA.CA.Base;
 
 namespace CPPNNEAT.CA.Experiments
 {
-	class Test2DimA : BaseTwoDimentionalExperimentCA
+	class Test2DimCA : BaseTwoDimentionalExperimentCA
 	{
-		public Test2DimA(CAParameters parameters) : base()
+		public Test2DimCA() : base()
 		{
 			parameters = new CAParameters(NeighbourHoodSize: 5,
 											 CellStateCount: 2,
@@ -43,9 +43,9 @@ namespace CPPNNEAT.CA.Experiments
 									  { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 },
 									  { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 }};
 
-			if(seed.Length != parameters.CellWorldWidth
-			 || goal.Length != parameters.CellWorldWidth)
-				throw new FormatException("seed not compatible with experiment parameters");
+			if(seed.GetLength(1) != parameters.CellWorldWidth
+			 || goal.GetLength(0) != parameters.CellWorldWidth)
+				throw new FormatException("seed not compatible with experiment parameters" + seed.Length + " " + goal.Length);
 
 			cells = new TwoDimCell[parameters.CellWorldWidth, parameters.CellWorldHeight];
 			for(int i = 0; i < parameters.CellWorldWidth; i++)

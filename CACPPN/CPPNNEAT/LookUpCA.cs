@@ -14,7 +14,7 @@ namespace CPPNNEAT
 {
 	class LookUpCA : BaseOneDimentionalExperimentCA
 	{
-		static void Main(string[] args)
+		static void Main1(string[] args)
 		{
 			Console.WriteLine("CA TEST RUN\n");
 			INeatCA ca = new LookUpCA();

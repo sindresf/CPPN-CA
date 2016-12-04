@@ -1,4 +1,5 @@
 ﻿using System;
+using CPPNNEAT.CA.Experiments;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.CA.Experiments;
 using CPPNNEATCA.CPPN.Parts;
@@ -15,7 +16,7 @@ namespace CPPNNEATCA
 
 		public Parameters()
 		{
-			experiment = new Test1DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
+			experiment = new Test2DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
 			CA = experiment.GetParameters();
 			EA = new EAParameters(experiment);
 			CPPN = new CPPNParameters(CA);
