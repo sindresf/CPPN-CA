@@ -11,10 +11,10 @@ namespace CPPNNEAT.CA.Utils
 		{
 			int neighbourhoodWidth = cell.neighbourhoodSize.NeighbourhoodRadius();
 
-			bool upperCell = false;
-			bool rightCell = false;
-			bool lowerCell = false;
-			bool leftCell = false;
+			bool upperCell = cell.x < 0 + neighbourhoodWidth;
+			bool rightCell = cell.y > cellBoardSize - 1 - neighbourhoodWidth;
+			bool lowerCell = cell.x > cellBoardSize - 1 - neighbourhoodWidth;
+			bool leftCell = cell.y < 0 + neighbourhoodWidth;
 
 			bool VertMidCell = !rightCell && !leftCell;
 			bool HoriMidCell = !upperCell && !lowerCell;

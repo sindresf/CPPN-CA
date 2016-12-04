@@ -88,14 +88,6 @@ namespace CPPNNEAT
 				cells[i] = new OneDimCell(i, cells, parameters.NeighbourHoodSize);
 			foreach(BaseCell cell in cells)
 				cell.InitializeNeighbourhood();
-
-			/*foreach(BaseCell cell in cells)
-			{
-				float left = ((BaseCell)cell.Neighbourhood[0]).x;
-				float mid = ((BaseCell)cell.Neighbourhood[1]).x;
-				float right = ((BaseCell)cell.Neighbourhood[2]).x;
-				Console.WriteLine("{0}:\t{1},{2},{3}", cell.x, left, mid, right);
-			}*/
 		}
 
 		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
