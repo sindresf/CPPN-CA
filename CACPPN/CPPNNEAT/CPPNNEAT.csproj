@@ -47,6 +47,7 @@
     <Compile Include="CA\Base\BaseTwoDimentionalExperimentCA.cs" />
     <Compile Include="CA\Base\ICell.cs" />
     <Compile Include="CA\Experiments\Test1DimCA.cs" />
+    <Compile Include="CA\Experiments\Test2DimA.cs" />
     <Compile Include="CA\INeatCA.cs" />
     <Compile Include="CA\Base\BaseNeatCA.cs" />
     <Compile Include="CA\Base\BaseCell.cs" />

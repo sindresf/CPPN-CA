@@ -1,8 +1,13 @@
-﻿namespace CPPNNEATCA.CA.Base
+﻿using CPPNNEAT.CA.Base.Interface;
+
+namespace CPPNNEATCA.CA.Base
 {
 	abstract class BaseTwoDimentionalExperimentCA : BaseNeatCA
 	{
-		public BaseTwoDimentionalExperimentCA(CAParameters parameters) : base()
+		protected static float[,] seed;
+		protected static float[,] goal;
+		protected static ICell[,] cells;
+		public BaseTwoDimentionalExperimentCA() : base()
 		{
 		}
 	}
