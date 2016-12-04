@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CPPNNEATCA.Utils;
 
@@ -65,6 +66,28 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			//this is where the compare should come into play for fitness selection.
 			//and "foreach" by the allowed amount
+			var _populace = new List<NEATIndividual>();
+			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
+				_populace.Add(getBest());
+			foreach(NEATIndividual indie in populace)
+			{
+				indie.genome = Mutator.Mutate(indie.genome, IDs);
+				_populace.Add(indie);
+			}
+			populace = _populace;
+		}
+
+		private NEATIndividual getBest()
+		{
+			float bestFitness = 0.0f;
+			NEATIndividual bestIndie = null;
+			foreach(NEATIndividual indie in populace)
+				if(indie.Fitness > bestFitness)
+				{
+					bestFitness = indie.Fitness;
+					bestIndie = indie;
+				}
+			return bestIndie ?? populace[0];
 		}
 	}
 }

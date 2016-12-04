@@ -53,7 +53,9 @@ namespace CPPNNEATCA.NEAT.Parts
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 			{
 				if(Neat.random.DoMutation(type))
+				{
 					newGenome = MutateOfType(type, newGenome, IDs);
+				}
 			}
 			return newGenome;
 		}

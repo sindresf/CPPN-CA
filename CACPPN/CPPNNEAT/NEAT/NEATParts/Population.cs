@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
@@ -15,7 +14,6 @@ namespace CPPNNEATCA.NEAT.Parts
 		public IDCounters IDs;
 
 		private float avgSpeciesFitness;
-		private static object _lock;
 
 		public Population(INeatCA ca, IDCounters IDs)
 		{
@@ -73,18 +71,27 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void MakeNextGeneration()
 		{
+			Dictionary<int,int> allowedPopulaceSize = new Dictionary<int, int>();
+			int averageSpots = EAParameters.PopulationSize / species.Count;
+			int spotsLeft = EAParameters.PopulationSize;
+			foreach(Species sp in species)
+			{
+				int spots = CalculateSpeciesAllowedPopulaceCount(sp,averageSpots,spotsLeft);
+				allowedPopulaceSize[sp.speciesID] = spots;
+				spotsLeft -= spots;
+			}
+
 			Parallel.ForEach(species, (Species species) =>
 			{
-				species.MakeNextGeneration(CalculateSpeciesAllowedPopulaceCount(species), IDs);
+				species.MakeNextGeneration(allowedPopulaceSize[species.speciesID], IDs);
 			});
 		}
 
-		private int CalculateSpeciesAllowedPopulaceCount(Species sp)
+		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
 		{
-			//int allowedSize = 0;
-			//float spStatus = sp.SpeciesFitness - avgSpeciesFitness; //is this positive it is better than avg and vice versa
+			if(spotsleft < avgSpots) return spotsleft;
 
-			return EAParameters.PopulationSize / species.Count;
+			return avgSpots;
 		}
 	}
 }
