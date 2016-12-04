@@ -11,5 +11,10 @@ namespace CPPNNEATCA.CA.Base
 		public BaseOneDimentionalExperimentCA()
 		{
 		}
+		protected void PushBack(float[] future, float[] past)
+		{
+			for(int i = 0; i < parameters.CellWorldWidth; i++)
+				past[i] = future[i];
+		}
 	}
 }

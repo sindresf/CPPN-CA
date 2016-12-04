@@ -28,8 +28,17 @@ namespace CPPNNEATCA.Utils
 		}
 		public static string PrintCA(this float[,] worldState)
 		{
-			string output = "|";
-			return output + "|";
+			string output = "";
+			for(int i = 0; i < worldState.GetLength(0); i++)
+			{
+				output += "|";
+				for(int j = 0; j < worldState.GetLength(1); j++)
+				{
+					output += worldState[i, j];
+				}
+				output += "|\n";
+			}
+			return output;
 		}
 
 		public static double Clamp(this double val, double min, double max)
