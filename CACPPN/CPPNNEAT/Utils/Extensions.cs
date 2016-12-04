@@ -19,6 +19,19 @@ namespace CPPNNEATCA.Utils
 			return (diameter - 1) / 2;
 		}
 
+		public static string PrintCA(this float[] worldState)
+		{
+			string output = "|";
+			foreach(float state in worldState)
+				output += state + "";
+			return output.TrimEnd() + "|";
+		}
+		public static string PrintCA(this float[,] worldState)
+		{
+			string output = "|";
+			return output + "|";
+		}
+
 		public static double Clamp(this double val, double min, double max)
 		{
 			if(val.CompareTo(min) < 0) return min;

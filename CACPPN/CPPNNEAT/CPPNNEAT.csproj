@@ -59,6 +59,7 @@
     <Compile Include="CPPN\NetworkParts\CPPNetwork.cs" />
     <Compile Include="CPPN\ICPPNetwork.cs" />
     <Compile Include="CPPN\NetworkParts\NetworkNode.cs" />
+    <Compile Include="LookUpCA.cs" />
     <Compile Include="NEAT\EABase\Individual.cs" />
     <Compile Include="NEAT\NEATBase\ConnectionGeneSequence.cs" />
     <Compile Include="NEAT\EABase\EvolutionaryAlgorithm.cs" />

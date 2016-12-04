@@ -11,8 +11,8 @@ namespace CPPNNEAT.CA.Utils
 		{
 			int neighbourhoodWidth = cell.neighbourhoodSize.NeighbourhoodRadius();
 
-			bool firstCell = cell.x <= 0 + neighbourhoodWidth;
-			bool lastCell = cell.x >= cellBoardLength - 1 - neighbourhoodWidth;
+			bool firstCell = cell.x < 0 + neighbourhoodWidth;
+			bool lastCell = cell.x > cellBoardLength - 1 - neighbourhoodWidth;
 			bool safeCell = !firstCell && !lastCell;
 
 			if(safeCell)

@@ -70,7 +70,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
 				_populace.Add(getBest());
 			foreach(NEATIndividual indie in populace)
-			{
+			{ //TODO this is not proper
 				indie.genome = Mutator.Mutate(indie.genome, IDs);
 				_populace.Add(indie);
 			}

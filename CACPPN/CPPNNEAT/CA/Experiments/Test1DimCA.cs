@@ -38,8 +38,10 @@ namespace CPPNNEATCA.CA.Experiments
 
 		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
 		{
-			float[] currentValues = seed;
-			float[] futureValues = seed;
+			float[] currentValues = new float[seed.Length];
+			seed.CopyTo(currentValues, 0);
+			float[] futureValues = new float[seed.Length];
+			seed.CopyTo(futureValues, 0);
 
 			foreach(OneDimCell cell in cells)
 				cell.ReferenceCurrentCellStates(currentValues);

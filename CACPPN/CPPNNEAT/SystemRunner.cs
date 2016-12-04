@@ -6,7 +6,7 @@ namespace CPPNNEATCA
 {
 	class SystemRunner
 	{
-		static void Main(string[] args)
+		static void Main1(string[] args)
 		{
 			ProperTestRun();
 		}
