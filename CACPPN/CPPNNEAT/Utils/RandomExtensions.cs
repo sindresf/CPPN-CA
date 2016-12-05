@@ -8,22 +8,28 @@ namespace CPPNNEATCA.Utils
 {
 	static class RandomExtensions //extension methods for the random class
 	{
+		public static double NextGaussianRandom(this Random rand, double mean, double maxChange)
+		{
+			return mean + ((rand.NextDouble() * 2.0 * maxChange) - maxChange);
+		}
 
 		public static float NextFloat(this Random rand)
 		{
 			return (float)rand.NextDouble();
+		}
+		public static float InitialConnectionWeight(this Random rand)
+		{
+			return rand.NextFloat() * CPPNParameters.InitialMaxConnectionWeight;
 		}
 
 		public static bool NextBoolean(this Random rand)
 		{
 			return rand.NextDouble() > 0.5;
 		}
-
 		public static bool NextBoolean(this Random rand, double probability)
 		{
 			return rand.NextDouble() < probability;
 		}
-
 		public static bool DoMutation(this Random rand, MutationType type)
 		{
 			return rand.NextDouble() <= MutationChances.GetMutationChance(type);
@@ -41,13 +47,10 @@ namespace CPPNNEATCA.Utils
 			}
 			return CPPN.Parts.ActivationFunctionType.Linear; //this should never occur by the laws of random within 0->1 so doesn't skew the distribution
 		}
-
-
 		public static ConnectionGene ConnectionGene(this Random rand, NeatGenome genome)
 		{
 			return genome.connectionGenes[rand.Next(genome.connectionGenes.Count)];
 		}
-
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
 			//skips the input node genes, as nothing ever should change there
@@ -57,12 +60,6 @@ namespace CPPNNEATCA.Utils
 		{
 			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - Neat.parameters.CPPN.InputSize)];
 		}
-
-		public static double NextGaussianRandom(this Random rand, double mean, double maxChange)
-		{
-			return mean + ((rand.NextDouble() * 2.0 * maxChange) - maxChange);
-		}
-
 		public static Coefficient Coefficient(this Random rand, Dictionary<char, Coefficient> dict)
 		{
 			//a bit of a bias way to go about it but not even supposed to be used so... can look at it properly later
@@ -74,11 +71,6 @@ namespace CPPNNEATCA.Utils
 					return dict[key];
 			}
 			throw new DllNotFoundException("silly random select failed");
-		}
-
-		public static float InitialConnectionWeight(this Random rand)
-		{
-			return rand.NextFloat() * CPPNParameters.InitialMaxConnectionWeight;
 		}
 	}
 }

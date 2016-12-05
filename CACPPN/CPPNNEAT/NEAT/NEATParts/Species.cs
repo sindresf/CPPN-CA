@@ -74,7 +74,7 @@ namespace CPPNNEATCA.NEAT.Parts
 				indie.genome = Mutator.Mutate(indie.genome, IDs);
 				_populace.Add(indie);
 			}
-			populace = _populace;
+			populace = new List<NEATIndividual>(_populace);
 		}
 
 		private NEATIndividual getBest()

@@ -13,12 +13,22 @@ namespace CPPNNEATCA.Utils
 			else if(val.CompareTo(CPPNParameters.WeightMax) > 0) return CPPNParameters.WeightMax;
 			else return val;
 		}
+		public static double Clamp(this double val, double min, double max)
+		{
+			if(val.CompareTo(min) < 0) return min;
+			else if(val.CompareTo(max) > 0) return max;
+			else return val;
+		}
+		public static bool SameWithinReason(this float val, float compareTo)
+		{
+			return val <= compareTo + EAParameters.SameFloatWithinReason
+				&& val >= compareTo - EAParameters.SameFloatWithinReason;
+		}
 
 		public static int NeighbourhoodRadius(this int diameter)
 		{
 			return (diameter - 1) / 2;
 		}
-
 		public static string PrintCA(this float[] worldState)
 		{
 			string output = "|";
@@ -40,20 +50,6 @@ namespace CPPNNEATCA.Utils
 			}
 			return output;
 		}
-
-		public static double Clamp(this double val, double min, double max)
-		{
-			if(val.CompareTo(min) < 0) return min;
-			else if(val.CompareTo(max) > 0) return max;
-			else return val;
-		}
-
-		public static bool SameWithinReason(this float val, float compareTo)
-		{
-			return val <= compareTo + EAParameters.SameFloatWithinReason
-				&& val >= compareTo - EAParameters.SameFloatWithinReason;
-		}
-
 		public static float SumFitness(this List<NEATIndividual> populace)
 		{
 			float sum = 0.0f;
@@ -61,17 +57,14 @@ namespace CPPNNEATCA.Utils
 				sum += indie.Fitness;
 			return sum;
 		}
-
 		public static bool IsLowerThanLimit(this int limit, NEATIndividual indie1, NEATIndividual indie2)
 		{
 			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
 		}
-
 		public static bool IsLongerThan(this NeatGenome genom1, NeatGenome genome2)
 		{
 			return genom1.connectionGenes.Count > genome2.connectionGenes.Count;
 		}
-
 		public static int GetHighestConnectionGeneID(this NeatGenome genome)
 		{
 			int max = 0;
@@ -82,12 +75,10 @@ namespace CPPNNEATCA.Utils
 			}
 			return max;
 		}
-
 		public static float GetWeightDifference(this ConnectionGene gene1, ConnectionGene gene2)
 		{
 			return Math.Abs(gene1.connectionWeight - gene2.connectionWeight);
 		}
-
 		public static float SimilarityTo(this NEATIndividual indie1, NEATIndividual indie2)
 		{
 			float similarity = 0.0f;

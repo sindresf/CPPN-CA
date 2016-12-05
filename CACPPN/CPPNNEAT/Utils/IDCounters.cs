@@ -17,7 +17,6 @@
 			get { return spID++; }
 			private set { spID = value; }
 		}
-
 		public int IndividualID
 		{
 			get { return indID++; }
@@ -28,7 +27,6 @@
 			get { return ngID++; }
 			private set { ngID = value; }
 		}
-
 		public int ConnectionGeneID
 		{
 			get { return cgID++; }

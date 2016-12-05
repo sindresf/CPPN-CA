@@ -1,6 +1,4 @@
-﻿using System;
-using CPPNNEATCA.CA;
-using CPPNNEATCA.CPPN;
+﻿using CPPNNEATCA.CPPN;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.Utils;
@@ -10,7 +8,6 @@ namespace CPPNNEATCA.NEAT.Parts
 	class NEATIndividual : Individual
 	{
 		public NeatGenome genome;
-
 		public ICPPNetwork network;
 
 		public NEATIndividual(IDCounters IDs) : base(IDs.IndividualID)

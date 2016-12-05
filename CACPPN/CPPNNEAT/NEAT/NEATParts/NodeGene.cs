@@ -4,6 +4,12 @@ using CPPNNEATCA.EA.Base;
 
 namespace CPPNNEATCA.NEAT.Parts
 {
+	enum NodeType
+	{
+		Sensor,
+		Output,
+		Hidden
+	}
 	class NodeGene : Gene
 	{
 		public readonly int nodeID;
@@ -55,12 +61,5 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			return geneID;
 		}
-	}
-
-	enum NodeType
-	{
-		Sensor,
-		Output,
-		Hidden
 	}
 }

@@ -3,10 +3,16 @@ using CPPNNEATCA.NEAT;
 
 namespace CPPNNEATCA.Utils
 {
+	class Coefficients : Dictionary<char, Coefficient>
+	{
+		public Coefficients() : base() { }
+	}
+
 	class Coefficient
 	{
 		public double coValue { get; private set; }
 		private double mutateRate, minValue, maxValue;
+
 		public Coefficient(double coefficientStart, double mutateRate, double minValue, double maxValue)
 		{
 			coValue = coefficientStart;
@@ -18,14 +24,6 @@ namespace CPPNNEATCA.Utils
 		public void Mutate()
 		{
 			coValue = Neat.random.NextGaussianRandom(coValue, mutateRate).Clamp(minValue, maxValue);
-		}
-	}
-
-	class Coefficients : Dictionary<char, Coefficient>
-	{
-		public Coefficients() : base()
-		{
-
 		}
 	}
 }
