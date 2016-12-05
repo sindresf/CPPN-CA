@@ -23,25 +23,5 @@ namespace CPPNNEATCA.NEAT.Parts
 			isEnabled = gene.isEnabled;
 			connectionWeight = gene.connectionWeight;
 		}
-
-		public override bool Equals(object other)
-		{
-			return ((ConnectionGene)other).geneID == geneID;
-		}
-
-		public static bool operator ==(ConnectionGene g1, ConnectionGene g2)
-		{
-			return g1.geneID == g2.geneID;
-		}
-
-		public static bool operator !=(ConnectionGene g1, ConnectionGene g2)
-		{
-			return g1.geneID != g2.geneID;
-		}
-
-		public override int GetHashCode()
-		{
-			return geneID;
-		}
 	}
 }

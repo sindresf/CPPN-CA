@@ -41,25 +41,5 @@ namespace CPPNNEATCA.NEAT.Parts
 			} else
 				throw new ArgumentException("Sensor nodes not supposed to have functions!");
 		}
-
-		public override bool Equals(object other)
-		{
-			return ((NodeGene)other).geneID == geneID;
-		}
-
-		public static bool operator ==(NodeGene g1, NodeGene g2)
-		{
-			return g1.geneID == g2.geneID;
-		}
-
-		public static bool operator !=(NodeGene g1, NodeGene g2)
-		{
-			return g1.geneID != g2.geneID;
-		}
-
-		public override int GetHashCode()
-		{
-			return geneID;
-		}
 	}
 }
