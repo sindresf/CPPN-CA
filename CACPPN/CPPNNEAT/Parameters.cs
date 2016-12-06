@@ -90,6 +90,14 @@ namespace CPPNNEATCA
 					{ ActivationFunctionType.Linear,    0.16f }
 				};
 
+		public static float[,] ActivationFunctionSimilarity = new float[,] {
+			{    1,0.12f,0.2f, 0.0f,0.32f,0.3f },//sin
+			{0.12f,    1,0.1f,0.56f,0.15f,0.1f },//gauss
+			{ 0.2f, 0.1f,   1, 0.0f, 0.2f,0.4f },//abs
+			{ 0.0f,0.56f,0.0f,    1,0.05f,0.0f },//Pyramid
+			{0.32f,0.15f,0.2f,0.05f,    1,0.32f },//Modulo
+			{ 0.3f, 0.1f,0.4f, 0.0f, 0.32f,   1 } }; //linear
+
 		public static TupleList<float, ActivationFunctionType> ActivationFunctionChanceIntervals
 		{
 			get
