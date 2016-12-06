@@ -1,7 +1,6 @@
 ﻿using System;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
-using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA
 {
@@ -10,17 +9,29 @@ namespace CPPNNEATCA
 		static void Main(string[] args)
 		{
 			//ProperTestRun();
-			float[] xs = new float[] {-1.2f,-1.0f,-0.5f,0.0f,0.5f,1.0f,1.1f};
+			int stateCount = 5;
+			var states = new float[stateCount];
+			states[0] = 0.0f;
+			states[stateCount - 1] = 1.0f;
+			double interval = 1.0 / (stateCount - 1);
+			for(int i = 1; i < stateCount - 1; i++)
+				states[i] = (float)Math.Round(states[i - 1] + interval, 2);
+			foreach(float state in states)
+				Console.Write(state + " ");
 
-			foreach(float x in xs)
+			float shortestDistance = 1.0f;
+			float value = 0.4652345913123f;
+			float resultingState = 0.0f;
+			foreach(float candidateState in states)
 			{
-				float sum = x;
-				float xt = 1.0f;
-				float y = .0f;
-				float mod = 1.0f;
-
-				Console.WriteLine((xt * sum + y) % mod);
+				float dist = Math.Abs(candidateState-value);
+				if(shortestDistance > dist)
+				{
+					shortestDistance = dist;
+					resultingState = candidateState;
+				}
 			}
+			Console.WriteLine("\nfloatToState({0}) = {1}", value, resultingState);
 		}
 
 		public static void ProperTestRun()
@@ -34,7 +45,7 @@ namespace CPPNNEATCA
 			{
 				Console.Write(".");
 				neat.EvaluatePopulation();
-				neat.NextGeneration(); // <- this can't possibly work just yet
+				neat.NextGeneration();
 			}
 			Console.Write("\n\nDone\n");
 		}

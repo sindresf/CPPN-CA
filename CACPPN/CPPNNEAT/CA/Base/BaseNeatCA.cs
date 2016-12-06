@@ -12,8 +12,9 @@ namespace CPPNNEATCA.CA.Base
 		{
 			states = new float[stateCount];
 			states[0] = 0.0f;
+			states[stateCount - 1] = 1.0f;
 			double interval = 1.0 / (stateCount - 1);
-			for(int i = 1; i < stateCount; i++)
+			for(int i = 1; i < stateCount - 1; i++)
 				states[i] = (float)Math.Round(states[i - 1] + interval, 2);
 		}
 

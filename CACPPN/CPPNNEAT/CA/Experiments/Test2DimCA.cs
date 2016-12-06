@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using CPPNNEAT.CA.Parts;
 using CPPNNEATCA;
@@ -18,8 +19,6 @@ namespace CPPNNEAT.CA.Experiments
 
 			MakeStates(parameters.CellStateCount);
 
-			//seed = new float[] { 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 };
-			//goal = new float[] { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
 			seed = new float[10][];
 			seed[0] = new float[] { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };
 			seed[1] = new float[] { 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 };

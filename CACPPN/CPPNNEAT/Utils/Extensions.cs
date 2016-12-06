@@ -32,13 +32,17 @@ namespace CPPNNEATCA.Utils
 		public static string PrintCA(this float[] worldState)
 		{
 			string output = "|";
-			foreach(float state in worldState)
-				output += state + "";
-			return output.TrimEnd() + "|";
+			/*foreach(float state in worldState)
+				output += state + "";*/
+			for(int i = 0; i < worldState.Length; i++)
+				output += worldState[i] > 0.7 ? 'O' : ' ';
+
+			return output + "|";
 		}
 		public static string PrintCA(this float[,] worldState)
 		{
 			string output = "";
+			/*
 			for(int i = 0; i < worldState.GetLength(0); i++)
 			{
 				output += "|";
@@ -46,6 +50,14 @@ namespace CPPNNEATCA.Utils
 				{
 					output += worldState[i, j];
 				}
+				output += "|\n";
+			}*/
+			for(int i = 0; i < worldState.GetLength(0); i++)
+			{
+				output += "|";
+				for(int j = 0; j < worldState.GetLength(1); j++)
+					output += worldState[i, j] > 0.7 ? 'O' : ' ';
+
 				output += "|\n";
 			}
 			return output;

@@ -1,7 +1,6 @@
 ﻿using System;
 using CPPNNEAT.CA.Experiments;
 using CPPNNEATCA.CA;
-using CPPNNEATCA.CA.Experiments;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.Utils;
 
