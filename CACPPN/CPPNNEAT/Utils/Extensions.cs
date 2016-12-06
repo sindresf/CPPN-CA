@@ -57,6 +57,13 @@ namespace CPPNNEATCA.Utils
 				sum += indie.Fitness;
 			return sum;
 		}
+		public static float WeightedSum(this TupleList<float, float> inputs)
+		{
+			float sum = 0.0f;
+			foreach(Tuple<float, float> input in inputs)
+				sum += input.Item1 * input.Item2;
+			return sum;
+		}
 		public static bool IsLowerThanLimit(this int limit, NEATIndividual indie1, NEATIndividual indie2)
 		{
 			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
