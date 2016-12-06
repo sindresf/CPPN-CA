@@ -46,8 +46,6 @@ namespace CPPNNEATCA
 
 		public static bool IsSeededRun = true;
 		public static int RandomSeed = 42;
-
-		public static double SameFloatWithinReason = 0.0001f;
 	}
 
 	struct CAParameters

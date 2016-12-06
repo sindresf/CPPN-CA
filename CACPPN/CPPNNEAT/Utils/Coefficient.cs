@@ -23,7 +23,7 @@ namespace CPPNNEATCA.Utils
 
 		public void Mutate()
 		{
-			coValue = Neat.random.NextGaussianRandom(coValue, mutateRate).Clamp(minValue, maxValue);
+			coValue = Neat.random.NextRangedDouble(coValue, mutateRate).Clamp(minValue, maxValue);
 		}
 	}
 }

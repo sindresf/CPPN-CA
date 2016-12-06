@@ -10,7 +10,7 @@ namespace CPPNNEAT.CA.Utils
 	{
 		public static void InitializeNeighbourhood2D(TwoDimCell cell, ICell[][] cells, int cellBoardSize)
 		{
-			int neighbourhoodWidth = cell.neighbourhoodSize.NeighbourhoodRadius();
+			int neighbourhoodWidth = cell.neighbourhoodSize.Neighbourhood1DRadius();
 
 			bool upperCell = cell.x < 0 + neighbourhoodWidth;
 			bool rightCell = cell.y > cellBoardSize - 1 - neighbourhoodWidth;

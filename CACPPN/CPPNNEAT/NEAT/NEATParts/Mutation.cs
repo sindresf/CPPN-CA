@@ -96,7 +96,7 @@ namespace CPPNNEATCA.NEAT.Parts
 															newNode.nodeID,
 															connectionToSplitt.fromNodeID,
 															true,
-															(float)Neat.random.NextGaussianRandom(0.0,CPPNParameters.InitialMaxConnectionWeight));
+															(float)Neat.random.NextRangedDouble(0.0,CPPNParameters.InitialMaxConnectionWeight));
 
 			connectionToSplitt.isEnabled = false;
 			genome.connectionGenes.Add(firstHalfGene);

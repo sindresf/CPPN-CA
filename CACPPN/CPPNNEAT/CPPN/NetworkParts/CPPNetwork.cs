@@ -79,7 +79,7 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		public float GetOutput(List<float> input) // represents the entirety of the input nodes
 		{
-			return (float)Neat.random.NextGaussianRandom(0.5, 0.49);/*
+			return (float)Neat.random.NextRangedDouble(0.5, 0.49);/*
 			if(hiddenNodes.Length == 0)
 			{// means straight up input to output
 			 //for each input get the weight to make the tupleList

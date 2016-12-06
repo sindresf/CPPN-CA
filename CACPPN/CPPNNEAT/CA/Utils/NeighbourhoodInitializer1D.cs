@@ -9,7 +9,7 @@ namespace CPPNNEAT.CA.Utils
 	{
 		public static void InitializeNeighbourhood(BaseCell cell, ICell[] cells, int cellBoardLength)
 		{
-			int neighbourhoodWidth = cell.neighbourhoodSize.NeighbourhoodRadius();
+			int neighbourhoodWidth = cell.neighbourhoodSize.Neighbourhood1DRadius();
 
 			bool firstCell = cell.x < 0 + neighbourhoodWidth;
 			bool lastCell = cell.x > cellBoardLength - 1 - neighbourhoodWidth;

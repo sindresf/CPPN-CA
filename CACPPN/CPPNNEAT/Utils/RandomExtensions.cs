@@ -8,9 +8,9 @@ namespace CPPNNEATCA.Utils
 {
 	static class RandomExtensions //extension methods for the random class
 	{
-		public static double NextGaussianRandom(this Random rand, double mean, double maxChange)
+		public static double NextRangedDouble(this Random rand, double mid, double minMax)
 		{
-			return mean + ((rand.NextDouble() * 2.0 * maxChange) - maxChange);
+			return mid + ((rand.NextDouble() * 2.0 * minMax) - minMax);
 		}
 
 		public static float NextFloat(this Random rand)
@@ -19,12 +19,12 @@ namespace CPPNNEATCA.Utils
 		}
 		public static float InitialConnectionWeight(this Random rand)
 		{
-			return rand.NextFloat() * CPPNParameters.InitialMaxConnectionWeight;
+			return (float)(rand.NextRangedDouble(0.0, CPPNParameters.InitialMaxConnectionWeight));
 		}
 
 		public static bool NextBoolean(this Random rand)
 		{
-			return rand.NextDouble() > 0.5;
+			return rand.NextDouble() > 0.5000;
 		}
 		public static bool NextBoolean(this Random rand, double probability)
 		{
@@ -45,7 +45,7 @@ namespace CPPNNEATCA.Utils
 					return tuple.Item2;
 				lastInterval = tuple.Item1;
 			}
-			return CPPN.Parts.ActivationFunctionType.Linear; //this should never occur by the laws of random within 0->1 so doesn't skew the distribution
+			return CPPN.Parts.ActivationFunctionType.Linear;
 		}
 		public static ConnectionGene ConnectionGene(this Random rand, NeatGenome genome)
 		{
@@ -53,11 +53,12 @@ namespace CPPNNEATCA.Utils
 		}
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
-			//skips the input node genes, as nothing ever should change there
 			return genome.nodeGenes[rand.Next(Neat.parameters.CPPN.InputSize, genome.nodeGenes.Count)];
 		}
 		public static NodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
+			int outputNodeStart = 0; //this needs work. maybe switching out functionality.
+			int outputNodeEnd = outputNodeStart + Neat.parameters.CPPN.OutputSize;
 			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - Neat.parameters.CPPN.InputSize)];
 		}
 		public static Coefficient Coefficient(this Random rand, Dictionary<char, Coefficient> dict)

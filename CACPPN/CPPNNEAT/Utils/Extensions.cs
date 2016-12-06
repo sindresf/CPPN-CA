@@ -21,47 +21,19 @@ namespace CPPNNEATCA.Utils
 		}
 		public static bool SameWithinReason(this float val, float compareTo)
 		{
-			return val <= compareTo + EAParameters.SameFloatWithinReason
-				&& val >= compareTo - EAParameters.SameFloatWithinReason;
+			float error = 0.000001f;
+			return val <= compareTo + error
+				&& val >= compareTo - error;
 		}
-
-		public static int NeighbourhoodRadius(this int diameter)
+		public static bool SameWithinReason(this double val, double compareTo)
 		{
-			return (diameter - 1) / 2;
+			double error = 0.00000000000001f;
+			return val <= compareTo + error
+				&& val >= compareTo - error;
 		}
-		public static string PrintCA(this float[] worldState)
-		{
-			string output = "|";
-			/*foreach(float state in worldState)
-				output += state + "";*/
-			for(int i = 0; i < worldState.Length; i++)
-				output += worldState[i] > 0.7 ? 'O' : ' ';
-
-			return output + "|";
-		}
-		public static string PrintCA(this float[,] worldState)
-		{
-			string output = "";
-			/*
-			for(int i = 0; i < worldState.GetLength(0); i++)
-			{
-				output += "|";
-				for(int j = 0; j < worldState.GetLength(1); j++)
-				{
-					output += worldState[i, j];
-				}
-				output += "|\n";
-			}*/
-			for(int i = 0; i < worldState.GetLength(0); i++)
-			{
-				output += "|";
-				for(int j = 0; j < worldState.GetLength(1); j++)
-					output += worldState[i, j] > 0.7 ? 'O' : ' ';
-
-				output += "|\n";
-			}
-			return output;
-		}
+	}
+	static class NEATExtensions
+	{
 		public static float SumFitness(this List<NEATIndividual> populace)
 		{
 			float sum = 0.0f;
@@ -76,7 +48,7 @@ namespace CPPNNEATCA.Utils
 				sum += input.Item1 * input.Item2;
 			return sum;
 		}
-		public static bool IsLowerThanLimit(this int limit, NEATIndividual indie1, NEATIndividual indie2)
+		public static bool isMoreThanConnectionsIn(this int limit, NEATIndividual indie1, NEATIndividual indie2)
 		{
 			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
 		}
@@ -98,12 +70,13 @@ namespace CPPNNEATCA.Utils
 		{
 			return Math.Abs(gene1.connectionWeight - gene2.connectionWeight);
 		}
-		public static float SimilarityTo(this NEATIndividual indie1, NEATIndividual indie2)
+		public static float DifferenceTo(this NEATIndividual indie1, NEATIndividual indie2)
 		{
-			float similarity = 0.0f;
+			float difference = 0.0f;
 
 			float excessVar = 0.0f;
 			float disjointVar = 0.0f;
+			float functionVar = 0.0f; //Needs incorporating
 			float weightDiffSum = 0.0f;
 			int sameGeneCount = 0;
 
@@ -142,15 +115,60 @@ namespace CPPNNEATCA.Utils
 			}
 
 			int N = 1;
-			if(!EAParameters.SetNToOneLimit.IsLowerThanLimit(indie1, indie2))
+			if(!EAParameters.SetNToOneLimit.isMoreThanConnectionsIn(indie1, indie2))
 				N = longestGeneSequence.Count;
 			excessVar /= N;
 			disjointVar /= N;
 
-			similarity += excessVar * EAParameters.ExcessSimilarityWeight;
-			similarity += disjointVar * EAParameters.DisjointSimilarityWeight;
-			similarity += (weightDiffSum / sameGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
-			return similarity;
+			difference += excessVar * EAParameters.ExcessSimilarityWeight;
+			difference += disjointVar * EAParameters.DisjointSimilarityWeight;
+			difference += (weightDiffSum / sameGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
+			return difference;
+		}
+	}
+	static class Extensions1D
+	{
+		public static int Neighbourhood1DRadius(this int diameter)
+		{
+			return (diameter - 1) / 2;
+		}
+		public static string PrintCA(this float[] worldState)
+		{
+			string output = "|";
+			foreach(float state in worldState)
+				output += state + "";
+			return output + "|";
+		}
+	}
+
+	static class Extensions2D
+	{
+		public static int Neighbourhood2DRadius(this int diameter)
+		{
+			return (diameter - 1) / 4;
+		}
+		public static string PrintCA(this float[,] worldState)
+		{
+			string output = "";
+			/*
+			for(int i = 0; i < worldState.GetLength(0); i++)
+			{
+				output += "|";
+				for(int j = 0; j < worldState.GetLength(1); j++)
+				{
+					output += worldState[i, j];
+				}
+				output += "|\n";
+			}*/
+			for(int i = 0; i < worldState.GetLength(0); i++)
+			{
+				output += "|";
+				for(int j = 0; j < worldState.GetLength(1); j++)
+					output += worldState[i, j] > 0.7 ? 'O' : ' ';
+
+				output += "|\n";
+			}
+			return output;
 		}
 	}
 }
