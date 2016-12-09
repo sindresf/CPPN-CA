@@ -80,6 +80,10 @@ namespace CPPNNEATCA.Utils
 			float weightDiffSum = 0.0f;
 			int sameGeneCount = 0;
 
+			//TODO need a "longest of nodeGene" function
+			//TODO need to go through nodeGenes
+			//	TODO so that function difference can be done
+
 			List<ConnectionGene> longestGeneSequence = NeatGenome.GetLonger(indie1.genome, indie2.genome).connectionGenes;
 			List<ConnectionGene> shortestGeneSequence = NeatGenome.GetShorter(indie1.genome, indie2.genome).connectionGenes;
 

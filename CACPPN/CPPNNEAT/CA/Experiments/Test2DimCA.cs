@@ -74,10 +74,6 @@ namespace CPPNNEAT.CA.Experiments
 				seed[i].CopyTo(futureValues[i], 0);
 			}
 
-			foreach(TwoDimCell[] cellRow in cells)
-				foreach(TwoDimCell cell in cellRow)
-					cell.ReferenceCurrentCellStates(currentValues);
-
 			float bestStateScore = 2.0f*parameters.CellWorldWidth;
 			float currentScore = 0.0f;
 

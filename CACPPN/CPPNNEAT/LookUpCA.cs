@@ -27,10 +27,9 @@ namespace CPPNNEAT
 				{
 					bool ruleMatched = true;
 					for(int i = 0; i < rule.Count - 1; i++)
-					{
 						if(rule[i] != (int)input[i])
 							ruleMatched = false;
-					}
+
 					if(ruleMatched)
 						return rule.Last();
 				}
@@ -100,8 +99,6 @@ namespace CPPNNEAT
 			seed.CopyTo(futureValues, 0);
 
 			Console.WriteLine(currentValues.PrintCA());
-			foreach(OneDimCell cell in cells)
-				cell.ReferenceCurrentCellStates(currentValues);
 
 			float bestStateScore = 2.0f*parameters.CellWorldWidth;
 			//float currentScore = 0.0f;
@@ -109,7 +106,7 @@ namespace CPPNNEAT
 			{
 				Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
 				{
-					futureValues[cell.x] = TransitionFunction(cell.GetNeighbourhoodCurrentState());
+					futureValues[cell.x] = TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues));
 				});
 				/*currentScore = CurrentVSGoalDifference(futureValues);
 				if(IsDeadSpace(futureValues))
@@ -136,12 +133,6 @@ namespace CPPNNEAT
 			for(int i = 0; i < parameters.CellWorldWidth; i++)
 				diff += Math.Abs(goal[i] - current[i]);
 			return diff;
-		}
-
-		private void PushBack(float[] future, float[] past)
-		{
-			for(int i = 0; i < parameters.CellWorldWidth; i++)
-				past[i] = future[i];
 		}
 	}
 }

@@ -6,6 +6,9 @@ namespace CPPNNEAT.CA.Base
 {
 	abstract class BaseCell : ICell
 	{
+		public readonly int neighbourhoodSize;
+		public readonly int x;
+
 		protected List<ICell> _neighbourhood;
 		public List<ICell> Neighbourhood
 		{
@@ -18,8 +21,6 @@ namespace CPPNNEAT.CA.Base
 					throw new MemberAccessException("no resetting of neighbourhood!");
 			}
 		}
-		public readonly int neighbourhoodSize;
-		public readonly int x;
 
 		public BaseCell(int x, int neighbourhoodSize)
 		{
@@ -27,16 +28,15 @@ namespace CPPNNEAT.CA.Base
 			this.neighbourhoodSize = neighbourhoodSize;
 		}
 
-		public List<float> GetNeighbourhoodCurrentState()
+		protected abstract float GetState(Array cellBoard);
+		public List<float> GetNeighbourhoodCurrentState(Array cellBoard)
 		{
 			List<float> returnedStates = new List<float>();
-			foreach(ICell cell in Neighbourhood)
-				returnedStates.Add(cell.GetState());
+			foreach(BaseCell cell in Neighbourhood)
+				returnedStates.Add(cell.GetState(cellBoard));
 
 			return returnedStates;
 		}
-
-		public abstract float GetState();
 		public abstract void InitializeNeighbourhood();
 	}
 }

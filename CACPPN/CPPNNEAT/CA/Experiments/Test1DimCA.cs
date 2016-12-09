@@ -43,16 +43,13 @@ namespace CPPNNEATCA.CA.Experiments
 			float[] futureValues = new float[seed.Length];
 			seed.CopyTo(futureValues, 0);
 
-			foreach(OneDimCell cell in cells)
-				cell.ReferenceCurrentCellStates(currentValues);
-
 			float bestStateScore = 2.0f*parameters.CellWorldWidth;
 			float currentScore = 0.0f;
 			for(int i = 0; i < parameters.MaxGeneration; i++)
 			{
 				Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
 			   {
-				   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState()));
+				   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
 			   });
 				currentScore = CurrentVSGoalDifference(futureValues);
 				if(IsDeadSpace(futureValues))
