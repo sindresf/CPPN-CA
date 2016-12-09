@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using CPPNNEAT.CA.Base.Interface;
-using CPPNNEAT.CA.Parts;
+﻿using System.Collections.Generic;
+using CPPNNEATCA.CA.Base.Interface;
+using CPPNNEATCA.CA.Parts;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEAT.CA.Utils

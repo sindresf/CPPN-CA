@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CPPNNEAT.CA.Base.Interface
+namespace CPPNNEATCA.CA.Base.Interface
 {
 	interface ICell
 	{

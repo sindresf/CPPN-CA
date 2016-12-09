@@ -1,6 +1,6 @@
-﻿using CPPNNEAT.CA.Base;
-using CPPNNEAT.CA.Base.Interface;
-using CPPNNEAT.CA.Parts;
+﻿using CPPNNEATCA.CA.Base;
+using CPPNNEATCA.CA.Base.Interface;
+using CPPNNEATCA.CA.Parts;
 
 namespace CPPNNEAT.CA.Utils
 {

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CPPNNEAT.CA.Base;
-using CPPNNEAT.CA.Parts;
 using CPPNNEATCA;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.CA.Base;
+using CPPNNEATCA.CA.Parts;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEAT

@@ -1,4 +1,4 @@
-﻿using CPPNNEAT.CA.Base.Interface;
+﻿using CPPNNEATCA.CA.Base.Interface;
 
 namespace CPPNNEATCA.CA.Base
 {

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using CPPNNEAT.CA.Parts;
-using CPPNNEATCA;
 using CPPNNEATCA.CA.Base;
+using CPPNNEATCA.CA.Parts;
 
-namespace CPPNNEAT.CA.Experiments
+namespace CPPNNEATCA.CA.Experiments
 {
 	class Test2DimCA : BaseTwoDimentionalExperimentCA
 	{
@@ -83,7 +81,7 @@ namespace CPPNNEAT.CA.Experiments
 				 {
 					 Parallel.For(0, parameters.CellWorldWidth, y =>
 					 {
-						 futureValues[x][y] = FloatToState(TransitionFunction(cells[x][y].GetNeighbourhoodCurrentState()));
+						 futureValues[x][y] = FloatToState(TransitionFunction(cells[x][y].GetNeighbourhoodCurrentState(currentValues)));
 					 });
 				 });
 				/*currentScore = CurrentVSGoalDifference(futureValues);

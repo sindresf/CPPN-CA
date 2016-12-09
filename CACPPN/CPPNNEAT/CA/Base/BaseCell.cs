@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using CPPNNEAT.CA.Base.Interface;
+using CPPNNEATCA.CA.Base.Interface;
 
-namespace CPPNNEAT.CA.Base
+namespace CPPNNEATCA.CA.Base
 {
 	abstract class BaseCell : ICell
 	{

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CPPNNEAT.CA.Base;
-using CPPNNEAT.CA.Parts;
 using CPPNNEATCA.CA.Base;
+using CPPNNEATCA.CA.Parts;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CA.Experiments
