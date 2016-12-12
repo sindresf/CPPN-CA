@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
+using CSVPieCharting;
 
 namespace CPPNNEATCA.NEAT.Parts
 {
@@ -22,6 +24,8 @@ namespace CPPNNEATCA.NEAT.Parts
 			species = new List<Species>();
 			SpeciesFitnessMap = new Dictionary<int, float>();
 			avgSpeciesFitness = 0.0f;
+			//HERE HERE HERE BULLSHITT!
+			var x = PieChart.ProcessFile(File.Open("lol", FileMode.Open));
 		}
 
 		public void Initialize()
