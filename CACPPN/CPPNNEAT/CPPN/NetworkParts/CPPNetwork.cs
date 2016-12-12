@@ -11,14 +11,21 @@ namespace CPPNNEATCA.CPPN.Parts
 	{
 		private Dictionary<int, InputNetworkNode> inputNodes;
 		private Dictionary<int, InternalNetworkNode> hiddenNodes, outputNodes;
+		private Dictionary<int,int> nodeInputCounts;
+
+		private Dictionary<int, bool> nodeHasPropagated;
 		private CPPNParameters parameters;
 
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
 			this.parameters = parameters;
+
 			inputNodes = new Dictionary<int, InputNetworkNode>();
 			hiddenNodes = new Dictionary<int, InternalNetworkNode>();
 			outputNodes = new Dictionary<int, InternalNetworkNode>();
+			nodeHasPropagated = new Dictionary<int, bool>();
+			nodeInputCounts = new Dictionary<int, int>();
+
 			SetupNodeList(genome.nodeGenes);
 			SetupConnections(genome.connectionGenes);
 		}
@@ -26,24 +33,30 @@ namespace CPPNNEATCA.CPPN.Parts
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
 			for(int i = 0; i < nodeGenes.Count; i++)
+			{
+				var nodeID = nodeGenes[i].nodeID;
+				nodeInputCounts[nodeID] = 0;
 				switch(nodeGenes[i].type)
 				{
 				case NodeType.Sensor:
-					inputNodes.Add(nodeGenes[i].nodeID, new InputNetworkNode(nodeGenes[i].nodeID));
+					inputNodes.Add(nodeID, new InputNetworkNode(nodeID));
 					break;
 				case NodeType.Hidden:
-					hiddenNodes.Add(nodeGenes[i].nodeID, new InternalNetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					nodeHasPropagated[nodeID] = false;
+					hiddenNodes.Add(nodeID, new InternalNetworkNode(nodeID, nodeGenes[i].nodeInputFunction));
 					break;
 				case NodeType.Output:
-					outputNodes.Add(nodeGenes[i].nodeID, new InternalNetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					outputNodes.Add(nodeID, new InternalNetworkNode(nodeID, nodeGenes[i].nodeInputFunction));
 					break;
 				}
+			}
 		}
 
 		private void SetupConnections(GeneSequence<ConnectionGene> connectionGenes)
 		{
 			foreach(ConnectionGene gene in connectionGenes)
 			{
+				nodeInputCounts[gene.toNodeID] = nodeInputCounts[gene.toNodeID] + 1;
 				var toDict = GetToNodeContainingDict(gene.toNodeID);
 				toDict[gene.toNodeID].AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
@@ -69,7 +82,26 @@ namespace CPPNNEATCA.CPPN.Parts
 			foreach(InputNetworkNode node in inputNodes.Values)
 				node.PropagateOutput(input[node.nodeID]);
 
+			while(!hasAllPropagated())
+			{
+				foreach(InternalNetworkNode node in hiddenNodes.Values)
+				{
+					if(node.IsFullyNotified(nodeInputCounts[node.nodeID]))
+					{
+						nodeHasPropagated[node.nodeID] = true;
+						node.PropagateOutput();
+					}
+				}
+			}
 			return ret;
+		}
+		private bool hasAllPropagated()
+		{
+			bool hasAll = true;
+			foreach(bool has in nodeHasPropagated.Values)
+				if(!has)
+					hasAll = false;
+			return hasAll;
 		}
 	}
 }

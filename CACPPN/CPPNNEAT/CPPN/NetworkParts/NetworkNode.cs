@@ -26,6 +26,11 @@ namespace CPPNNEATCA.CPPN.Parts
 			inValues[inputNodeID] = value;
 		}
 
+		public bool IsFullyNotified(int shouldHave)
+		{
+			return inValues.Count == shouldHave;
+		}
+
 		public void PropagateOutput()
 		{
 			var nodeInput = new TupleList<float,float>();
