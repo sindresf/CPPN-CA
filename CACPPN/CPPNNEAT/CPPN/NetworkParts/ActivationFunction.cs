@@ -21,7 +21,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			coefficients = new Coefficients();
 		}
-		protected virtual float GetOutput(TupleList<float, float> inputs)
+		public virtual float GetOutput(TupleList<float, float> inputs)
 		{
 			throw new NotImplementedException("base case is not an actual function!");
 		}
@@ -62,7 +62,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			coefficients.Add('d', new Coefficient(1.0, 0.1, 0.5, 1.7));
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = inputs.WeightedSum();
 			double a = coefficients['a'].coValue;
@@ -82,7 +82,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			coefficients.Add('2', new Coefficient(2.0, .01, 1.9, 2.1));
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = inputs.WeightedSum();
 
@@ -105,7 +105,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			coefficients.Add('y', new Coefficient(.0, .01, 1.9, 2.1));
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = inputs.WeightedSum();
 			double x = coefficients['x'].coValue;
@@ -120,7 +120,7 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float x = 1.0f;
 			float y = .0f;
@@ -138,7 +138,7 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = inputs.WeightedSum();
 			float x = 1.0f;
@@ -155,7 +155,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			coefficients.Add('b', new Coefficient(0.0, 0.1, -3.0, 3.0));
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			double a = coefficients['a'].coValue;
 			double b = coefficients['b'].coValue;
@@ -167,7 +167,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	{
 		public SensorFunction() : base() { }
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			return inputs[0].Item1;
 		}
@@ -179,7 +179,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			coefficients.Add('x', new Coefficient(1.0, 0.0, 0.0, 1.0));
 		}
 
-		protected override float GetOutput(TupleList<float, float> inputs)
+		public override float GetOutput(TupleList<float, float> inputs)
 		{
 			float sum = inputs.WeightedSum();
 			double x = coefficients['x'].coValue;

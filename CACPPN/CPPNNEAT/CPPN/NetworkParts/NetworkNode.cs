@@ -4,33 +4,40 @@ using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CPPN.Parts
 {
-	class NetworkNode : ActivationFunction
+	class NetworkNode
 	{
 		public int nodeID { get; set; }
-		private Dictionary<int,Tuple<float,float>> inValues;
-		private Dictionary<int,NetworkNode> outConnections;
+		private Dictionary<float, float> inValues;
+		private List<NetworkNode> outConnections;
+		private ActivationFunction activationFunction;
 
-		public NetworkNode(int nodeID)
+		public NetworkNode(int nodeID, ActivationFunction function)
 		{
-			inValues = new Dictionary<int, Tuple<float, float>>();
-			outConnections = new Dictionary<int, NetworkNode>();
+			activationFunction = function;
+			inValues = new Dictionary<float, float>();
+			outConnections = new List<NetworkNode>();
 		}
 
 		public void AddOutConnection(NetworkNode outConnection)
 		{
-			outConnections.Add(outConnection.nodeID, outConnection);
+			outConnections.Add(outConnection);
 		}
 
-		public void AddInputConnection(int nodeID, float value, float weight)
+		public void AddInputConnection(int nodeID, float value, float weight) //this needs working
 		{
-			inValues.Add(nodeID, Tuple.Create(value, weight));
+			inValues[weight] = value;
 		}
 
-		public int GetInputConnectionCount()
+		public void PropagateOutput()
 		{
-			return inValues.Count;
+			var nodeInput = new TupleList<float,float>();
+			foreach(KeyValuePair<float, float> pair in inValues)
+				nodeInput.Add(Tuple.Create(pair.Key, pair.Value));
+
+			float nodeOutput = activationFunction.GetOutput(nodeInput);
+			foreach(NetworkNode node in outConnections)
+				node.AddInputConnection(nodeID, nodeOutput, -1);
 		}
 
-		public float 
 	}
 }

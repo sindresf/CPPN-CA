@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
 using CPPNNEATCA.NEAT.Parts;
 using CPPNNEATCA.Utils;
@@ -8,74 +8,52 @@ namespace CPPNNEATCA.CPPN.Parts
 {
 	class CPPNetwork : ICPPNetwork
 	{
-		private NetworkNode[] hiddenNodes;
-		private float[][] connections;
-		private NetworkNode outputNode;
-
-		private Dictionary<int, float> nodeOutput;
-
+		private List<NetworkNode> inputNodes, hiddenNodes, outputNodes;
 		private CPPNParameters parameters;
 
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
 			this.parameters = parameters;
-			/*
-			nodeOutput = new Dictionary<int, float>();
-			SetupNodeList(genome);
-			SetupConnectionMatrix(genome);*/
+			inputNodes = new List<NetworkNode>();
+			hiddenNodes = new List<NetworkNode>();
+			outputNodes = new List<NetworkNode>();
+			SetupNodeList(genome.nodeGenes);
+			SetupConnectionMatrix(genome.connectionGenes);
 		}
 
-		private void SetupNodeList(NeatGenome genome) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
+		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
-			int hiddenNodes = (genome.nodeGenes.Count - parameters.InputSize - parameters.OutputSize);
-			if(hiddenNodes >= 1)
+			for(int i = 0; i < nodeGenes.Count; i++)
 			{
-				this.hiddenNodes = new NetworkNode[genome.nodeGenes.Count]; //just - the input and output count to get hidden? yeaa...
-
-				for(int i = 0; i < genome.nodeGenes.Count; i++)
+				switch(nodeGenes[i].type)
 				{
-					switch(genome.nodeGenes[i].type)
-					{
-					case NodeType.Hidden:
-						this.hiddenNodes[i] = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
-						this.hiddenNodes[i].nodeID = genome.nodeGenes[i].nodeID;
-						break;
-					case NodeType.Output:
-						if(parameters.OutputSize == 1)
-						{
-							outputNode = genome.nodeGenes[i].nodeInputFunction as NetworkNode;
-							outputNode.nodeID = genome.nodeGenes[i].nodeID;
-						}
-						break;
-					}
+				case NodeType.Sensor:
+					inputNodes.Add(new NetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					break;
+				case NodeType.Hidden:
+					hiddenNodes.Add(new NetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					break;
+				case NodeType.Output:
+					outputNodes.Add(new NetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					break;
 				}
-			} else
-			{ // so this is how it is in the beginning
-				this.hiddenNodes = new NetworkNode[0];
-
-				Console.WriteLine(genome.nodeGenes[parameters.InputSize].nodeInputFunction);// SENSOR NODE TYPE RETURNS NULL!!!! :O :'(
-				outputNode = genome.nodeGenes[parameters.InputSize].nodeInputFunction as NetworkNode;
-				//outputNode.nodeID = genome.nodeGenes[parameters.InputSize].nodeID;
 			}
 		}
 
-		private void SetupConnectionMatrix(NeatGenome genome)
+		private void SetupConnectionMatrix(GeneSequence<ConnectionGene> connectionGenes)
 		{
-			connections = new float[hiddenNodes.Length + 1][]; // +1 for the output node
-
-			for(int i = 0; i < connections.Length; i++)
+			for(int i = 0; i < connectionGenes.Count; i++)
 			{
 				int connectionInCount = 0;
-				foreach(ConnectionGene gene in genome.connectionGenes)
+				foreach(ConnectionGene gene in connectionGenes)
 					if(gene.toNodeID == hiddenNodes[i].nodeID || gene.toNodeID == outputNode.nodeID) // not how it works though
 						connectionInCount++;
-				connections[i] = new float[connectionInCount];
 			}
 			//connections established
 			//now make them be weights
 		}
 
-		public float GetOutput(List<float> input) // represents the entirety of the input nodes
+		public float GetOutput(List<float> input)
 		{
 			return (float)Neat.random.NextRangedDouble(0.5, 0.49);/*
 			if(hiddenNodes.Length == 0)
