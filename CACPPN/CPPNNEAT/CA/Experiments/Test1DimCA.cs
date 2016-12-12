@@ -36,7 +36,7 @@ namespace CPPNNEATCA.CA.Experiments
 				cell.InitializeNeighbourhood();
 		}
 
-		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
+		public override float RunEvaluation(Func<Dictionary<int, float>, float> TransitionFunction)
 		{
 			Console.WriteLine();
 			Thread.Sleep(300);

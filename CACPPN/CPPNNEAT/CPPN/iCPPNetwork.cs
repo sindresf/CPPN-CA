@@ -4,6 +4,6 @@ namespace CPPNNEATCA.CPPN
 {
 	interface ICPPNetwork
 	{
-		float GetOutput(List<float> input);
+		float GetOutput(Dictionary<int, float> input);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
 using CPPNNEATCA.NEAT.Parts;
@@ -8,78 +9,67 @@ namespace CPPNNEATCA.CPPN.Parts
 {
 	class CPPNetwork : ICPPNetwork
 	{
-		private List<NetworkNode> inputNodes, hiddenNodes, outputNodes;
+		private Dictionary<int, InputNetworkNode> inputNodes;
+		private Dictionary<int, InternalNetworkNode> hiddenNodes, outputNodes;
 		private CPPNParameters parameters;
 
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
 			this.parameters = parameters;
-			inputNodes = new List<NetworkNode>();
-			hiddenNodes = new List<NetworkNode>();
-			outputNodes = new List<NetworkNode>();
+			inputNodes = new Dictionary<int, InputNetworkNode>();
+			hiddenNodes = new Dictionary<int, InternalNetworkNode>();
+			outputNodes = new Dictionary<int, InternalNetworkNode>();
 			SetupNodeList(genome.nodeGenes);
-			SetupConnectionMatrix(genome.connectionGenes);
+			SetupConnections(genome.connectionGenes);
 		}
 
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes) //makes this a lot easier to just have "no sensor nodes" a list of hidden and funnel to output
 		{
 			for(int i = 0; i < nodeGenes.Count; i++)
-			{
 				switch(nodeGenes[i].type)
 				{
 				case NodeType.Sensor:
-					inputNodes.Add(new NetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					inputNodes.Add(nodeGenes[i].nodeID, new InputNetworkNode(nodeGenes[i].nodeID));
 					break;
 				case NodeType.Hidden:
-					hiddenNodes.Add(new NetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					hiddenNodes.Add(nodeGenes[i].nodeID, new InternalNetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
 					break;
 				case NodeType.Output:
-					outputNodes.Add(new NetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
+					outputNodes.Add(nodeGenes[i].nodeID, new InternalNetworkNode(nodeGenes[i].nodeID, nodeGenes[i].nodeInputFunction));
 					break;
 				}
-			}
 		}
 
-		private void SetupConnectionMatrix(GeneSequence<ConnectionGene> connectionGenes)
+		private void SetupConnections(GeneSequence<ConnectionGene> connectionGenes)
 		{
-			for(int i = 0; i < connectionGenes.Count; i++)
+			foreach(ConnectionGene gene in connectionGenes)
 			{
-				int connectionInCount = 0;
-				foreach(ConnectionGene gene in connectionGenes)
-					if(gene.toNodeID == hiddenNodes[i].nodeID || gene.toNodeID == outputNode.nodeID) // not how it works though
-						connectionInCount++;
+				var toDict = GetToNodeContainingDict(gene.toNodeID);
+				toDict[gene.toNodeID].AddInputConnection(gene.fromNodeID, gene.connectionWeight);
+
+				if(inputNodes.ContainsKey(gene.fromNodeID))
+					inputNodes[gene.fromNodeID].AddOutConnection(toDict[gene.toNodeID]);
+
+				else if(hiddenNodes.ContainsKey(gene.fromNodeID))
+					hiddenNodes[gene.fromNodeID].AddOutConnection(toDict[gene.toNodeID]);
 			}
-			//connections established
-			//now make them be weights
+		}
+		private Dictionary<int, InternalNetworkNode> GetToNodeContainingDict(int tokey)
+		{
+			if(hiddenNodes.ContainsKey(tokey))
+				return hiddenNodes;
+			if(outputNodes.ContainsKey(tokey))
+				return outputNodes;
+			throw new ArgumentException("The fuck!? that nodeGeneID:" + tokey + " is in No of the Network nodes that can be To nodes!");
 		}
 
-		public float GetOutput(List<float> input)
+		public float GetOutput(Dictionary<int, float> input)
 		{
-			return (float)Neat.random.NextRangedDouble(0.5, 0.49);/*
-			if(hiddenNodes.Length == 0)
-			{// means straight up input to output
-			 //for each input get the weight to make the tupleList
-				return outputNode.GetOutput(null);// input);
-			} else
-			{
-				TupleList<float,float> outputs = new TupleList<float, float>();
+			var ret = (float)Neat.random.NextRangedDouble(0.5, 0.49);
+			foreach(InputNetworkNode node in inputNodes.Values)
+				node.PropagateOutput(input[node.nodeID]);
 
-				//TODO check with the CPPN paper if the way the genes are structured actually takes automatically care of the ordering
-
-				//here go through all the nodes
-				//if they're sensor nodes skip (or find away to not store them at all
-				//if they are hidden with only connections to sensor nodes they go first
-				//and then hidden with sensor
-				//and then only hidden
-				//and then the output node(s)
-
-				//recursive memoized call from the output node?
-				//if sensorNode return input
-
-				if(outputNode != null)
-					return outputNode.GetOutput(outputs); //this is the ActivationFunction GetOutput function!
-			}
-			return 0.0f;*/
+			return ret;
 		}
 	}
 }

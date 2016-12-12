@@ -4,40 +4,60 @@ using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CPPN.Parts
 {
-	class NetworkNode
+	class InternalNetworkNode : InputNetworkNode
 	{
-		public int nodeID { get; set; }
-		private Dictionary<float, float> inValues;
-		private List<NetworkNode> outConnections;
+		private Dictionary<int, float> inValues, inWeights;
 		private ActivationFunction activationFunction;
 
-		public NetworkNode(int nodeID, ActivationFunction function)
+		public InternalNetworkNode(int nodeID, ActivationFunction function) : base(nodeID)
 		{
 			activationFunction = function;
-			inValues = new Dictionary<float, float>();
-			outConnections = new List<NetworkNode>();
+			inValues = new Dictionary<int, float>();
+			inWeights = new Dictionary<int, float>();
 		}
 
-		public void AddOutConnection(NetworkNode outConnection)
+		public void AddInputConnection(int inputNodeID, float inputWeight)
 		{
-			outConnections.Add(outConnection);
+			inWeights[inputNodeID] = inputWeight;
 		}
 
-		public void AddInputConnection(int nodeID, float value, float weight) //this needs working
+		public void Notify(int inputNodeID, float value)
 		{
-			inValues[weight] = value;
+			inValues[inputNodeID] = value;
 		}
 
 		public void PropagateOutput()
 		{
 			var nodeInput = new TupleList<float,float>();
-			foreach(KeyValuePair<float, float> pair in inValues)
-				nodeInput.Add(Tuple.Create(pair.Key, pair.Value));
+			foreach(int inputNodeID in inValues.Keys)
+				nodeInput.Add(Tuple.Create(inValues[inputNodeID], inWeights[inputNodeID]));
 
 			float nodeOutput = activationFunction.GetOutput(nodeInput);
-			foreach(NetworkNode node in outConnections)
-				node.AddInputConnection(nodeID, nodeOutput, -1);
+			foreach(InternalNetworkNode node in outConnections)
+				node.Notify(nodeID, nodeOutput);
+		}
+	}
+
+	class InputNetworkNode
+	{
+		public readonly int nodeID;
+		protected List<InternalNetworkNode> outConnections;
+
+		public InputNetworkNode(int nodeID)
+		{
+			this.nodeID = nodeID;
+			outConnections = new List<InternalNetworkNode>();
 		}
 
+		public void AddOutConnection(InternalNetworkNode outConnection)
+		{
+			outConnections.Add(outConnection);
+		}
+
+		public void PropagateOutput(float input)
+		{
+			foreach(InternalNetworkNode node in outConnections)
+				node.Notify(nodeID, input);
+		}
 	}
 }
