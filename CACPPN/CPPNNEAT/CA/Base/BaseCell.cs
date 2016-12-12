@@ -29,11 +29,11 @@ namespace CPPNNEATCA.CA.Base
 		}
 
 		protected abstract float GetState(Array cellBoard);
-		public List<float> GetNeighbourhoodCurrentState(Array cellBoard)
+		public Dictionary<int, float> GetNeighbourhoodCurrentState(Array cellBoard)
 		{
-			List<float> returnedStates = new List<float>();
+			var returnedStates = new Dictionary<int, float>();
 			foreach(BaseCell cell in Neighbourhood)
-				returnedStates.Add(cell.GetState(cellBoard));
+				returnedStates[cell.] = cell.GetState(cellBoard);
 
 			return returnedStates;
 		}
