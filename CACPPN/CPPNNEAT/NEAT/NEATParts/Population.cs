@@ -25,7 +25,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			SpeciesFitnessMap = new Dictionary<int, float>();
 			avgSpeciesFitness = 0.0f;
 			//HERE HERE HERE BULLSHITT!
-			var x = PieChart.ProcessFile(File.Open("lol", FileMode.Open));
+			//var x = PieChart.ProcessFile(File.Open("lol", FileMode.Open));
 		}
 
 		public void Initialize()

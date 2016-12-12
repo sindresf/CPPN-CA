@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using CPPNNEATCA.CA.Base;
 using CPPNNEATCA.CA.Parts;
@@ -9,7 +10,7 @@ namespace CPPNNEATCA.CA.Experiments
 {
 	class Test1DimCA : BaseOneDimentionalExperimentCA
 	{
-
+		private object _lock = new object();
 		public Test1DimCA() : base()
 		{
 			parameters = new CAParameters(NeighbourHoodSize: 3,
@@ -37,27 +38,34 @@ namespace CPPNNEATCA.CA.Experiments
 
 		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
 		{
-			float[] currentValues = new float[seed.Length];
-			seed.CopyTo(currentValues, 0);
-			float[] futureValues = new float[seed.Length];
-			seed.CopyTo(futureValues, 0);
-
-			float bestStateScore = 2.0f*parameters.CellWorldWidth;
-			float currentScore = 0.0f;
-			for(int i = 0; i < parameters.MaxGeneration; i++)
+			Console.WriteLine();
+			Thread.Sleep(300);
+			lock(_lock)
 			{
-				Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
-			   {
-				   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
-			   });
-				currentScore = CurrentVSGoalDifference(futureValues);
-				if(IsDeadSpace(futureValues))
-					return 1337;
-				if(currentScore.SameWithinReason(0.0f))
-					break;
-				PushBack(futureValues, currentValues);
+				float[] currentValues = new float[seed.Length];
+				seed.CopyTo(currentValues, 0);
+				float[] futureValues = new float[seed.Length];
+				seed.CopyTo(futureValues, 0);
+
+				float bestStateScore = 2.0f*parameters.CellWorldWidth;
+				float currentScore = 0.0f;
+				for(int i = 0; i < parameters.MaxGeneration; i++)
+				{
+					Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
+				   {
+					   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
+				   });
+					currentScore = CurrentVSGoalDifference(futureValues);
+					if(IsDeadSpace(futureValues))
+						return 1337;
+					if(currentScore.SameWithinReason(0.0f))
+						break;
+					PushBack(futureValues, currentValues);
+					Console.WriteLine(currentValues.PrintCA());
+					Thread.Sleep(80);
+				}
+				return bestStateScore;
 			}
-			return bestStateScore;
 		}
 		private bool IsDeadSpace(float[] cellStates)
 		{

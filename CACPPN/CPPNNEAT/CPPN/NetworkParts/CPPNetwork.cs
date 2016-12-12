@@ -6,23 +6,21 @@ using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CPPN.Parts
 {
-	class CPPNetwork : ICPPNetwork //no recurrent connections as a feature, because of its "once fed forward" nature (until physics might enter)s
+	class CPPNetwork : ICPPNetwork
 	{
-		//doesn't it say in the paper that the bias is ALWAYS one? so can just add that to any output OH YES, THE WEIGHT FOR IT
-
-		private NetworkNode[] hiddenNodes; // to store the activation functions 
-		private float[][] connections;   // to store all the weights
-										 // TODO MAKE THIS A DICTIONARY ON NODE-IDs INFACT MAKE ALL THINGS DICTIONARIES ON SUCH IDs
+		private NetworkNode[] hiddenNodes;
+		private float[][] connections;
 		private NetworkNode outputNode;
 
-		private Dictionary<int, float> nodeOutput; //memoizing the output as they comes. Only for hidden (output node's output is the output)
+		private Dictionary<int, float> nodeOutput;
 
 		private CPPNParameters parameters;
 
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
 			this.parameters = parameters;
-			/*nodeOutput = new Dictionary<int, float>();
+			/*
+			nodeOutput = new Dictionary<int, float>();
 			SetupNodeList(genome);
 			SetupConnectionMatrix(genome);*/
 		}

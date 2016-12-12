@@ -15,7 +15,7 @@ namespace CPPNNEATCA
 
 		public Parameters()
 		{
-			experiment = new Test2DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
+			experiment = new Test1DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
 			CA = experiment.GetParameters();
 			EA = new EAParameters(experiment);
 			CPPN = new CPPNParameters(CA);
