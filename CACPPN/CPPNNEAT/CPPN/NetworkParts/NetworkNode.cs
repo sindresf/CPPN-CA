@@ -4,10 +4,45 @@ using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CPPN.Parts
 {
-	class InternalNetworkNode : InputNetworkNode
+
+	interface INetworkNode
+	{
+		void SetupDone();
+		void Notify(int inputNodeID, float value);
+		bool IsFullyNotified();
+		void AddInputConnection(int inputNodeID, float inputWeight);
+	}
+
+
+	class InputNetworkNode
+	{
+		public readonly int nodeID;
+
+		protected List<INetworkNode> outConnections;
+
+		public InputNetworkNode(int nodeID)
+		{
+			this.nodeID = nodeID;
+			outConnections = new List<INetworkNode>();
+		}
+
+		public void AddOutConnection(INetworkNode outConnection)
+		{
+			outConnections.Add(outConnection);
+		}
+
+		public void PropagateOutput(float input)
+		{
+			foreach(InternalNetworkNode node in outConnections)
+				node.Notify(nodeID, input);
+		}
+	}
+
+	class InternalNetworkNode : InputNetworkNode, INetworkNode
 	{
 		private Dictionary<int, float> inValues, inWeights;
 		private ActivationFunction activationFunction;
+		private int shouldHave;
 
 		public InternalNetworkNode(int nodeID, ActivationFunction function) : base(nodeID)
 		{
@@ -26,11 +61,6 @@ namespace CPPNNEATCA.CPPN.Parts
 			inValues[inputNodeID] = value;
 		}
 
-		public bool IsFullyNotified(int shouldHave)
-		{
-			return inValues.Count == shouldHave;
-		}
-
 		public void PropagateOutput()
 		{
 			var nodeInput = new TupleList<float,float>();
@@ -41,28 +71,15 @@ namespace CPPNNEATCA.CPPN.Parts
 			foreach(InternalNetworkNode node in outConnections)
 				node.Notify(nodeID, nodeOutput);
 		}
-	}
 
-	class InputNetworkNode
-	{
-		public readonly int nodeID;
-		protected List<InternalNetworkNode> outConnections;
-
-		public InputNetworkNode(int nodeID)
+		public void SetupDone()
 		{
-			this.nodeID = nodeID;
-			outConnections = new List<InternalNetworkNode>();
+			shouldHave = inWeights.Count;
 		}
 
-		public void AddOutConnection(InternalNetworkNode outConnection)
+		public bool IsFullyNotified()
 		{
-			outConnections.Add(outConnection);
-		}
-
-		public void PropagateOutput(float input)
-		{
-			foreach(InternalNetworkNode node in outConnections)
-				node.Notify(nodeID, input);
+			return shouldHave == inValues.Count;
 		}
 	}
 
@@ -70,10 +87,11 @@ namespace CPPNNEATCA.CPPN.Parts
 	{
 		public readonly int nodeID;
 		public readonly float representedState;
+
 		private Dictionary<int, float> inValues, inWeights;
 		private ActivationFunction activationFunction;
-
 		private int shouldHave;
+
 		public OutputNetworkNode(int nodeID, float representedState, ActivationFunction function)
 		{
 			this.nodeID = nodeID;
@@ -87,14 +105,17 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			shouldHave = inWeights.Count;
 		}
+
 		public void AddInputConnection(int inputNodeID, float inputWeight)
 		{
 			inWeights[inputNodeID] = inputWeight;
 		}
+
 		public void Notify(int inputNodeID, float value)
 		{
 			inValues[inputNodeID] = value;
 		}
+
 		public bool IsFullyNotified()
 		{
 			return shouldHave == inValues.Count;
