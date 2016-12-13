@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using ImageMagick;
 
@@ -20,22 +19,7 @@ namespace Gif
 			return filteredFiles.ToArray();
 		}
 
-		public static void MakeGif(IntPtr[] images, string gifPath)
-		{
-			GifBitmapEncoder gEnc = new GifBitmapEncoder();
-			foreach(IntPtr pointer in images)
-			{
-				var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-										pointer,
-										IntPtr.Zero,
-										Int32Rect.Empty,
-										BitmapSizeOptions.FromEmptyOptions());
-				var frame = BitmapFrame.Create(src);
-				gEnc.Frames.Add(frame);
-			}
-			SaveGif(gEnc, gifPath);
-		}
-		public static void MakeMagickGif(string[] imagePaths, string gifPath, int frameDuration)
+		public static void MakeGif(string[] imagePaths, string gifPath, int frameDuration)
 		{
 			using(MagickImageCollection collection = new MagickImageCollection())
 			{
@@ -46,6 +30,17 @@ namespace Gif
 					collection[indexCount++].AnimationDelay = frameDuration;
 				}
 				collection.Write(gifPath);
+			}
+		}
+		public static void MakeDirectoryGifs(string[] dirPaths, string GifDirPath, int frameDuration)
+		{
+			int gifNameAdd = 1;
+			string gifPath;
+			foreach(string dirPath in dirPaths)
+			{
+				gifPath = Path.Combine(GifDirPath, "Dank.gif".Insert(4, "" + gifNameAdd++));
+				var images = GetImagesInDirectory(dirPath);
+				MakeGif(images, gifPath, frameDuration);
 			}
 		}
 		private static void SaveGif(GifBitmapEncoder gEnc, string path)
