@@ -147,7 +147,6 @@ namespace CPPNNEAT.CA.Utils
 			cell.Neighbourhood = neighbourhood;
 		}
 
-
 		private static void InitializeCornerCell(TwoDimCell cell, ICell[][] cells, int neighbourhoodWidth, int cellBoardSize, bool upperCell, bool rightCell, bool lowerCell, bool leftCell)
 		{
 			bool URCell = upperCell && rightCell;
