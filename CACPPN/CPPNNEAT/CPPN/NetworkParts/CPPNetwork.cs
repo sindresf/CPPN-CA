@@ -76,7 +76,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			throw new ArgumentException("The fuck!? that nodeGeneID:" + tokey + " is in No of the Network nodes that can be To nodes!");
 		}
 
-		public float GetOutput(Dictionary<int, float> input)
+		public float GetOutput(List<float> input)
 		{
 			var ret = (float)Neat.random.NextRangedDouble(0.5, 0.49);
 			foreach(InputNetworkNode node in inputNodes.Values)
