@@ -1,5 +1,4 @@
-﻿using CPPNNEATCA.CPPN.Parts;
-using CPPNNEATCA.EA.Base;
+﻿using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.Utils;
 
@@ -37,13 +36,11 @@ namespace CPPNNEATCA.NEAT.Parts
 			nodeGenes = new NodeGeneSequence();
 
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
-				nodeGenes.Add(new NodeGene(IDs.NodeGeneID, i, NodeType.Sensor, ActivationFunctionType.AbsoluteValue));
+				nodeGenes.Add(new SensorNodeGene(IDs.NodeGeneID, i) as NodeGene);
 
+			int stateCounter = 0;
 			for(int i = Neat.parameters.CPPN.InputSize; i < Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize; i++)
-				nodeGenes.Add(new NodeGene(IDs.NodeGeneID,
-					i,
-					NodeType.Output,
-					Neat.random.ActivationFunctionType()));
+				nodeGenes.Add(new OutputNodeGene(IDs.NodeGeneID, i, stateCounter++, Neat.random.ActivationFunctionType()) as NodeGene);
 		}
 
 		private void InitializeConnectionGenes(IDCounters IDs)

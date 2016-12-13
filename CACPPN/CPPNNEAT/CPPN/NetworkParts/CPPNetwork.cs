@@ -39,10 +39,10 @@ namespace CPPNNEATCA.CPPN.Parts
 					break;
 				case NodeType.Hidden:
 					nodeHasPropagated[nodeID] = false;
-					hiddenNodes.Add(nodeID, new InternalNetworkNode(nodeID, nodeGenes[i].nodeInputFunction));
+					hiddenNodes.Add(nodeID, new InternalNetworkNode(nodeID, ((InternalNodeGene)nodeGenes[i]).Function));
 					break;
 				case NodeType.Output:
-					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0.0f, nodeGenes[i].nodeInputFunction) as INetworkNode);
+					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0.0f, ((InternalNodeGene)nodeGenes[i]).Function) as INetworkNode);
 					break;
 				}
 			}

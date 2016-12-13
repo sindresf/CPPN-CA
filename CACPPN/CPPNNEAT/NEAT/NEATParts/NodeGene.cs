@@ -37,9 +37,14 @@ namespace CPPNNEATCA.NEAT.Parts
 
 	class InternalNodeGene : NodeGene
 	{
+		public ActivationFunction Function;
+		public InternalNodeGene(int geneID, int nodeID, ActivationFunctionType type) : base(geneID, nodeID)
+		{
+			Function = ActivationFunction.GetRandomInitializedFunction(type);
+		}
 		public InternalNodeGene(int geneID, int nodeID, ActivationFunction function) : base(geneID, nodeID)
 		{
-
+			this.Function = function;
 		}
 
 		public InternalNodeGene ChangeFunction(ActivationFunctionType newType, int geneID)
@@ -50,23 +55,28 @@ namespace CPPNNEATCA.NEAT.Parts
 
 	class HiddenNodeGene : InternalNodeGene
 	{
-		public ActivationFunction function;
+		public HiddenNodeGene(int geneID, int nodeID, ActivationFunctionType function) : base(geneID, nodeID, function)
+		{
+			type = NodeType.Hidden;
+		}
 		public HiddenNodeGene(int geneID, int nodeID, ActivationFunction function) : base(geneID, nodeID, function)
 		{
 			type = NodeType.Hidden;
-			this.function = function;
 		}
 	}
 
 	class OutputNodeGene : InternalNodeGene
 	{
 		public readonly float representedState;
-		public ActivationFunction function;
+		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunctionType function) : base(geneID, nodeID, function)
+		{
+			type = NodeType.Output;
+			this.representedState = representedState;
+		}
 		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunction function) : base(geneID, nodeID, function)
 		{
 			type = NodeType.Output;
 			this.representedState = representedState;
-			this.function = function;
 		}
 	}
 }
