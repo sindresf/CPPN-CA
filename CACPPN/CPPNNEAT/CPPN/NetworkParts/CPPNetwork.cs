@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CPPNNEATCA.EA.Base;
-using CPPNNEATCA.NEAT;
 using CPPNNEATCA.NEAT.Parts;
 
 namespace CPPNNEATCA.CPPN.Parts
@@ -76,31 +75,32 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		public int GetNextState(List<float> input)
 		{
-			var ret = Neat.random.Next(Neat.parameters.CA.CellStateCount);
+			PropagateInput(input);
 			if(hiddenNodes.Count > 0)
 			{
-				foreach(InputNetworkNode node in inputNodes.Values)
-					node.PropagateOutput(input[node.nodeID]);
-
-				while(awaitingNotificationsNodes.Count > 0)
-				{
-					foreach(InternalNetworkNode node in awaitingNotificationsNodes.Values)
-					{
-						if(node.IsFullyNotified())
-						{
-							node.PropagateOutput();
-							awaitingNotificationsNodes.Remove(node.nodeID);
-						}
-					}
-				}
-				//so here every hidden node should've had their say
-				//and so the politicianNodes are checked for state
-				int state = CheckStateVote();
-				return ret;
-			} else //this means there's just input-output, meaning "direct state voting"
-			{
-
+				PropagateInternal();
 				return CheckStateVote();
+			} else
+				return CheckStateVote();
+		}
+		private void PropagateInput(List<float> input)
+		{
+			foreach(InputNetworkNode node in inputNodes.Values)
+				node.PropagateOutput(input[node.nodeID]);
+		}
+		private void PropagateInternal()
+		{
+			while(awaitingNotificationsNodes.Count > 0)
+			{
+				var doneNodesID = new List<int>();
+				foreach(InternalNetworkNode node in awaitingNotificationsNodes.Values)
+					if(node.IsFullyNotified())
+					{
+						node.PropagateOutput();
+						doneNodesID.Add(node.nodeID);
+					}
+				foreach(int ID in doneNodesID)
+					awaitingNotificationsNodes.Remove(ID);
 			}
 		}
 		private int CheckStateVote()
