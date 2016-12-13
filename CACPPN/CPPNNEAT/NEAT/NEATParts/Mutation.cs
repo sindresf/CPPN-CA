@@ -81,7 +81,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			ConnectionGene connectionToSplitt = Neat.random.ConnectionGene(genome);
 
-			NodeGene newNode = new NodeGene(IDs.NodeGeneID,
+			NodeGene newNode = new InternalNodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										NodeType.Hidden,
 										Neat.random.ActivationFunctionType());

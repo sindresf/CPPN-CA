@@ -42,7 +42,7 @@ namespace CPPNNEATCA.CPPN.Parts
 					hiddenNodes.Add(nodeID, new InternalNetworkNode(nodeID, nodeGenes[i].nodeInputFunction));
 					break;
 				case NodeType.Output:
-					outputNodes.Add(nodeID, new InternalNetworkNode(nodeID, nodeGenes[i].nodeInputFunction));
+					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0.0f, nodeGenes[i].nodeInputFunction) as INetworkNode);
 					break;
 				}
 			}

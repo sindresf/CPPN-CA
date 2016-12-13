@@ -1,5 +1,4 @@
-﻿using System;
-using CPPNNEATCA.CPPN.Parts;
+﻿using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -13,33 +12,47 @@ namespace CPPNNEATCA.NEAT.Parts
 	class NodeGene : Gene
 	{
 		public readonly int nodeID;
-		public readonly NodeType type;
-		public readonly ActivationFunctionType functionType;
-		public ActivationFunction nodeInputFunction { get; private set; }
+		public NodeType type { get; protected set; }
 
-		public NodeGene(int geneID, int nodeID, NodeType type, ActivationFunctionType nodeInputFunctionType) : base(geneID)
+		public NodeGene(int geneID, int nodeID) : base(geneID)
 		{
 			this.nodeID = nodeID;
-			this.type = type;
-			functionType = nodeInputFunctionType;
-			nodeInputFunction = ActivationFunction.GetRandomInitializedFunction(functionType);
 		}
 
 		public NodeGene(NodeGene gene) : base(gene.geneID)
 		{
 			nodeID = gene.nodeID;
 			type = gene.type;
-			functionType = gene.functionType;
-			nodeInputFunction = gene.nodeInputFunction;
 		}
+	}
 
-		public NodeGene ChangeFunction(ActivationFunctionType newFunctionType, int newGeneID)
+	class SensorNodeGene : NodeGene
+	{
+		public SensorNodeGene(int geneID, int nodeID) : base(geneID, nodeID)
 		{
-			if(type != NodeType.Sensor)
-			{
-				return new NodeGene(newGeneID, nodeID, type, newFunctionType);
-			} else
-				throw new ArgumentException("Sensor nodes not supposed to have functions!");
+			type = NodeType.Sensor;
+		}
+	}
+
+	class InternalNodeGene : NodeGene
+	{
+		public ActivationFunction function;
+		public InternalNodeGene(int geneID, int nodeID, ActivationFunction function) : base(geneID, nodeID)
+		{
+			type = NodeType.Hidden;
+			this.function = function;
+		}
+	}
+
+	class OutputNodeGene : NodeGene
+	{
+		public readonly float representedState;
+		public ActivationFunction function;
+		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunction function) : base(geneID, nodeID)
+		{
+			type = NodeType.Output;
+			this.representedState = representedState;
+			this.function = function;
 		}
 	}
 }
