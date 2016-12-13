@@ -24,7 +24,6 @@ namespace CPPNNEATCA.CPPN.Parts
 			SetupNodeList(genome.nodeGenes);
 			SetupConnections(genome.connectionGenes);
 		}
-
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes)
 		{
 			for(int i = 0; i < nodeGenes.Count; i++)
@@ -42,12 +41,11 @@ namespace CPPNNEATCA.CPPN.Parts
 					hiddenNodes.Add(nodeID, node);
 					break;
 				case NodeType.Output:
-					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0.0f, ((InternalNodeGene)nodeGene).Function) as INetworkNode);
+					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0, ((InternalNodeGene)nodeGene).Function) as INetworkNode);
 					break;
 				}
 			}
 		}
-
 		private void SetupConnections(GeneSequence<ConnectionGene> connectionGenes)
 		{
 			foreach(ConnectionGene gene in connectionGenes)
@@ -77,11 +75,9 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			PropagateInput(input);
 			if(hiddenNodes.Count > 0)
-			{
 				PropagateInternal();
-				return CheckStateVote();
-			} else
-				return CheckStateVote();
+
+			return CheckStateVote();
 		}
 		private void PropagateInput(List<float> input)
 		{
@@ -94,7 +90,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			{
 				var doneNodesID = new List<int>();
 				foreach(InternalNetworkNode node in awaitingNotificationsNodes.Values)
-					if(node.IsFullyNotified())
+					if(node.IsFullyNotified)
 					{
 						node.PropagateOutput();
 						doneNodesID.Add(node.nodeID);
@@ -105,12 +101,19 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 		private int CheckStateVote()
 		{
-			float voted = -1;
-			foreach(InternalNetworkNode node in outputNodes.Values)
+			int voted = -1;
+			float maxActivation = float.MinValue;
+			foreach(INetworkNode Inode in outputNodes.Values)
 			{
-				node.IsFullyNotified();
+				var node = ((OutputNetworkNode)Inode);
+				var activationLevel = node.Activation;
+				if(activationLevel > maxActivation)
+				{
+					maxActivation = activationLevel;
+					voted = node.representedState;
+				}
 			}
-			return 1;
+			return voted;
 		}
 	}
 }

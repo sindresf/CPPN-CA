@@ -9,7 +9,6 @@ namespace CPPNNEATCA.CPPN.Parts
 	{
 		void SetupDone();
 		void Notify(int inputNodeID, float value);
-		bool IsFullyNotified();
 		void AddInputConnection(int inputNodeID, float inputWeight);
 	}
 
@@ -77,26 +76,29 @@ namespace CPPNNEATCA.CPPN.Parts
 			shouldHave = inWeights.Count;
 		}
 
-		public bool IsFullyNotified()
+		public bool IsFullyNotified
 		{
-			return shouldHave == inValues.Count;
+			get
+			{
+				return shouldHave == inValues.Count;
+			}
 		}
 	}
 
 	class OutputNetworkNode
 	{
 		public readonly int nodeID;
-		public readonly float representedState;
+		public readonly int representedState;
 
 		private Dictionary<int, float> inValues, inWeights;
-		private ActivationFunction activationFunction;
+		private ActivationFunction Function;
 		private int shouldHave;
 
-		public OutputNetworkNode(int nodeID, float representedState, ActivationFunction function)
+		public OutputNetworkNode(int nodeID, int representedState, ActivationFunction function)
 		{
 			this.nodeID = nodeID;
 			this.representedState = representedState;
-			activationFunction = function;
+			Function = function;
 			inValues = new Dictionary<int, float>();
 			inWeights = new Dictionary<int, float>();
 		}
@@ -116,9 +118,16 @@ namespace CPPNNEATCA.CPPN.Parts
 			inValues[inputNodeID] = value;
 		}
 
-		public bool IsFullyNotified()
+		public float Activation
 		{
-			return shouldHave == inValues.Count;
+			get
+			{
+				var nodeInput = new TupleList<float,float>();
+				foreach(int inputNodeID in inValues.Keys)
+					nodeInput.Add(Tuple.Create(inValues[inputNodeID], inWeights[inputNodeID]));
+
+				return Function.GetOutput(nodeInput);
+			}
 		}
 	}
 }
