@@ -37,9 +37,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[i - 1][j]);
 			neighbourhood.Add(cells[i][j + 1]);
-			neighbourhood.Add(cells[i][j]);
 			neighbourhood.Add(cells[i + 1][j]);
 			neighbourhood.Add(cells[i][j - 1]);
+			neighbourhood.Add(cells[i][j]);
 			//width == 2
 			if(neighbourhoodWidth == 2)
 			{
@@ -65,9 +65,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 1][i]);
 			neighbourhood.Add(cells[0][i + 1]);
-			neighbourhood.Add(cells[0][i]);
 			neighbourhood.Add(cells[1][i]);
 			neighbourhood.Add(cells[0][i - 1]);
+			neighbourhood.Add(cells[0][i]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
@@ -85,9 +85,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 2][i]);
 			neighbourhood.Add(cells[cellBoardSize - 1][i + 1]);
-			neighbourhood.Add(cells[cellBoardSize - 1][i]);
 			neighbourhood.Add(cells[0][i]);
 			neighbourhood.Add(cells[cellBoardSize - 1][i - 1]);
+			neighbourhood.Add(cells[cellBoardSize - 1][i]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
@@ -113,9 +113,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[i - 1][cellBoardSize - 1]);
 			neighbourhood.Add(cells[i][0]);
-			neighbourhood.Add(cells[i][cellBoardSize - 1]);
 			neighbourhood.Add(cells[i + 1][cellBoardSize - 1]);
 			neighbourhood.Add(cells[i][cellBoardSize - 2]);
+			neighbourhood.Add(cells[i][cellBoardSize - 1]);
 			//width == 2
 			if(cellBoardSize >= 2)
 			{
@@ -133,9 +133,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[i - 1][0]);
 			neighbourhood.Add(cells[i][1]);
-			neighbourhood.Add(cells[i][0]);
 			neighbourhood.Add(cells[i + 1][0]);
 			neighbourhood.Add(cells[i][cellBoardSize - 1]);
+			neighbourhood.Add(cells[i][0]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
@@ -166,9 +166,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 1][cellBoardSize - 1]);
 			neighbourhood.Add(cells[0][0]);
-			neighbourhood.Add(cells[0][cellBoardSize - 1]);
 			neighbourhood.Add(cells[1][cellBoardSize - 1]);
 			neighbourhood.Add(cells[0][cellBoardSize - 2]);
+			neighbourhood.Add(cells[0][cellBoardSize - 1]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
@@ -185,9 +185,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 2][cellBoardSize - 1]);
 			neighbourhood.Add(cells[cellBoardSize - 1][0]);
-			neighbourhood.Add(cells[cellBoardSize - 1][cellBoardSize - 1]);
 			neighbourhood.Add(cells[0][cellBoardSize - 1]);
 			neighbourhood.Add(cells[cellBoardSize - 1][cellBoardSize - 2]);
+			neighbourhood.Add(cells[cellBoardSize - 1][cellBoardSize - 1]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
@@ -204,9 +204,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 2][0]);
 			neighbourhood.Add(cells[cellBoardSize - 1][1]);
-			neighbourhood.Add(cells[cellBoardSize - 1][0]);
 			neighbourhood.Add(cells[0][0]);
 			neighbourhood.Add(cells[cellBoardSize - 1][cellBoardSize - 1]);
+			neighbourhood.Add(cells[cellBoardSize - 1][0]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
@@ -223,9 +223,9 @@ namespace CPPNNEAT.CA.Utils
 			//width == 1
 			neighbourhood.Add(cells[cellBoardSize - 1][0]);
 			neighbourhood.Add(cells[0][1]);
-			neighbourhood.Add(cells[0][0]);
 			neighbourhood.Add(cells[1][0]);
 			neighbourhood.Add(cells[0][cellBoardSize - 1]);
+			neighbourhood.Add(cells[0][0]);
 			//width == 2
 			if(neighbourhoodWidth >= 2)
 			{
