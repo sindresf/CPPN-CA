@@ -17,8 +17,10 @@ namespace CPPNNEATCA.CPPN.Parts
 	abstract class ActivationFunction
 	{
 		protected Coefficients coefficients;
-		public ActivationFunction()
+		public readonly ActivationFunctionType Type;
+		public ActivationFunction(ActivationFunctionType Type)
 		{
+			this.Type = Type;
 			coefficients = new Coefficients();
 		}
 		public virtual float GetOutput(TupleList<float, float> inputs)
@@ -54,7 +56,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class SinusFunction : ActivationFunction
 	{
-		public SinusFunction() : base()
+		public SinusFunction() : base(ActivationFunctionType.Sinusodial)
 		{
 			coefficients.Add('a', new Coefficient(1.0, 0.1, 0.0, 3.0));
 			coefficients.Add('b', new Coefficient(0.0, 0.1, -3.0, 3.0));
@@ -74,7 +76,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class GaussianFunction : ActivationFunction
 	{
-		public GaussianFunction() : base()
+		public GaussianFunction() : base(ActivationFunctionType.Gaussian)
 		{
 			coefficients.Add('m', new Coefficient(.0, .1, -3.0, 3.0));
 			coefficients.Add('v', new Coefficient(1.0, .05, -.7, 2.0));
@@ -99,7 +101,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class AbsoluteValueFunction : ActivationFunction
 	{
-		public AbsoluteValueFunction() : base()
+		public AbsoluteValueFunction() : base(ActivationFunctionType.AbsoluteValue)
 		{
 			coefficients.Add('x', new Coefficient(1.0, .02, 1.01, 2.5));
 			coefficients.Add('y', new Coefficient(.0, .01, 1.9, 2.1));
@@ -115,7 +117,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class PyramidAbsoluteValueFunction : ActivationFunction
 	{
-		public PyramidAbsoluteValueFunction() : base()
+		public PyramidAbsoluteValueFunction() : base(ActivationFunctionType.PyramidAbsoluteValue)
 		{
 
 		}
@@ -133,7 +135,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class ModuloFunction : ActivationFunction
 	{
-		public ModuloFunction() : base()
+		public ModuloFunction() : base(ActivationFunctionType.Modulo)
 		{
 
 		}
@@ -149,7 +151,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class LinearFunction : ActivationFunction
 	{
-		public LinearFunction() : base()
+		public LinearFunction() : base(ActivationFunctionType.Linear)
 		{
 			coefficients.Add('a', new Coefficient(1.0, 0.1, -3.0, 3.0));
 			coefficients.Add('b', new Coefficient(0.0, 0.1, -3.0, 3.0));
@@ -165,7 +167,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class SensorFunction : ActivationFunction
 	{
-		public SensorFunction() : base() { }
+		public SensorFunction() : base(ActivationFunctionType.Sensor) { }
 
 		public override float GetOutput(TupleList<float, float> inputs)
 		{
@@ -174,7 +176,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	}
 	class OtherFunction : ActivationFunction
 	{
-		public OtherFunction() : base()
+		public OtherFunction() : base(ActivationFunctionType.Linear)
 		{
 			coefficients.Add('x', new Coefficient(1.0, 0.0, 0.0, 1.0));
 		}

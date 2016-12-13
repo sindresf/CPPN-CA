@@ -1,4 +1,5 @@
-﻿using CPPNNEATCA.CPPN.Parts;
+﻿using System;
+using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -36,19 +37,32 @@ namespace CPPNNEATCA.NEAT.Parts
 
 	class InternalNodeGene : NodeGene
 	{
-		public ActivationFunction function;
 		public InternalNodeGene(int geneID, int nodeID, ActivationFunction function) : base(geneID, nodeID)
+		{
+
+		}
+
+		public InternalNodeGene ChangeFunction(ActivationFunctionType newType, int geneID)
+		{
+			throw new NotImplementedException("last thing on my fucking list!");
+		}
+	}
+
+	class HiddenNodeGene : InternalNodeGene
+	{
+		public ActivationFunction function;
+		public HiddenNodeGene(int geneID, int nodeID, ActivationFunction function) : base(geneID, nodeID, function)
 		{
 			type = NodeType.Hidden;
 			this.function = function;
 		}
 	}
 
-	class OutputNodeGene : NodeGene
+	class OutputNodeGene : InternalNodeGene
 	{
 		public readonly float representedState;
 		public ActivationFunction function;
-		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunction function) : base(geneID, nodeID)
+		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunction function) : base(geneID, nodeID, function)
 		{
 			type = NodeType.Output;
 			this.representedState = representedState;

@@ -81,9 +81,8 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			ConnectionGene connectionToSplitt = Neat.random.ConnectionGene(genome);
 
-			NodeGene newNode = new InternalNodeGene(IDs.NodeGeneID,
+			NodeGene newNode = new HiddenNodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
-										NodeType.Hidden,
 										Neat.random.ActivationFunctionType());
 
 			ConnectionGene firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
@@ -134,7 +133,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			int geneIndex = Neat.random.Next(Neat.parameters.CPPN.InputSize,
 						Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize);
 
-			genome.nodeGenes[geneIndex] = genome.nodeGenes[geneIndex].ChangeFunction(newType, IDs.NodeGeneID);
+			genome.nodeGenes[geneIndex] = ((InternalNodeGene)genome.nodeGenes[geneIndex]).ChangeFunction(newType, IDs.NodeGeneID);
 			return genome;
 		}
 
