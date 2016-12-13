@@ -18,20 +18,9 @@ namespace CPPNNEATCA.CA.Base
 				states[i] = (float)Math.Round(states[i - 1] + interval, 2);
 		}
 
-		protected float FloatToState(float value)
+		protected float FloatToState(int stateIndex)
 		{
-			float shortestDistance = 1.0f;
-			float state = 0.0f;
-			foreach(float candidateState in states)
-			{
-				float dist = Math.Abs(candidateState-value);
-				if(shortestDistance > dist)
-				{
-					shortestDistance = dist;
-					state = candidateState;
-				}
-			}
-			return state;
+			return states[stateIndex];
 		}
 
 		public abstract float RunEvaluation(Func<List<float>, int> TransitionFunction);
