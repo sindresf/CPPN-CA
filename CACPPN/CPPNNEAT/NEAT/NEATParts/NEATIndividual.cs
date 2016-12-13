@@ -26,7 +26,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		public override void Evaluate(int speciesCount)
 		{
 			network = new CPPNetwork(genome, Neat.parameters.CPPN);
-			Fitness *= Neat.evaluator.RunEvaluation(network.GetOutput);
+			Fitness *= Neat.evaluator.RunEvaluation(network.GetNextState);
 			Fitness *= 1.24f / speciesCount;
 		}
 	}

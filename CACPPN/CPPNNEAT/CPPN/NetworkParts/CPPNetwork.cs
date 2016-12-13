@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
 using CPPNNEATCA.NEAT.Parts;
-using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.CPPN.Parts
 {
@@ -11,7 +10,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	{
 		private Dictionary<int, InputNetworkNode> inputNodes;
 		private Dictionary<int, INetworkNode> hiddenNodes, outputNodes;
-		private Dictionary<int, bool> nodeHasPropagated;
+		private Dictionary<int, INetworkNode> awaitingNotificationsNodes;
 		private CPPNParameters parameters;
 
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
@@ -21,7 +20,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			inputNodes = new Dictionary<int, InputNetworkNode>();
 			hiddenNodes = new Dictionary<int, INetworkNode>();
 			outputNodes = new Dictionary<int, INetworkNode>();
-			nodeHasPropagated = new Dictionary<int, bool>();
+			awaitingNotificationsNodes = new Dictionary<int, INetworkNode>();
 
 			SetupNodeList(genome.nodeGenes);
 			SetupConnections(genome.connectionGenes);
@@ -31,18 +30,20 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			for(int i = 0; i < nodeGenes.Count; i++)
 			{
-				var nodeID = nodeGenes[i].nodeID;
-				switch(nodeGenes[i].type)
+				var nodeGene = nodeGenes[i];
+				var nodeID = nodeGene.nodeID;
+				switch(nodeGene.type)
 				{
 				case NodeType.Sensor:
 					inputNodes.Add(nodeID, new InputNetworkNode(nodeID));
 					break;
 				case NodeType.Hidden:
-					nodeHasPropagated[nodeID] = false;
-					hiddenNodes.Add(nodeID, new InternalNetworkNode(nodeID, ((InternalNodeGene)nodeGenes[i]).Function));
+					var node =  new InternalNetworkNode(nodeID, ((InternalNodeGene)nodeGene).Function) as INetworkNode;
+					awaitingNotificationsNodes[nodeID] = node;
+					hiddenNodes.Add(nodeID, node);
 					break;
 				case NodeType.Output:
-					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0.0f, ((InternalNodeGene)nodeGenes[i]).Function) as INetworkNode);
+					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0.0f, ((InternalNodeGene)nodeGene).Function) as INetworkNode);
 					break;
 				}
 			}
@@ -73,25 +74,28 @@ namespace CPPNNEATCA.CPPN.Parts
 			throw new ArgumentException("The fuck!? that nodeGeneID:" + tokey + " is in No of the Network nodes that can be To nodes!");
 		}
 
-		public float GetOutput(List<float> input)
+		public int GetNextState(List<float> input)
 		{
-			var ret = (float)Neat.random.NextRangedDouble(0.5, 0.49);
+			var ret = Neat.random.Next(Neat.parameters.CA.CellStateCount);
 			if(hiddenNodes.Count > 0)
 			{
 				foreach(InputNetworkNode node in inputNodes.Values)
 					node.PropagateOutput(input[node.nodeID]);
 
-				while(!hasAllPropagated())
+				while(awaitingNotificationsNodes.Count > 0)
 				{
-					foreach(InternalNetworkNode node in hiddenNodes.Values)
+					foreach(InternalNetworkNode node in awaitingNotificationsNodes.Values)
 					{
 						if(node.IsFullyNotified())
 						{
-							nodeHasPropagated[node.nodeID] = true;
 							node.PropagateOutput();
+							awaitingNotificationsNodes.Remove(node.nodeID);
 						}
 					}
 				}
+				//so here every hidden node should've had their say
+				//and so the politicianNodes are checked for state
+				int state = CheckStateVote();
 				return ret;
 			} else //this means there's just input-output, meaning "direct state voting"
 			{
@@ -99,22 +103,14 @@ namespace CPPNNEATCA.CPPN.Parts
 				return CheckStateVote();
 			}
 		}
-		private bool hasAllPropagated()
-		{
-			bool hasAll = true;
-			foreach(bool has in nodeHasPropagated.Values)
-				if(!has)
-					hasAll = false;
-			return hasAll;
-		}
-		private float CheckStateVote()
+		private int CheckStateVote()
 		{
 			float voted = -1;
 			foreach(InternalNetworkNode node in outputNodes.Values)
 			{
 				node.IsFullyNotified();
 			}
-			return 1.0f;
+			return 1;
 		}
 	}
 }

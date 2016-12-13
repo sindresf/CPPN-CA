@@ -34,7 +34,7 @@ namespace CPPNNEATCA.CA.Base
 			return state;
 		}
 
-		public abstract float RunEvaluation(Func<List<float>, float> TransitionFunction);
+		public abstract float RunEvaluation(Func<List<float>, int> TransitionFunction);
 
 		public CAParameters GetParameters()
 		{

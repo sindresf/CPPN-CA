@@ -59,7 +59,7 @@ namespace CPPNNEATCA.CA.Experiments
 					cell.InitializeNeighbourhood();
 		}
 
-		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
+		public override float RunEvaluation(Func<List<float>, int> TransitionFunction)
 		{
 			float[][] currentValues = new float[seed.GetLength(0)][];
 			float[][] futureValues = new float[seed.GetLength(0)][];

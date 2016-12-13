@@ -4,6 +4,6 @@ namespace CPPNNEATCA.CPPN
 {
 	interface ICPPNetwork
 	{
-		float GetOutput(List<float> input);
+		int GetNextState(List<float> input);
 	}
 }

@@ -20,7 +20,7 @@ namespace CPPNNEAT
 
 			var lookupTable = setupMapping();
 
-			Func<List<float>, float> transitionfunction = (List<float> input) =>
+			Func<List<float>, int> transitionfunction = (List<float> input) =>
 			{
 				foreach(List<int> rule in lookupTable)
 				{
@@ -89,7 +89,7 @@ namespace CPPNNEAT
 				cell.InitializeNeighbourhood();
 		}
 
-		public override float RunEvaluation(Func<List<float>, float> TransitionFunction)
+		public override float RunEvaluation(Func<List<float>, int> TransitionFunction)
 		{
 			Console.WriteLine("Running CA...");
 			float[] currentValues = new float[seed.Length];

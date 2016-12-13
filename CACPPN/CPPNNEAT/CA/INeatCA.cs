@@ -7,6 +7,6 @@ namespace CPPNNEATCA.CA
 	{
 		//Runs the entire CA based on nothing on a CPPNs return from a list of input states
 		CAParameters GetParameters();
-		float RunEvaluation(Func<List<float>, float> TransitionFunction);
+		float RunEvaluation(Func<List<float>, int> TransitionFunction);
 	}
 }
