@@ -89,7 +89,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 	}
 
-	class OutputNetworkNode
+	class OutputNetworkNode : INetworkNode
 	{
 		public readonly int nodeID;
 		public readonly int representedState;

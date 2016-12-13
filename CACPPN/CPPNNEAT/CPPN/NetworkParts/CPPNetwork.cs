@@ -12,6 +12,8 @@ namespace CPPNNEATCA.CPPN.Parts
 		private Dictionary<int, INetworkNode> awaitingNotificationsNodes;
 		private CPPNParameters parameters;
 
+		private object _lock = new object();
+
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
 			this.parameters = parameters;
@@ -20,9 +22,10 @@ namespace CPPNNEATCA.CPPN.Parts
 			hiddenNodes = new Dictionary<int, INetworkNode>();
 			outputNodes = new Dictionary<int, INetworkNode>();
 			awaitingNotificationsNodes = new Dictionary<int, INetworkNode>();
-
-			SetupNodeList(genome.nodeGenes);
-			SetupConnections(genome.connectionGenes);
+			lock(_lock)
+				SetupNodeList(genome.nodeGenes);
+			lock(_lock)
+				SetupConnections(genome.connectionGenes);
 		}
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes)
 		{
@@ -36,12 +39,13 @@ namespace CPPNNEATCA.CPPN.Parts
 					inputNodes.Add(nodeID, new InputNetworkNode(nodeID));
 					break;
 				case NodeType.Hidden:
-					var node =  new InternalNetworkNode(nodeID, ((InternalNodeGene)nodeGene).Function) as INetworkNode;
-					awaitingNotificationsNodes[nodeID] = node;
-					hiddenNodes.Add(nodeID, node);
+					var hnode =  new InternalNetworkNode(nodeID, ((InternalNodeGene)nodeGene).Function) as INetworkNode;
+					awaitingNotificationsNodes[nodeID] = hnode;
+					hiddenNodes.Add(nodeID, hnode);
 					break;
 				case NodeType.Output:
-					outputNodes.Add(nodeID, new OutputNetworkNode(nodeID, 0, ((InternalNodeGene)nodeGene).Function) as INetworkNode);
+					var onode = new OutputNetworkNode(nodeID, 0, ((InternalNodeGene)nodeGene).Function) as INetworkNode;
+					outputNodes.Add(nodeID, onode);
 					break;
 				}
 			}
@@ -51,7 +55,8 @@ namespace CPPNNEATCA.CPPN.Parts
 			foreach(ConnectionGene gene in connectionGenes)
 			{
 				var toDict = GetToNodeContainingDict(gene.toNodeID);
-				toDict[gene.toNodeID].AddInputConnection(gene.fromNodeID, gene.connectionWeight);
+				var node = toDict[gene.toNodeID];
+				node.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
 				if(inputNodes.ContainsKey(gene.fromNodeID))
 					inputNodes[gene.fromNodeID].AddOutConnection(toDict[gene.toNodeID]);
@@ -62,13 +67,15 @@ namespace CPPNNEATCA.CPPN.Parts
 			if(hiddenNodes.Count > 0) foreach(INetworkNode node in hiddenNodes.Values) node.SetupDone();
 			foreach(INetworkNode node in outputNodes.Values) node.SetupDone();
 		}
-		private Dictionary<int, INetworkNode> GetToNodeContainingDict(int tokey)
+		private Dictionary<int, INetworkNode> GetToNodeContainingDict(int toKey)
 		{
-			if(hiddenNodes.ContainsKey(tokey))
+			if(hiddenNodes.ContainsKey(toKey))
 				return hiddenNodes;
-			if(outputNodes.ContainsKey(tokey))
+
+			if(outputNodes.ContainsKey(toKey))
 				return outputNodes;
-			throw new ArgumentException("The fuck!? that nodeGeneID:" + tokey + " is in No of the Network nodes that can be To nodes!");
+
+			throw new ArgumentException("The fuck!? that nodeGeneID:" + toKey + " is in No of the Network nodes that can be To nodes!");
 		}
 
 		public int GetNextState(List<float> input)
