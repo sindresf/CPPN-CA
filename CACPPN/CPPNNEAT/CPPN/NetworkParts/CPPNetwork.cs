@@ -74,10 +74,18 @@ namespace CPPNNEATCA.CPPN.Parts
 		public int GetNextState(List<float> input)
 		{
 			PropagateInput(input);
+
 			if(hiddenNodes.Count > 0)
 				PropagateInternal();
 
 			return CheckStateVote();
+		}
+		private void ResetNetwork()
+		{
+			foreach(InternalNetworkNode node in hiddenNodes.Values)
+				node.RemoveOldInput();
+			foreach(InternalNetworkNode node in outputNodes.Values)
+				node.RemoveOldInput();
 		}
 		private void PropagateInput(List<float> input)
 		{

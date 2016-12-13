@@ -83,6 +83,10 @@ namespace CPPNNEATCA.CPPN.Parts
 				return shouldHave == inValues.Count;
 			}
 		}
+		public void RemoveOldInput()
+		{
+			inValues = new Dictionary<int, float>();
+		}
 	}
 
 	class OutputNetworkNode
