@@ -7,12 +7,10 @@ namespace CPPNNEATCA.CPPN.Parts
 {
 	class CPPNetwork : ICPPNetwork
 	{
-		private Dictionary<int, InputNetworkNode> inputNodes;
-		private Dictionary<int, INetworkNode> hiddenNodes, outputNodes;
-		private Dictionary<int, INetworkNode> awaitingNotificationsNodes;
-		private CPPNParameters parameters;
-
-		private object _lock = new object();
+		public Dictionary<int, InputNetworkNode> inputNodes;
+		public Dictionary<int, INetworkNode> hiddenNodes, outputNodes;
+		public Dictionary<int, INetworkNode> awaitingNotificationsNodes;
+		public CPPNParameters parameters;
 
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
@@ -30,7 +28,9 @@ namespace CPPNNEATCA.CPPN.Parts
 			for(int i = 0; i < nodeGenes.Count; i++)
 			{
 				var nodeGene = nodeGenes[i];
+				Console.WriteLine(nodeGene.GetType());
 				var nodeID = nodeGene.nodeID;
+				Console.WriteLine("nodeGene not null: " + (nodeGene != null));
 				switch(nodeGene.type)
 				{
 				case NodeType.Sensor:

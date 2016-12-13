@@ -64,6 +64,7 @@ namespace CPPNNEATCA.CA.Experiments
 					Console.WriteLine(currentValues.PrintCA());
 					Thread.Sleep(80);
 				}
+				Console.WriteLine("done eval");
 				return bestStateScore;
 			}
 		}

@@ -33,6 +33,10 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			type = NodeType.Sensor;
 		}
+		public SensorNodeGene(SensorNodeGene gene) : base(gene)
+		{
+			type = NodeType.Sensor;
+		}
 	}
 
 	class InternalNodeGene : NodeGene
@@ -44,7 +48,11 @@ namespace CPPNNEATCA.NEAT.Parts
 		}
 		public InternalNodeGene(int geneID, int nodeID, ActivationFunction function) : base(geneID, nodeID)
 		{
-			this.Function = function;
+			Function = function;
+		}
+		public InternalNodeGene(InternalNodeGene gene) : base(gene.geneID, gene.nodeID)
+		{
+			Function = gene.Function;
 		}
 
 		public InternalNodeGene ChangeFunction(ActivationFunctionType newType, int geneID)
@@ -63,6 +71,10 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			type = NodeType.Hidden;
 		}
+		public HiddenNodeGene(HiddenNodeGene gene) : base(gene)
+		{
+			type = NodeType.Hidden;
+		}
 	}
 
 	class OutputNodeGene : InternalNodeGene
@@ -77,6 +89,11 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			type = NodeType.Output;
 			this.representedState = representedState;
+		}
+		public OutputNodeGene(OutputNodeGene gene) : base(gene)
+		{
+			type = NodeType.Output;
+			representedState = gene.representedState;
 		}
 	}
 }

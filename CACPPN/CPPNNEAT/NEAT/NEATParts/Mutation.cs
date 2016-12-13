@@ -46,7 +46,6 @@ namespace CPPNNEATCA.NEAT.Parts
 
 	class Mutator
 	{
-
 		public static NeatGenome Mutate(NeatGenome genome, IDCounters IDs)
 		{
 			NeatGenome newGenome = new NeatGenome(genome);
@@ -54,6 +53,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			{
 				if(Neat.random.DoMutation(type))
 				{
+					Console.Write("m");
 					newGenome = MutateOfType(type, newGenome, IDs);
 				}
 			}

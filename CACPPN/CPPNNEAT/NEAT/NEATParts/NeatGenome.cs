@@ -20,7 +20,14 @@ namespace CPPNNEATCA.NEAT.Parts
 			nodeGenes = new NodeGeneSequence();
 			connectionGenes = new ConnectionGeneSequence();
 			foreach(NodeGene gene in copyFromGenome.nodeGenes)
-				nodeGenes.Add(new NodeGene(gene));
+			{
+				if(gene.type == NodeType.Sensor)
+					nodeGenes.Add(new SensorNodeGene(((SensorNodeGene)gene)));
+				else if(gene.type == NodeType.Hidden)
+					nodeGenes.Add(new HiddenNodeGene(((HiddenNodeGene)gene)));
+				else if(gene.type == NodeType.Output)
+					nodeGenes.Add(new OutputNodeGene(((OutputNodeGene)gene)));
+			}
 			foreach(ConnectionGene gene in copyFromGenome.connectionGenes)
 				connectionGenes.Add(new ConnectionGene(gene));
 			hasMutated = false;

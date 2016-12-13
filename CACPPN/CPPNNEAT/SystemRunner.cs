@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
@@ -11,8 +12,8 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
-			//ProperTestRun();
-			NetworkTest();
+			ProperTestRun();
+			//NetworkTest();
 		}
 
 		public static void NetworkTest()
@@ -30,10 +31,31 @@ namespace CPPNNEATCA
 				+ ": " + (IDs.NodeGeneID == genome.connectionGenes.Count));
 			Console.WriteLine("all other counters are 0: "
 				+ (IDs.IndividualID == 0 && IDs.SpeciesID == 0));
-
+			Console.WriteLine();
 			CPPNParameters parames = new CPPNParameters();
 			CPPNetwork network = new CPPNetwork(genome,parames);
-
+			var lol = network.inputNodes;
+			var lmao = network.hiddenNodes;
+			var rofl = network.outputNodes;
+			Console.Write("inputCount: {0}\tnodeIDs: ", lol.Count);
+			foreach(var sta in lol.Values)
+			{
+				Console.Write(sta.nodeID + " ");
+			}
+			Console.Write("\nhiddenCount: {0}\tnodeIDs: ", lmao.Count);
+			foreach(var sta in lmao.Values)
+			{
+				Console.Write(((InternalNetworkNode)sta).nodeID + " ");
+			}
+			Console.Write("\noutputCount: {0}\tnodeIDs: ", rofl.Count);
+			foreach(var sta in rofl.Values)
+			{
+				Console.Write(((OutputNetworkNode)sta).nodeID + " ");
+			}
+			Console.WriteLine("\n");
+			Console.WriteLine("\n\tRunning Through The CPPNetwork!\n");
+			int nextState = network.GetNextState(new List<float>() {0.2f,0.4f,0.99f});
+			Console.WriteLine("Got state: {0}", nextState);
 		}
 
 		public static void ProperTestRun()
