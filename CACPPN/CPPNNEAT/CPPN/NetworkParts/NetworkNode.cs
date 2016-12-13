@@ -65,4 +65,39 @@ namespace CPPNNEATCA.CPPN.Parts
 				node.Notify(nodeID, input);
 		}
 	}
+
+	class OutputNetworkNode
+	{
+		public readonly int nodeID;
+		public readonly float representedState;
+		private Dictionary<int, float> inValues, inWeights;
+		private ActivationFunction activationFunction;
+
+		private int shouldHave;
+		public OutputNetworkNode(int nodeID, float representedState, ActivationFunction function)
+		{
+			this.nodeID = nodeID;
+			this.representedState = representedState;
+			activationFunction = function;
+			inValues = new Dictionary<int, float>();
+			inWeights = new Dictionary<int, float>();
+		}
+
+		public void SetupDone()
+		{
+			shouldHave = inWeights.Count;
+		}
+		public void AddInputConnection(int inputNodeID, float inputWeight)
+		{
+			inWeights[inputNodeID] = inputWeight;
+		}
+		public void Notify(int inputNodeID, float value)
+		{
+			inValues[inputNodeID] = value;
+		}
+		public bool IsFullyNotified()
+		{
+			return shouldHave == inValues.Count;
+		}
+	}
 }

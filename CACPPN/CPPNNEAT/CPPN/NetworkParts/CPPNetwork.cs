@@ -79,21 +79,28 @@ namespace CPPNNEATCA.CPPN.Parts
 		public float GetOutput(List<float> input)
 		{
 			var ret = (float)Neat.random.NextRangedDouble(0.5, 0.49);
-			foreach(InputNetworkNode node in inputNodes.Values)
-				node.PropagateOutput(input[node.nodeID]);
-
-			while(!hasAllPropagated())
+			if(hiddenNodes.Count > 0)
 			{
-				foreach(InternalNetworkNode node in hiddenNodes.Values)
+				foreach(InputNetworkNode node in inputNodes.Values)
+					node.PropagateOutput(input[node.nodeID]);
+
+				while(!hasAllPropagated())
 				{
-					if(node.IsFullyNotified(nodeInputCounts[node.nodeID]))
+					foreach(InternalNetworkNode node in hiddenNodes.Values)
 					{
-						nodeHasPropagated[node.nodeID] = true;
-						node.PropagateOutput();
+						if(node.IsFullyNotified(nodeInputCounts[node.nodeID]))
+						{
+							nodeHasPropagated[node.nodeID] = true;
+							node.PropagateOutput();
+						}
 					}
 				}
+				return ret;
+			} else //this means there's just input-output, meaning "direct state voting"
+			{
+
+				return CheckStateVote();
 			}
-			return ret;
 		}
 		private bool hasAllPropagated()
 		{
@@ -102,6 +109,15 @@ namespace CPPNNEATCA.CPPN.Parts
 				if(!has)
 					hasAll = false;
 			return hasAll;
+		}
+		private float CheckStateVote()
+		{
+			float voted = -1;
+			foreach(InternalNetworkNode node in outputNodes.Values)
+			{
+				node.IsFullyNotified();
+			}
+			return 1.0f;
 		}
 	}
 }
