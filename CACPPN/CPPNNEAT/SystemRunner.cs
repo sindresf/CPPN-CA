@@ -1,6 +1,9 @@
 ﻿using System;
+using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
+using CPPNNEATCA.NEAT.Parts;
+using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA
 {
@@ -8,7 +11,29 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
-			ProperTestRun();
+			//ProperTestRun();
+			NetworkTest();
+		}
+
+		public static void NetworkTest()
+		{
+			IDCounters IDs = new IDCounters();
+			NeatGenome genome = new NeatGenome();
+			genome.Initialize(IDs);
+			Console.WriteLine("nodeGeneCount: " + genome.nodeGenes.Count);
+			Console.WriteLine("connectionGeneGount: " + genome.connectionGenes.Count);
+			Console.WriteLine("IDCounter for nodeGenes equals "
+				+ genome.nodeGenes.Count
+				+ ": " + (IDs.NodeGeneID == genome.nodeGenes.Count));
+			Console.WriteLine("IDCounter for connectionGenes equals "
+				+ genome.connectionGenes.Count
+				+ ": " + (IDs.NodeGeneID == genome.connectionGenes.Count));
+			Console.WriteLine("all other counters are 0: "
+				+ (IDs.IndividualID == 0 && IDs.SpeciesID == 0));
+
+			CPPNParameters parames = new CPPNParameters();
+			CPPNetwork network = new CPPNetwork(genome,parames);
+
 		}
 
 		public static void ProperTestRun()

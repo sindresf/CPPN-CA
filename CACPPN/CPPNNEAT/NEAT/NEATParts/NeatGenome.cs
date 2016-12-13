@@ -29,8 +29,8 @@ namespace CPPNNEATCA.NEAT.Parts
 		public override void Initialize(IDCounters IDs)
 		{
 			InitilizeNodeGenes(IDs);
-			InitializeConnectionGenes(IDs);
 			if(nodeGenes.Count != 5) throw new TypeInitializationException("not 5 nodes initially", null);
+			InitializeConnectionGenes(IDs);
 			if(connectionGenes.Count != 6) throw new TypeInitializationException("not 6 connections initially", null);
 		}
 
@@ -39,11 +39,11 @@ namespace CPPNNEATCA.NEAT.Parts
 			nodeGenes = new NodeGeneSequence();
 
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
-				nodeGenes.Add(new SensorNodeGene(IDs.NodeGeneID, i) as NodeGene);
+				nodeGenes.Add(new SensorNodeGene(IDs.NodeGeneID, i));
 
 			int stateCounter = 0;
 			for(int i = Neat.parameters.CPPN.InputSize; i < Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize; i++)
-				nodeGenes.Add(new OutputNodeGene(IDs.NodeGeneID, i, stateCounter++, Neat.random.ActivationFunctionType()) as NodeGene);
+				nodeGenes.Add(new OutputNodeGene(IDs.NodeGeneID, i, stateCounter++, Neat.random.ActivationFunctionType()));
 		}
 
 		private void InitializeConnectionGenes(IDCounters IDs)
