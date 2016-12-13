@@ -32,7 +32,7 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		public void PropagateOutput(float input)
 		{
-			foreach(InternalNetworkNode node in outConnections)
+			foreach(INetworkNode node in outConnections)
 				node.Notify(nodeID, input);
 		}
 	}
@@ -121,7 +121,13 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			inValues[inputNodeID] = value;
 		}
-
+		public bool IsFullyNotified
+		{
+			get
+			{
+				return shouldHave == inValues.Count;
+			}
+		}
 		public float Activation
 		{
 			get

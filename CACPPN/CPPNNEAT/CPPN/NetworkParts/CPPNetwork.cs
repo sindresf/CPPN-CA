@@ -22,10 +22,8 @@ namespace CPPNNEATCA.CPPN.Parts
 			hiddenNodes = new Dictionary<int, INetworkNode>();
 			outputNodes = new Dictionary<int, INetworkNode>();
 			awaitingNotificationsNodes = new Dictionary<int, INetworkNode>();
-			lock(_lock)
-				SetupNodeList(genome.nodeGenes);
-			lock(_lock)
-				SetupConnections(genome.connectionGenes);
+			SetupNodeList(genome.nodeGenes);
+			SetupConnections(genome.connectionGenes);
 		}
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes)
 		{
@@ -121,6 +119,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			foreach(INetworkNode Inode in outputNodes.Values)
 			{
 				var node = ((OutputNetworkNode)Inode);
+				if(!node.IsFullyNotified) throw new Exception("The fuck!? not notified output node!");
 				var activationLevel = node.Activation;
 				if(activationLevel > maxActivation)
 				{

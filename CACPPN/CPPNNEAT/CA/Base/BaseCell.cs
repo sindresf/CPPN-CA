@@ -33,7 +33,7 @@ namespace CPPNNEATCA.CA.Base
 		{
 			var returnedStates = new List<float>();
 			foreach(BaseCell cell in Neighbourhood)
-				returnedStates[cell.x] = cell.GetState(cellBoard);
+				returnedStates.Add(cell.GetState(cellBoard));
 
 			return returnedStates;
 		}

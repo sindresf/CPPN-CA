@@ -1,4 +1,5 @@
-﻿using CPPNNEATCA.EA.Base;
+﻿using System;
+using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.Utils;
 
@@ -29,6 +30,8 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			InitilizeNodeGenes(IDs);
 			InitializeConnectionGenes(IDs);
+			if(nodeGenes.Count != 5) throw new TypeInitializationException("not 5 nodes initially", null);
+			if(connectionGenes.Count != 6) throw new TypeInitializationException("not 6 connections initially", null);
 		}
 
 		private void InitilizeNodeGenes(IDCounters IDs)
@@ -46,14 +49,15 @@ namespace CPPNNEATCA.NEAT.Parts
 		private void InitializeConnectionGenes(IDCounters IDs)
 		{
 			connectionGenes = new ConnectionGeneSequence();
-			foreach(NodeGene gene in nodeGenes)
-			{
-				connectionGenes.Add(new ConnectionGene(IDs.ConnectionGeneID,
-					gene.nodeID,
-					nodeGenes.Count - 1,
-					true,
-					Neat.random.InitialConnectionWeight()));
-			}
+			for(int i = 0; i < Neat.parameters.CA.NeighbourHoodSize; i++)
+				for(int j = Neat.parameters.CA.CellStateCount; j > 0; j--)
+				{
+					connectionGenes.Add(new ConnectionGene(IDs.ConnectionGeneID,
+						nodeGenes[i].nodeID,
+						nodeGenes[nodeGenes.Count - j].nodeID,
+						true,
+						Neat.random.InitialConnectionWeight()));
+				}
 		}
 
 		public static NeatGenome GetLonger(NeatGenome genome1, NeatGenome genome2)

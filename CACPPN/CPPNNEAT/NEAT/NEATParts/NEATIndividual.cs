@@ -19,8 +19,8 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			genome = new NeatGenome();
 			genome.Initialize(IDs);
-			if(Neat.random.NextBoolean(MutationChances.CreationMutationChance))
-				Mutator.Mutate(genome, IDs);
+			/*if(Neat.random.NextBoolean(MutationChances.CreationMutationChance))
+				Mutator.Mutate(genome, IDs);*/
 		}
 
 		public override void Evaluate(int speciesCount)
