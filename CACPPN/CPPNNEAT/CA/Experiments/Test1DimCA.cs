@@ -39,7 +39,6 @@ namespace CPPNNEATCA.CA.Experiments
 		public override float RunEvaluation(Func<List<float>, int> TransitionFunction)
 		{
 			Console.WriteLine();
-			Thread.Sleep(300);
 			lock(_lock)
 			{
 				float[] currentValues = new float[seed.Length];
@@ -62,7 +61,7 @@ namespace CPPNNEATCA.CA.Experiments
 						break;
 					PushBack(futureValues, currentValues);
 					Console.WriteLine(currentValues.PrintCA());
-					Thread.Sleep(80);
+					Thread.Sleep(100);
 				}
 				Console.WriteLine("done eval");
 				return bestStateScore;

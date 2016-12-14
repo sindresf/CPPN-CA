@@ -12,7 +12,8 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
-			ProperTestRun();
+			for(int i = 0; i < 50; i++)
+				ProperTestRun();
 			//NetworkTest();
 		}
 

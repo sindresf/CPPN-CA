@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using CPPNNEATCA.Utils;
 
@@ -39,15 +40,15 @@ namespace CPPNNEATCA.CPPN.Parts
 
 	class InternalNetworkNode : InputNetworkNode, INetworkNode
 	{
-		private Dictionary<int, float> inValues, inWeights;
+		private ConcurrentDictionary<int, float> inValues, inWeights;
 		private ActivationFunction activationFunction;
 		private int shouldHave;
 
 		public InternalNetworkNode(int nodeID, ActivationFunction function) : base(nodeID)
 		{
 			activationFunction = function;
-			inValues = new Dictionary<int, float>();
-			inWeights = new Dictionary<int, float>();
+			inValues = new ConcurrentDictionary<int, float>();
+			inWeights = new ConcurrentDictionary<int, float>();
 		}
 
 		public void AddInputConnection(int inputNodeID, float inputWeight)
@@ -85,7 +86,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 		public void RemoveOldInput()
 		{
-			inValues = new Dictionary<int, float>();
+			inValues = new ConcurrentDictionary<int, float>();
 		}
 	}
 
@@ -97,6 +98,8 @@ namespace CPPNNEATCA.CPPN.Parts
 		private Dictionary<int, float> inValues, inWeights;
 		private ActivationFunction Function;
 		private int shouldHave;
+
+		public object _lock = new object();
 
 		public OutputNetworkNode(int nodeID, int representedState, ActivationFunction function)
 		{
@@ -133,10 +136,18 @@ namespace CPPNNEATCA.CPPN.Parts
 			get
 			{
 				var nodeInput = new TupleList<float,float>();
-				foreach(int inputNodeID in inValues.Keys)
+				/*foreach(int inputNodeID in inValues.Keys)
 					nodeInput.Add(Tuple.Create(inValues[inputNodeID], inWeights[inputNodeID]));
+				*/
+				var keyArray = new int[inValues.Keys.Count];
+				inValues.Keys.CopyTo(keyArray, 0);
+				for(int i = 0; i < inValues.Keys.Count; i++)
+				{
+					nodeInput.Add(Tuple.Create(inValues[keyArray[i]], inWeights[keyArray[i]]));
+				}
 
 				return Function.GetOutput(nodeInput);
+
 			}
 		}
 	}

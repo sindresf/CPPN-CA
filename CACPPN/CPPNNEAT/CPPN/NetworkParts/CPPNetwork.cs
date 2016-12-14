@@ -12,6 +12,8 @@ namespace CPPNNEATCA.CPPN.Parts
 		public Dictionary<int, INetworkNode> awaitingNotificationsNodes;
 		public CPPNParameters parameters;
 
+		public object _lock = new object();
+
 		public CPPNetwork(NeatGenome genome, CPPNParameters parameters)
 		{
 			this.parameters = parameters;
@@ -82,8 +84,12 @@ namespace CPPNNEATCA.CPPN.Parts
 
 			if(hiddenNodes.Count > 0)
 				PropagateInternal();
-
-			return CheckStateVote();
+			int state;
+			lock(_lock)
+			{
+				state = CheckStateVote();
+				return state;
+			}
 		}
 		private void ResetNetwork()
 		{
