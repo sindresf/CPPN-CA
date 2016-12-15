@@ -24,7 +24,7 @@ namespace CPPNNEATCA
 
 	struct EAParameters
 	{
-		public const int PopulationSize = 40;
+		public const int PopulationSize = 60;
 		public const int MaximumRuns = 25;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public static INeatCA CAExperiment;
