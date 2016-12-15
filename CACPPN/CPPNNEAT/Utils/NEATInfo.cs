@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CPPNNEAT.Utils
 {
-	class NEATInfo
+	class NEATInfo : IInfo
 	{
 		public List<GenerationInfo> generationInfos;
 
@@ -10,32 +11,67 @@ namespace CPPNNEAT.Utils
 		{
 			generationInfos = new List<GenerationInfo>();
 		}
-	}
 
-	class GenerationInfo
-	{
-		public float bestFitness,avgSpeciesFitness, worstFitness;
-		public int speciesCount;
-		public List<SpeciesInfo> speciesInfos;
-
-		public GenerationInfo()
+		public string GetSaveToFileFormat()
 		{
-			speciesInfos = new List<SpeciesInfo>();
+			string s = "";
+			foreach(GenerationInfo gInfo in generationInfos)
+			{
+				s += gInfo.GetSaveToFileFormat() + "\n";
+			}
+			return s;
 		}
 	}
 
-	class SpeciesInfo
+	class GenerationInfo : IInfo
 	{
+		public float bestFitness,avgSpeciesFitness, worstFitness;
+		public int generationNumber, speciesCount;
+		public List<SpeciesInfo> speciesInfos;
+
+		public GenerationInfo(int generationNumber)
+		{
+			speciesInfos = new List<SpeciesInfo>();
+			this.generationNumber = generationNumber;
+		}
+
+		public string GetSaveToFileFormat()
+		{
+			string s = generationNumber + ": |"
+				+speciesCount
+				+"|"+bestFitness
+				+"|"+avgSpeciesFitness
+				+"|"+worstFitness+"|{.|.";
+			foreach(SpeciesInfo sInfo in speciesInfos)
+			{
+				s += sInfo.GetSaveToFileFormat() + ".|.";
+			}
+			s += "}";
+			return s;
+		}
+	}
+
+	class SpeciesInfo : IInfo
+	{
+		public int speciesID;
 		public float speciesFitness;
 		public List<IndividualInfo> indieInfos;
 
-		public SpeciesInfo()
+		public SpeciesInfo(int speciesID)
 		{
 			indieInfos = new List<IndividualInfo>();
+			this.speciesID = speciesID;
+		}
+
+		public string GetSaveToFileFormat()
+		{
+			string s = speciesID + ": _" + speciesID + "_";
+
+			return s;
 		}
 	}
 
-	class IndividualInfo
+	class IndividualInfo : IInfo
 	{
 		public float individualFitness;
 		public GenomeInfo genomeInfo;
@@ -44,9 +80,14 @@ namespace CPPNNEAT.Utils
 		{
 			genomeInfo = new GenomeInfo();
 		}
+
+		public string GetSaveToFileFormat()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
-	class GenomeInfo
+	class GenomeInfo : IInfo
 	{
 		public int nodeGeneCount, connectionGeneCount;
 
@@ -58,6 +99,11 @@ namespace CPPNNEAT.Utils
 		public GenomeInfo()
 		{
 
+		}
+
+		public string GetSaveToFileFormat()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
