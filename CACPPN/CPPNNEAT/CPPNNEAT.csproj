@@ -56,6 +56,7 @@
     <Compile Include="CA\Base\BaseCell.cs" />
     <Compile Include="CA\Parts\OneDimCell.cs" />
     <Compile Include="CA\Parts\TwoDimCell.cs" />
+    <Compile Include="CA\Utils\CAInfo.cs" />
     <Compile Include="CA\Utils\NeighbourhoodInitializer1D.cs" />
     <Compile Include="CA\Utils\NeighbourhoodInitializor.cs" />
     <Compile Include="CA\Utils\NeighbourhoodInitializor2D.cs" />

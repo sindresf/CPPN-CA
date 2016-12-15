@@ -99,8 +99,6 @@ namespace CPPNNEATCA.CPPN.Parts
 		private ActivationFunction Function;
 		private int shouldHave;
 
-		public object _lock = new object();
-
 		public OutputNetworkNode(int nodeID, int representedState, ActivationFunction function)
 		{
 			this.nodeID = nodeID;
@@ -136,18 +134,10 @@ namespace CPPNNEATCA.CPPN.Parts
 			get
 			{
 				var nodeInput = new TupleList<float,float>();
-				/*foreach(int inputNodeID in inValues.Keys)
+				foreach(int inputNodeID in inValues.Keys)
 					nodeInput.Add(Tuple.Create(inValues[inputNodeID], inWeights[inputNodeID]));
-				*/
-				var keyArray = new int[inValues.Keys.Count];
-				inValues.Keys.CopyTo(keyArray, 0);
-				for(int i = 0; i < inValues.Keys.Count; i++)
-				{
-					nodeInput.Add(Tuple.Create(inValues[keyArray[i]], inWeights[keyArray[i]]));
-				}
 
 				return Function.GetOutput(nodeInput);
-
 			}
 		}
 	}

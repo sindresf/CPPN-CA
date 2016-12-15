@@ -41,6 +41,12 @@ namespace CPPNNEATCA.NEAT
 			population.Evaluate();
 		}
 
+		public override bool IsDeadRun()
+		{
+			//means the last species killed itself off due to no improvement
+			return population.species.Count == 0;
+		}
+
 		public override void NextGeneration()
 		{
 			CurrentGeneration++;

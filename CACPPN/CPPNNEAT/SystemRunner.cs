@@ -13,13 +13,23 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
-			var timer = new Stopwatch();
-			timer.Start();
-			for(int i = 0; i < 50; i++)
+			var totsTimer = new Stopwatch();
+			var indiTimer = new Stopwatch();
+			totsTimer.Start();
+			long tots = 0;
+			for(int i = 0; i < 15; i++)
+			{
+				indiTimer.Start();
 				ProperTestRun();
-			//NetworkTest();
-			timer.Stop();
-			Console.WriteLine("that took {0} ms", timer.ElapsedMilliseconds);
+				indiTimer.Stop();
+				tots += indiTimer.ElapsedMilliseconds;
+				indiTimer.Reset();
+			}
+			NetworkTest();
+			totsTimer.Stop();
+			Console.WriteLine();
+			Console.WriteLine("total time: {0} ms", totsTimer.ElapsedMilliseconds);
+			Console.WriteLine("avg.: {0}", tots / 50);
 		}
 
 		public static void NetworkTest()
@@ -66,18 +76,16 @@ namespace CPPNNEATCA
 
 		public static void ProperTestRun()
 		{
-			Console.Write("\nStarting up\n");
 			EvolutionaryAlgorithm neat = new Neat();
 			neat.InitializePopulation();
 
-			Console.Write("\nRunning.");
 			for(int i = 0; i < EAParameters.MaximumRuns; i++)
 			{
-				Console.Write(".");
 				neat.EvaluatePopulation();
+				if(neat.IsDeadRun())
+					break;
 				neat.NextGeneration();
 			}
-			Console.Write("\n\nDone\n");
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using CPPNNEATCA.CA.Base;
 using CPPNNEATCA.CA.Parts;
 using CPPNNEATCA.Utils;
@@ -9,13 +8,12 @@ namespace CPPNNEATCA.CA.Experiments
 {
 	class Test1DimCA : BaseOneDimentionalExperimentCA
 	{
-		private object _lock = new object();
 		public Test1DimCA() : base()
 		{
 			parameters = new CAParameters(NeighbourHoodSize: 3,
 										  CellStateCount: 2,
 										  CellWorldWidth: 5,
-										  MaxGeneration: 4);
+										  MaxGeneration: 40);
 
 			MakeStates(parameters.CellStateCount);
 
@@ -37,38 +35,31 @@ namespace CPPNNEATCA.CA.Experiments
 
 		public override float RunEvaluation(Func<List<float>, int> TransitionFunction)
 		{
-			Console.WriteLine();
-			lock(_lock)
-			{
-				float[] currentValues = new float[seed.Length];
-				seed.CopyTo(currentValues, 0);
-				float[] futureValues = new float[seed.Length];
-				seed.CopyTo(futureValues, 0);
+			float[] currentValues = new float[seed.Length];
+			seed.CopyTo(currentValues, 0);
+			float[] futureValues = new float[seed.Length];
+			seed.CopyTo(futureValues, 0);
 
-				float bestStateScore = 2.0f*parameters.CellWorldWidth;
-				float currentScore = 0.0f;
-				for(int i = 0; i < parameters.MaxGeneration; i++)
+			float bestStateScore = 2.0f*parameters.CellWorldWidth;
+			float currentScore = 0.0f;
+			for(int i = 0; i < parameters.MaxGeneration; i++)
+			{
+				foreach(BaseCell cell in cells)
 				{
-					foreach(BaseCell cell in cells)
-					{
-						futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
-					}
-					/*Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
-				   {
-					   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
-				   });*/
-					currentScore = CurrentVSGoalDifference(futureValues);
-					if(IsDeadSpace(futureValues))
-						return 1337;
-					if(currentScore.SameWithinReason(0.0f))
-						break;
-					PushBack(futureValues, currentValues);
-					Console.WriteLine(currentValues.PrintCA());
-					Thread.Sleep(10);
+					futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
 				}
-				Console.WriteLine("done eval");
-				return bestStateScore;
+				/*Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
+			   {
+				   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
+			   });*/
+				currentScore = CurrentVSGoalDifference(futureValues);
+				if(IsDeadSpace(futureValues))
+					return 1337;
+				if(currentScore.SameWithinReason(0.0f))
+					break;
+				PushBack(futureValues, currentValues);
 			}
+			return bestStateScore;
 		}
 		private bool IsDeadSpace(float[] cellStates)
 		{
@@ -86,7 +77,7 @@ namespace CPPNNEATCA.CA.Experiments
 			return diff;
 		}
 
-		private void PushBack(float[] future, float[] past)
+		protected override void PushBack(float[] future, float[] past)
 		{
 			for(int i = 0; i < parameters.CellWorldWidth; i++)
 				past[i] = future[i];

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
-using CSVPieCharting;
 
 namespace CPPNNEATCA.NEAT.Parts
 {
@@ -87,10 +84,6 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			foreach(Species sp in species)
 				sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID], IDs);
-			/*Parallel.ForEach(species, (Species species) =>
-			{
-				species.MakeNextGeneration(allowedPopulaceSize[species.speciesID], IDs);
-			});*/
 		}
 
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
