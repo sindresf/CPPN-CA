@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
@@ -13,23 +14,23 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
+			Console.WriteLine("running in parallel:");
 			var totsTimer = new Stopwatch();
-			var indiTimer = new Stopwatch();
 			totsTimer.Start();
-			long tots = 0;
-			for(int i = 0; i < 15; i++)
+			Parallel.For(0, 10, i =>
 			{
-				indiTimer.Start();
 				ProperTestRun();
-				indiTimer.Stop();
-				tots += indiTimer.ElapsedMilliseconds;
-				indiTimer.Reset();
-			}
-			NetworkTest();
+				ProperTestRun();
+				ProperTestRun();
+				ProperTestRun();
+				ProperTestRun();
+				ProperTestRun();
+				ProperTestRun();
+			});
 			totsTimer.Stop();
-			Console.WriteLine();
 			Console.WriteLine("total time: {0} ms", totsTimer.ElapsedMilliseconds);
-			Console.WriteLine("avg.: {0}", tots / 50);
+			Console.WriteLine("avg. para run: {0}", totsTimer.ElapsedMilliseconds / 20);
+			Console.WriteLine("avg. Neat run: {0}", totsTimer.ElapsedMilliseconds / 80);
 		}
 
 		public static void NetworkTest()
