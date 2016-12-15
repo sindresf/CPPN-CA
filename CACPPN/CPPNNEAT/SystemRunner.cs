@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
@@ -12,9 +13,13 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
+			var timer = new Stopwatch();
+			timer.Start();
 			for(int i = 0; i < 50; i++)
 				ProperTestRun();
 			//NetworkTest();
+			timer.Stop();
+			Console.WriteLine("that took {0} ms", timer.ElapsedMilliseconds);
 		}
 
 		public static void NetworkTest()

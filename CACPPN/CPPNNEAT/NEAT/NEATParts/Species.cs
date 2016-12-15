@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -49,7 +47,8 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void EvaluatePopulace()
 		{
-			Parallel.ForEach(populace, indie => { indie.Evaluate(populace.Count); });
+			foreach(NEATIndividual indie in populace) indie.Evaluate(populace.Count);
+			//Parallel.ForEach(populace, indie => { indie.Evaluate(populace.Count); });
 			SpeciesFitness = populace.SumFitness();
 			DiedOffCheck();
 		}

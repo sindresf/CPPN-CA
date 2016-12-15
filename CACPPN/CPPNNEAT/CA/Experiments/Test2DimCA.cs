@@ -77,13 +77,17 @@ namespace CPPNNEATCA.CA.Experiments
 
 			for(int i = 0; i < parameters.MaxGeneration; i++)
 			{
+				for(int x = 0; x < parameters.CellWorldWidth; x++)
+					for(int y = 0; y < parameters.CellWorldHeight; y++)
+						futureValues[x][y] = FloatToState(TransitionFunction(cells[x][y].GetNeighbourhoodCurrentState(currentValues)));
+				/*
 				Parallel.For(0, parameters.CellWorldHeight, x =>
 				 {
 					 Parallel.For(0, parameters.CellWorldWidth, y =>
 					 {
 						 futureValues[x][y] = FloatToState(TransitionFunction(cells[x][y].GetNeighbourhoodCurrentState(currentValues)));
 					 });
-				 });
+				 });*/
 				/*currentScore = CurrentVSGoalDifference(futureValues);
 				if(IsDeadSpace(futureValues))
 					return 1337;

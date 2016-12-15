@@ -30,9 +30,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			for(int i = 0; i < nodeGenes.Count; i++)
 			{
 				var nodeGene = nodeGenes[i];
-				Console.WriteLine(nodeGene.GetType());
 				var nodeID = nodeGene.nodeID;
-				Console.WriteLine("nodeGene not null: " + (nodeGene != null));
 				switch(nodeGene.type)
 				{
 				case NodeType.Sensor:

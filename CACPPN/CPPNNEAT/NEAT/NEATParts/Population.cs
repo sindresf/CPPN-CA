@@ -54,7 +54,8 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void Evaluate()
 		{
-			Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(); });
+			foreach(Species sp in species) sp.EvaluatePopulace();
+			//Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(); });
 			CheckForDeadSpecies();
 			avgSpeciesFitness = 0.0f;
 			foreach(Species sp in species)
@@ -84,11 +85,12 @@ namespace CPPNNEATCA.NEAT.Parts
 				allowedPopulaceSize[sp.speciesID] = spots;
 				spotsLeft -= spots;
 			}
-
-			Parallel.ForEach(species, (Species species) =>
+			foreach(Species sp in species)
+				sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID], IDs);
+			/*Parallel.ForEach(species, (Species species) =>
 			{
 				species.MakeNextGeneration(allowedPopulaceSize[species.speciesID], IDs);
-			});
+			});*/
 		}
 
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)

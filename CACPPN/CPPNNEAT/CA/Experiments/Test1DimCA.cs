@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using CPPNNEATCA.CA.Base;
 using CPPNNEATCA.CA.Parts;
 using CPPNNEATCA.Utils;
@@ -50,10 +49,14 @@ namespace CPPNNEATCA.CA.Experiments
 				float currentScore = 0.0f;
 				for(int i = 0; i < parameters.MaxGeneration; i++)
 				{
-					Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
+					foreach(BaseCell cell in cells)
+					{
+						futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
+					}
+					/*Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
 				   {
 					   futureValues[cell.x] = FloatToState(TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues)));
-				   });
+				   });*/
 					currentScore = CurrentVSGoalDifference(futureValues);
 					if(IsDeadSpace(futureValues))
 						return 1337;
@@ -61,7 +64,7 @@ namespace CPPNNEATCA.CA.Experiments
 						break;
 					PushBack(futureValues, currentValues);
 					Console.WriteLine(currentValues.PrintCA());
-					Thread.Sleep(100);
+					Thread.Sleep(10);
 				}
 				Console.WriteLine("done eval");
 				return bestStateScore;
