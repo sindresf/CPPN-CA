@@ -14,10 +14,25 @@ namespace CPPNNEATCA
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("running in parallel:");
+			//ParaRun();
+			SingleRun();
+		}
+
+		public static void SingleRun()
+		{
+			Console.WriteLine("running");
+			ProperTestRun();
+			Console.WriteLine("run complete");
+		}
+
+		public static void ParaRun()
+		{
+			int runs = 10;
+			int threads = 7;
+			Console.WriteLine("running " + runs * threads + " NEATs in semi-parallel:");
 			var totsTimer = new Stopwatch();
 			totsTimer.Start();
-			Parallel.For(0, 10, i =>
+			Parallel.For(0, runs, i =>
 			{
 				ProperTestRun();
 				ProperTestRun();
@@ -29,8 +44,8 @@ namespace CPPNNEATCA
 			});
 			totsTimer.Stop();
 			Console.WriteLine("total time: {0} ms", totsTimer.ElapsedMilliseconds);
-			Console.WriteLine("avg. para run: {0}", totsTimer.ElapsedMilliseconds / 20);
-			Console.WriteLine("avg. Neat run: {0}", totsTimer.ElapsedMilliseconds / 80);
+			Console.WriteLine("avg. para run: {0}", totsTimer.ElapsedMilliseconds / runs);
+			Console.WriteLine("avg. Neat run: {0}", totsTimer.ElapsedMilliseconds / (runs * threads));
 		}
 
 		public static void NetworkTest()

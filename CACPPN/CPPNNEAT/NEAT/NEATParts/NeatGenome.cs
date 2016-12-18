@@ -7,8 +7,8 @@ namespace CPPNNEATCA.NEAT.Parts
 {
 	class NeatGenome : Genome
 	{
-		public GeneSequence<NodeGene> nodeGenes { get; set; }
-		public GeneSequence<ConnectionGene> connectionGenes { get; set; }
+		public NodeGeneSequence nodeGenes { get; set; }
+		public ConnectionGeneSequence connectionGenes { get; set; }
 
 		public NeatGenome()
 		{
@@ -56,9 +56,11 @@ namespace CPPNNEATCA.NEAT.Parts
 		private void InitializeConnectionGenes(IDCounters IDs)
 		{
 			connectionGenes = new ConnectionGeneSequence();
-			for(int i = 0; i < Neat.parameters.CA.NeighbourHoodSize; i++)
-				for(int j = Neat.parameters.CA.CellStateCount; j > 0; j--)
+			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
+				for(int j = Neat.parameters.CPPN.OutputSize; j > 0; j--)
 				{
+					if(nodeGenes[i].nodeID > 2) throw new ArgumentException("fromNodeID over 2");
+					if(nodeGenes[nodeGenes.Count - j].nodeID > 4) throw new ArgumentException("toNodeID over 4");
 					connectionGenes.Add(new ConnectionGene(IDs.ConnectionGeneID,
 						nodeGenes[i].nodeID,
 						nodeGenes[nodeGenes.Count - j].nodeID,

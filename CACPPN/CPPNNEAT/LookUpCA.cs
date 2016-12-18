@@ -9,7 +9,7 @@ using CPPNNEATCA.CA.Base;
 using CPPNNEATCA.CA.Parts;
 using CPPNNEATCA.Utils;
 
-namespace CPPNNEAT
+namespace CPPNNEATCA
 {
 	class LookUpCA : BaseOneDimentionalExperimentCA
 	{
@@ -18,25 +18,23 @@ namespace CPPNNEAT
 			Console.WriteLine("CA TEST RUN\n");
 			INeatCA ca = new LookUpCA();
 
-			var lookupTable = setupMapping();
+			ca.RunEvaluation(TransFunc);
+		}
 
-			Func<List<float>, int> transitionfunction = (List<float> input) =>
+		public static int TransFunc(List<float> input)
+		{
+			foreach(List<int> rule in setupMapping())
 			{
-				foreach(List<int> rule in lookupTable)
-				{
-					bool ruleMatched = true;
-					for(int i = 0; i < rule.Count - 1; i++)
-						if(rule[i] != (int)input[i])
-							ruleMatched = false;
+				bool ruleMatched = true;
+				for(int i = 0; i < rule.Count - 1; i++)
+					if(rule[i] != (int)input[i])
+						ruleMatched = false;
 
-					if(ruleMatched)
-						return rule.Last();
-				}
-				Console.Write("whaa");
-				return 0;
-			};
-
-			ca.RunEvaluation(transitionfunction);
+				if(ruleMatched)
+					return rule.Last();
+			}
+			Console.Write("whaa");
+			return 0;
 		}
 
 		private static List<List<int>> setupMapping()
@@ -103,10 +101,14 @@ namespace CPPNNEAT
 			//float currentScore = 0.0f;
 			for(int i = 0; i < parameters.MaxGeneration; i++)
 			{
-				Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
+				/*Parallel.ForEach(((BaseCell[])cells), (BaseCell cell) =>
 				{
 					futureValues[cell.x] = TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues));
-				});
+				});*/
+				foreach(BaseCell cell in cells)
+				{
+					futureValues[cell.x] = TransitionFunction(cell.GetNeighbourhoodCurrentState(currentValues));
+				}
 				/*currentScore = CurrentVSGoalDifference(futureValues);
 				if(IsDeadSpace(futureValues))
 					return 1337;

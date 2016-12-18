@@ -1,5 +1,4 @@
-﻿using System;
-using CPPNNEATCA.CPPN.Parts;
+﻿using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -57,7 +56,9 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public InternalNodeGene ChangeFunction(ActivationFunctionType newType, int geneID)
 		{
-			throw new NotImplementedException("last thing on my fucking list!");
+			ActivationFunction function = ActivationFunction.GetRandomInitializedFunction(newType);
+			InternalNodeGene gene = new InternalNodeGene(geneID,nodeID,function);
+			return gene;
 		}
 	}
 

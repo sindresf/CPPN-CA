@@ -49,14 +49,10 @@ namespace CPPNNEATCA.NEAT.Parts
 		public static NeatGenome Mutate(NeatGenome genome, IDCounters IDs)
 		{
 			NeatGenome newGenome = new NeatGenome(genome);
-			/*foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
-			{
+			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 				if(Neat.random.DoMutation(type))
-				{
-					Console.Write("m");
 					newGenome = MutateOfType(type, newGenome, IDs);
-				}
-			}*/
+
 			return newGenome;
 		}
 
