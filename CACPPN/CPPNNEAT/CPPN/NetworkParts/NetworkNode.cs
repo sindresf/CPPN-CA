@@ -40,23 +40,23 @@ namespace CPPNNEATCA.CPPN.Parts
 
 	class InternalNetworkNode : InputNetworkNode, INetworkNode
 	{
-		private ConcurrentDictionary<int, float> inValues, inWeights;
-		private ActivationFunction activationFunction;
+		protected ConcurrentDictionary<int, float> inValues, inWeights;
+		protected ActivationFunction Function;
 		private int shouldHave;
 
 		public InternalNetworkNode(int nodeID, ActivationFunction function) : base(nodeID)
 		{
-			activationFunction = function;
+			Function = function;
 			inValues = new ConcurrentDictionary<int, float>();
 			inWeights = new ConcurrentDictionary<int, float>();
 		}
 
-		public void AddInputConnection(int inputNodeID, float inputWeight)
+		public virtual void AddInputConnection(int inputNodeID, float inputWeight)
 		{
 			inWeights[inputNodeID] = inputWeight;
 		}
 
-		public void Notify(int inputNodeID, float value)
+		public virtual void Notify(int inputNodeID, float value)
 		{
 			inValues[inputNodeID] = value;
 		}
@@ -67,62 +67,59 @@ namespace CPPNNEATCA.CPPN.Parts
 			foreach(int inputNodeID in inValues.Keys)
 				nodeInput.Add(Tuple.Create(inValues[inputNodeID], inWeights[inputNodeID]));
 
-			float nodeOutput = activationFunction.GetOutput(nodeInput);
+			float nodeOutput = Function.GetOutput(nodeInput);
 			foreach(InternalNetworkNode node in outConnections)
 				node.Notify(nodeID, nodeOutput);
 		}
 
-		public void SetupDone()
+		public virtual void SetupDone()
 		{
 			shouldHave = inWeights.Count;
 		}
 
-		public bool IsFullyNotified
+		public virtual bool IsFullyNotified
 		{
 			get
 			{
 				return shouldHave == inValues.Count;
 			}
 		}
-		public void RemoveOldInput()
+		public virtual void RemoveOldInput()
 		{
 			inValues = new ConcurrentDictionary<int, float>();
 		}
 	}
 
-	class OutputNetworkNode : INetworkNode
+	class OutputNetworkNode : InternalNetworkNode, INetworkNode
 	{
-		public readonly int nodeID;
 		public readonly int representedState;
-
-		private Dictionary<int, float> inValues, inWeights;
-		private ActivationFunction Function;
 		private int shouldHave;
 
-		public OutputNetworkNode(int nodeID, int representedState, ActivationFunction function)
+		public OutputNetworkNode(int nodeID, int representedState, ActivationFunction function) : base(nodeID, function)
 		{
-			this.nodeID = nodeID;
 			this.representedState = representedState;
-			Function = function;
-			inValues = new Dictionary<int, float>();
-			inWeights = new Dictionary<int, float>();
 		}
 
-		public void SetupDone()
+		public OutputNetworkNode(int nodeID, ActivationFunction function) : base(nodeID, function)
+		{
+			representedState = 0;
+		}
+
+		public override void SetupDone()
 		{
 			shouldHave = inWeights.Count;
 		}
 
-		public void AddInputConnection(int inputNodeID, float inputWeight)
+		public override void AddInputConnection(int inputNodeID, float inputWeight)
 		{
 			inWeights[inputNodeID] = inputWeight;
 		}
 
-		public void Notify(int inputNodeID, float value)
+		public override void Notify(int inputNodeID, float value)
 		{
 			inValues[inputNodeID] = value;
 		}
-		public bool IsFullyNotified
+		public override bool IsFullyNotified
 		{
 			get
 			{

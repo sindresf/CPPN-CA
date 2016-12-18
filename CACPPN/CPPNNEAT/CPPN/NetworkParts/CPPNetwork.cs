@@ -60,7 +60,7 @@ namespace CPPNNEATCA.CPPN.Parts
 					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
 					toDict = contains ? hiddenNodes : outputNodes;
 				}
-				var toNode = toDict[gene.toNodeID];
+				var toNode = toDict[gene.toNodeID]; //new bug instance here
 				toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
 				if(inputNodes.ContainsKey(gene.fromNodeID))
