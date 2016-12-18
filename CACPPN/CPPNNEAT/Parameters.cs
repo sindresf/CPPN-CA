@@ -44,7 +44,7 @@ namespace CPPNNEATCA
 
 		public static float ASexualReproductionQuota = 0.25f;
 
-		public static bool IsSeededRun = false;
+		public static bool IsSeededRun = true;
 		public static int RandomSeed = 42;
 	}
 

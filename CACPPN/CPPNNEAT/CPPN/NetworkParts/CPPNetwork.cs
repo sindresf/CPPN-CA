@@ -27,6 +27,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes)
 		{
+			int representedState = 0;
 			foreach(NodeGene gene in nodeGenes)
 			{
 				var nodeID = gene.nodeID;
@@ -41,7 +42,7 @@ namespace CPPNNEATCA.CPPN.Parts
 					hiddenNodes.Add(nodeID, hnode);
 					break;
 				case NodeType.Output:
-					var onode = new OutputNetworkNode(nodeID, 0, ((InternalNodeGene)gene).Function) as INetworkNode;
+					var onode = new OutputNetworkNode(nodeID, representedState++, ((InternalNodeGene)gene).Function) as INetworkNode;
 					outputNodes.Add(nodeID, onode);
 					break;
 				}
@@ -55,8 +56,10 @@ namespace CPPNNEATCA.CPPN.Parts
 				if(hiddenNodes.Count == 0)
 					toDict = outputNodes;
 				else
-					toDict = hiddenNodes.ContainsKey(gene.toNodeID) ? hiddenNodes : outputNodes;
-
+				{
+					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
+					toDict = contains ? hiddenNodes : outputNodes;
+				}
 				var toNode = toDict[gene.toNodeID];
 				toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 

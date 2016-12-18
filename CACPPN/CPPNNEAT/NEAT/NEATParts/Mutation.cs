@@ -75,25 +75,27 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome AddNode(NeatGenome genome, IDCounters IDs)
 		{
-			ConnectionGene connectionToSplitt = Neat.random.ConnectionGene(genome);
+			var connectionToSplitt = Neat.random.ConnectionGene(genome);
+			connectionToSplitt.isEnabled = false;
 
-			NodeGene newNode = new HiddenNodeGene(IDs.NodeGeneID,
+			var newNode = new HiddenNodeGene(IDs.NodeGeneID,
 										genome.nodeGenes.Count,
 										Neat.random.ActivationFunctionType());
-
-			ConnectionGene firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
+			var firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															connectionToSplitt.fromNodeID,
 															newNode.nodeID,
 															true,
 															1.0f);
-
-			ConnectionGene secondHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
+			var secondHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															newNode.nodeID,
-															connectionToSplitt.fromNodeID,
+															connectionToSplitt.toNodeID,
 															true,
 															(float)Neat.random.NextRangedDouble(0.0,CPPNParameters.InitialMaxConnectionWeight));
 
-			connectionToSplitt.isEnabled = false;
+			var newSplittConnGene = new ConnectionGene(connectionToSplitt);
+			genome.connectionGenes.Remove(connectionToSplitt);
+			genome.connectionGenes.Add(newSplittConnGene);
+			genome.nodeGenes.Add(newNode);
 			genome.connectionGenes.Add(firstHalfGene);
 			genome.connectionGenes.Add(secondHalfGene);
 			return genome;
@@ -102,7 +104,6 @@ namespace CPPNNEATCA.NEAT.Parts
 		private static NeatGenome AddConnection(NeatGenome genome, IDCounters IDs)
 		{
 			//NO RECCURENT BULLSHITT.
-			//CHECK HIS PAPER for any good explanations for this
 			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
 			NodeGene toNode = Neat.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
@@ -110,16 +111,22 @@ namespace CPPNNEATCA.NEAT.Parts
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
 														Neat.random.InitialConnectionWeight());
+
 			genome.connectionGenes.Add(conGene);
+			Console.WriteLine();
 			return genome;
 		}
 
 		private static NeatGenome ChangeWeight(NeatGenome genome)
 		{
-			ConnectionGene connGene = Neat.random.ConnectionGene(genome);
-			float newWeight = (connGene.connectionWeight + Neat.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
+			ConnectionGene oldConnGene = Neat.random.ConnectionGene(genome);
+			float newWeight = (oldConnGene.connectionWeight + Neat.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
 																			- MutationChances.MutatWeightAmount).ClampWeight();
-			connGene.connectionWeight = newWeight;
+			oldConnGene.connectionWeight = newWeight;
+
+			ConnectionGene newConnGene = new ConnectionGene(oldConnGene);
+			genome.connectionGenes.Remove(oldConnGene);
+			genome.connectionGenes.Add(newConnGene);
 			return genome;
 		}
 
@@ -135,6 +142,7 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public static NeatGenome Crossover(NEATIndividual indie1, NEATIndividual indie2)
 		{
+			Console.WriteLine("crossover!");
 			NeatGenome genome1 = indie1.genome;
 			NeatGenome genome2 = indie2.genome;
 			if(indie1.Fitness.SameWithinReason(indie2.Fitness))
@@ -157,6 +165,7 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome SameFitnessRandomCrossOver(NeatGenome genome1, NeatGenome genome2)
 		{
+			Console.WriteLine("crossover same fitt!");
 			NeatGenome childGenome = new NeatGenome();
 			int shortestNodeGeneList = genome1.nodeGenes.Count < genome2.nodeGenes.Count ?
 									   genome1.nodeGenes.Count :
