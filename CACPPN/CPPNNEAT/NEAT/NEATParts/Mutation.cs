@@ -77,10 +77,11 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			var connectionToSplitt = Neat.random.ConnectionGene(genome);
 			connectionToSplitt.isEnabled = false;
-
-			var newNode = new HiddenNodeGene(IDs.NodeGeneID,
+			var id = IDs.NodeGeneID;
+			var newNode = new HiddenNodeGene(id,
 										genome.nodeGenes.Count,
 										Neat.random.ActivationFunctionType());
+
 			var firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															connectionToSplitt.fromNodeID,
 															newNode.nodeID,
@@ -111,9 +112,7 @@ namespace CPPNNEATCA.NEAT.Parts
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
 														Neat.random.InitialConnectionWeight());
-
 			genome.connectionGenes.Add(conGene);
-			Console.WriteLine();
 			return genome;
 		}
 
@@ -136,7 +135,8 @@ namespace CPPNNEATCA.NEAT.Parts
 			int geneIndex = Neat.random.Next(Neat.parameters.CPPN.InputSize,
 						Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize);
 
-			genome.nodeGenes[geneIndex] = ((InternalNodeGene)genome.nodeGenes[geneIndex]).ChangeFunction(newType, IDs.NodeGeneID);
+			var nodeGene = genome.nodeGenes[geneIndex];
+			nodeGene = ((InternalNodeGene)genome.nodeGenes[geneIndex]).ChangeFunction(newType, nodeGene.geneID);
 			return genome;
 		}
 

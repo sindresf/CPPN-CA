@@ -61,6 +61,13 @@ namespace CPPNNEATCA.Utils
 			int outputNodeEnd = outputNodeStart + Neat.parameters.CPPN.OutputSize;
 			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - Neat.parameters.CPPN.InputSize)];
 		}
+		public static NodeGene NodeGeneAfterInSequence(this Random rand, NeatGenome genome, NodeGene fromNode)
+		{
+			var minID = fromNode.nodeID; //TODO this is whaaaa!
+			var maxID = 0;
+			var toID = rand.Next(minID,maxID);
+			return null;
+		}
 		public static Coefficient Coefficient(this Random rand, Dictionary<char, Coefficient> dict)
 		{
 			//a bit of a bias way to go about it but not even supposed to be used so... can look at it properly later

@@ -97,6 +97,7 @@ namespace CPPNNEATCA
 
 			for(int i = 0; i < EAParameters.MaximumRuns; i++)
 			{
+				Console.WriteLine("generation:" + i);
 				neat.EvaluatePopulation();
 				if(neat.IsDeadRun())
 					break;

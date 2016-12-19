@@ -60,7 +60,7 @@ namespace CPPNNEATCA.CPPN.Parts
 					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
 					toDict = contains ? hiddenNodes : outputNodes;
 				}
-				var toNode = toDict[gene.toNodeID]; //new bug instance here
+				var toNode = toDict[gene.toNodeID];
 				toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
 				if(inputNodes.ContainsKey(gene.fromNodeID))
@@ -103,17 +103,23 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 		private void PropagateInternal()
 		{
+			var whileRuns = 0;
 			while(awaitingNotificationsNodes.Count > 0)
 			{
+				if(whileRuns % 10 == 0)
+					Console.WriteLine("whileRun nr." + whileRuns);
+				if(whileRuns > 10000)
+					break;
 				var doneNodesID = new List<int>();
 				foreach(InternalNetworkNode node in awaitingNotificationsNodes.Values)
 					if(node.IsFullyNotified)
 					{
 						node.PropagateOutput();
 						doneNodesID.Add(node.nodeID);
-					}
+					} //else is a recurrent thing or something
 				foreach(int ID in doneNodesID)
 					awaitingNotificationsNodes.Remove(ID);
+				whileRuns++;
 			}
 		}
 		private int CheckStateVote()
