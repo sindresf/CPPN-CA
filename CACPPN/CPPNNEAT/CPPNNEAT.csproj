@@ -85,6 +85,7 @@
     <Compile Include="SystemRunner.cs" />
     <Compile Include="Utils\Coefficient.cs" />
     <Compile Include="Utils\CPPNInfo.cs" />
+    <Compile Include="Utils\CycleCheckGraphNode.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\IDCounters.cs" />
     <Compile Include="Utils\IInfo.cs" />

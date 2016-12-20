@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -105,8 +106,27 @@ namespace CPPNNEATCA.NEAT.Parts
 		private static NeatGenome AddConnection(NeatGenome genome, IDCounters IDs)
 		{
 			//NO RECCURENT BULLSHITT.
+			var connGenes = genome.connectionGenes;
 			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
-			NodeGene toNode = Neat.random.NotInputNodeGene(genome); // is it so simple I can just make a "get node from After fromNode" ?
+			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
+
+			if(connGenes.Contains(fromNode.nodeID, toNode.nodeID)) // can't be bothered to make more tries. statistically it Will find the missing ones.
+				return genome;                                     // and in the beginning every connection is already there.
+
+			int allottedTries = genome.nodeGenes.Count-Neat.parameters.CPPN.InputSize - 1; //allowed to try every other node that's not input or itself.
+			bool stillTrying = true;
+			while(stillTrying)
+			{
+				allottedTries--;
+				toNode = Neat.random.NotInputNodeGene(genome);
+
+				stillTrying = (toNode.type != NodeType.Output);
+				stillTrying &= !AlreadyPathFromToToFrom(genome, toNode, fromNode);
+				stillTrying &= allottedTries > 0;
+			}
+
+			if(connGenes.Contains(fromNode.nodeID, toNode.nodeID))
+				return genome;
 			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
@@ -114,6 +134,21 @@ namespace CPPNNEATCA.NEAT.Parts
 														Neat.random.InitialConnectionWeight());
 			genome.connectionGenes.Add(conGene);
 			return genome;
+		}
+		private static bool AlreadyPathFromToToFrom(NeatGenome genome, NodeGene to, NodeGene from)
+		{
+			if(genome.connectionGenes.Contains(to.nodeID, from.nodeID)) return true; //simplest case
+
+			//making a minimal linked-list graph for checking
+			var nodes = new Dictionary<int,List<int>>();
+
+			foreach(var node in genome.nodeGenes)
+				nodes.Add(node.nodeID, new List<int>());
+
+			foreach(var connection in genome.connectionGenes)
+				nodes[connection.fromNodeID].Add(connection.toNodeID);
+
+			return nodes.CanReachGoalFromRoot(to.nodeID, from.nodeID);
 		}
 
 		private static NeatGenome ChangeWeight(NeatGenome genome)

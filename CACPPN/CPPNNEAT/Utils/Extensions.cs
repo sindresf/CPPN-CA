@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using CPPNNEAT.Utils;
 using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.NEAT.Parts;
 
 namespace CPPNNEATCA.Utils
@@ -30,6 +32,18 @@ namespace CPPNNEATCA.Utils
 			double error = 0.00000000000001f;
 			return val <= compareTo + error
 				&& val >= compareTo - error;
+		}
+
+		public static bool CanReachGoalFromRoot(this Dictionary<int, List<int>> tree, int root, int goalValue)
+		{
+			if(tree[root].Count == 0) return false;
+			if(tree[root].Contains(goalValue)) return true;
+			//else
+			foreach(int child in tree[root])
+			{
+				return tree.CanReachGoalFromRoot(child, goalValue);
+			}
+			throw new Exception("shouldn't have come here ( cycle recursion fail)");
 		}
 	}
 	static class NEATExtensions
@@ -128,6 +142,20 @@ namespace CPPNNEATCA.Utils
 			difference += disjointVar * EAParameters.DisjointSimilarityWeight;
 			difference += (weightDiffSum / sameGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
 			return difference;
+		}
+		public static bool Contains(this ConnectionGeneSequence connGenes, int fromID, int toID)
+		{
+			foreach(var gene in connGenes)
+				if(gene.fromNodeID == fromID && gene.toNodeID == toID)
+					return true;
+			return false;
+		}
+
+		public static bool ContainsID(this List<CycleCheckGraphNode> nodes, int ID)
+		{
+			foreach(var node in nodes)
+				if(node.nodeID == ID) return true;
+			return false;
 		}
 	}
 	static class Extensions1D

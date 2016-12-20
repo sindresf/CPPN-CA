@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.NEAT.Parts;
@@ -80,14 +81,17 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		public int GetNextState(List<float> input)
 		{
+			bool logTime = false;// NEAT.Neat.random.NextDouble() < 0.0005;
+			var timer = new Stopwatch();
+			if(logTime) timer.Start();
 			PropagateInput(input);
-
 			if(hiddenNodes.Count > 0)
 				PropagateInternal();
 			int state;
 			state = CheckStateVote();
+			if(logTime) timer.Stop();
+			if(logTime) Console.WriteLine("network took: {0}ms", timer.ElapsedMilliseconds);
 			return state;
-
 		}
 		private void ResetNetwork()
 		{
@@ -103,12 +107,12 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 		private void PropagateInternal()
 		{
-			var whileRuns = 0;
+			var whileRuns = 1;
 			while(awaitingNotificationsNodes.Count > 0)
 			{
 				if(whileRuns % 10 == 0)
 					Console.WriteLine("whileRun nr." + whileRuns);
-				if(whileRuns > 10000)
+				if(whileRuns > 500)
 					break;
 				var doneNodesID = new List<int>();
 				foreach(InternalNetworkNode node in awaitingNotificationsNodes.Values)
