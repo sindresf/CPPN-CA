@@ -36,14 +36,23 @@ namespace CPPNNEATCA.Utils
 
 		public static bool CanReachGoalFromRoot(this Dictionary<int, List<int>> tree, int root, int goalValue)
 		{
-			if(tree[root].Count == 0) return false;
-			if(tree[root].Contains(goalValue)) return true;
-			//else
-			foreach(int child in tree[root])
+			if(tree[root].Count == 0) //no outgoing edges = no goal reachable (only output nodes can be the root for this if)
 			{
-				return tree.CanReachGoalFromRoot(child, goalValue);
+				return false;
+			} else if(tree[root].Contains(goalValue)) //goal "reached"
+			{
+				Console.WriteLine("found it");
+				return true;
+			} else
+			{
+				bool could = false;
+				foreach(int child in tree[root])
+				{
+					could = tree.CanReachGoalFromRoot(child, goalValue);
+				}
+				return could;
 			}
-			throw new Exception("shouldn't have come here ( cycle recursion fail)");
+			throw new Exception("shouldn't have come here! (cycle check fail)");
 		}
 	}
 	static class NEATExtensions

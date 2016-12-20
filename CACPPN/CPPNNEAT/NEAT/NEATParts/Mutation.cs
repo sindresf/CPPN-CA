@@ -110,45 +110,49 @@ namespace CPPNNEATCA.NEAT.Parts
 			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
 			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
 
-			if(connGenes.Contains(fromNode.nodeID, toNode.nodeID)) // can't be bothered to make more tries. statistically it Will find the missing ones.
-				return genome;                                     // and in the beginning every connection is already there.
+			bool baseCase = fromNode.type == NodeType.Sensor && toNode.type == NodeType.Output; //already exist all of these
+			baseCase |= connGenes.Contains(fromNode.nodeID, toNode.nodeID); //existing "internal" connection
+
+			if(baseCase)
+				return genome;
 
 			int allottedTries = genome.nodeGenes.Count-Neat.parameters.CPPN.InputSize - 1; //allowed to try every other node that's not input or itself.
-			bool stillTrying = true;
-			while(stillTrying)
-			{
-				allottedTries--;
-				toNode = Neat.random.NotInputNodeGene(genome);
+																						   //making a minimal linked-list graph for checking
+			var graph = new Dictionary<int,List<int>>();
 
-				stillTrying = (toNode.type != NodeType.Output);
-				stillTrying &= !AlreadyPathFromToToFrom(genome, toNode, fromNode);
-				stillTrying &= allottedTries > 0;
+			foreach(var node in genome.nodeGenes)
+				graph.Add(node.nodeID, new List<int>());
+			foreach(var connection in genome.connectionGenes)
+				graph[connection.fromNodeID].Add(connection.toNodeID);
+
+			while(allottedTries > 0)
+			{
+				if(graph.CanReachGoalFromRoot(toNode.nodeID, fromNode.nodeID))
+				{
+					allottedTries--;
+					toNode = Neat.random.NotInputNodeGene(genome);
+
+					if(toNode.type == NodeType.Output)
+						if(fromNode.type == NodeType.Sensor)
+							return genome;
+						else if(connGenes.Contains(fromNode.nodeID, toNode.nodeID))
+							continue;
+						else
+							break;
+
+				} else
+				{
+					break; //the connection is none-cyclic
+				}
 			}
 
-			if(connGenes.Contains(fromNode.nodeID, toNode.nodeID))
-				return genome;
-			ConnectionGene conGene = new ConnectionGene(IDs.ConnectionGeneID,
+			var conGene = new ConnectionGene(IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
 														Neat.random.InitialConnectionWeight());
 			genome.connectionGenes.Add(conGene);
 			return genome;
-		}
-		private static bool AlreadyPathFromToToFrom(NeatGenome genome, NodeGene to, NodeGene from)
-		{
-			if(genome.connectionGenes.Contains(to.nodeID, from.nodeID)) return true; //simplest case
-
-			//making a minimal linked-list graph for checking
-			var nodes = new Dictionary<int,List<int>>();
-
-			foreach(var node in genome.nodeGenes)
-				nodes.Add(node.nodeID, new List<int>());
-
-			foreach(var connection in genome.connectionGenes)
-				nodes[connection.fromNodeID].Add(connection.toNodeID);
-
-			return nodes.CanReachGoalFromRoot(to.nodeID, from.nodeID);
 		}
 
 		private static NeatGenome ChangeWeight(NeatGenome genome)
