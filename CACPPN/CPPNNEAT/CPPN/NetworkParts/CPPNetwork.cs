@@ -53,14 +53,9 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			foreach(ConnectionGene gene in connectionGenes)
 			{
-				var toDict = hiddenNodes;
-				if(hiddenNodes.Count == 0)
-					toDict = outputNodes;
-				else
-				{
-					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
-					toDict = contains ? hiddenNodes : outputNodes;
-				}
+				bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
+				var toDict = contains ? hiddenNodes : outputNodes;
+
 				var toNode = toDict[gene.toNodeID];
 				toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
@@ -92,13 +87,6 @@ namespace CPPNNEATCA.CPPN.Parts
 			if(logTime) timer.Stop();
 			if(logTime) Console.WriteLine("network took: {0}ms", timer.ElapsedMilliseconds);
 			return state;
-		}
-		private void ResetNetwork()
-		{
-			foreach(InternalNetworkNode node in hiddenNodes.Values)
-				node.RemoveOldInput();
-			foreach(InternalNetworkNode node in outputNodes.Values)
-				node.RemoveOldInput();
 		}
 		private void PropagateInput(List<float> input)
 		{
@@ -146,6 +134,13 @@ namespace CPPNNEATCA.CPPN.Parts
 				}
 			}
 			return voted;
+		}
+		private void ResetNetwork()
+		{
+			foreach(InternalNetworkNode node in hiddenNodes.Values)
+				node.RemoveOldInput();
+			foreach(InternalNetworkNode node in outputNodes.Values)
+				node.RemoveOldInput();
 		}
 	}
 }

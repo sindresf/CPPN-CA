@@ -49,6 +49,7 @@
     <Compile Include="CA\Base\BaseOneDimentionalExperimentCA.cs" />
     <Compile Include="CA\Base\BaseTwoDimentionalExperimentCA.cs" />
     <Compile Include="CA\Base\ICell.cs" />
+    <Compile Include="CA\Experiments\LambdaExperiment.cs" />
     <Compile Include="CA\Experiments\Test1DimCA.cs" />
     <Compile Include="CA\Experiments\Test2DimCA.cs" />
     <Compile Include="CA\INeatCA.cs" />

@@ -120,7 +120,7 @@ namespace CPPNNEATCA.NEAT.Parts
 																						   //making a minimal linked-list graph for checking
 			var graph = new Dictionary<int,List<int>>();
 
-			foreach(var node in genome.nodeGenes)
+			foreach(var node in genome.nodeGenes)	
 				graph.Add(node.nodeID, new List<int>());
 			foreach(var connection in genome.connectionGenes)
 				graph[connection.fromNodeID].Add(connection.toNodeID);
@@ -139,7 +139,6 @@ namespace CPPNNEATCA.NEAT.Parts
 							continue;
 						else
 							break;
-
 				} else
 				{
 					break; //the connection is none-cyclic

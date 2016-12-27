@@ -42,7 +42,7 @@ namespace CPPNNEATCA.CPPN.Parts
 	{
 		protected ConcurrentDictionary<int, float> inValues, inWeights;
 		protected ActivationFunction Function;
-		private int shouldHave;
+		protected int shouldHave;
 
 		public InternalNetworkNode(int nodeID, ActivationFunction function) : base(nodeID)
 		{
@@ -93,7 +93,6 @@ namespace CPPNNEATCA.CPPN.Parts
 	class OutputNetworkNode : InternalNetworkNode, INetworkNode
 	{
 		public readonly int representedState;
-		private int shouldHave;
 
 		public OutputNetworkNode(int nodeID, int representedState, ActivationFunction function) : base(nodeID, function)
 		{
@@ -103,28 +102,6 @@ namespace CPPNNEATCA.CPPN.Parts
 		public OutputNetworkNode(int nodeID, ActivationFunction function) : base(nodeID, function)
 		{
 			representedState = 0;
-		}
-
-		public override void SetupDone()
-		{
-			shouldHave = inWeights.Count;
-		}
-
-		public override void AddInputConnection(int inputNodeID, float inputWeight)
-		{
-			inWeights[inputNodeID] = inputWeight;
-		}
-
-		public override void Notify(int inputNodeID, float value)
-		{
-			inValues[inputNodeID] = value;
-		}
-		public override bool IsFullyNotified
-		{
-			get
-			{
-				return shouldHave == inValues.Count;
-			}
 		}
 		public float Activation
 		{
