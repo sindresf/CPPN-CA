@@ -81,7 +81,7 @@ namespace CPPNNEATCA.NEAT.Parts
 	class OutputNodeGene : InternalNodeGene
 	{
 		public readonly float representedState;
-		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunctionType function) : base(geneID, nodeID, function)
+		public OutputNodeGene(int geneID, int nodeID, float representedState, ActivationFunctionType function = ActivationFunctionType.Sigmoid) : base(geneID, nodeID, function)
 		{
 			type = NodeType.Output;
 			this.representedState = representedState;

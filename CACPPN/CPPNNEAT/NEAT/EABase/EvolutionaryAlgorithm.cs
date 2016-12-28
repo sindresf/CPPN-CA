@@ -7,6 +7,7 @@
 		public abstract void EvaluatePopulation();
 
 		public abstract bool IsDeadRun();
+		public abstract bool SolvedIt();
 		public abstract void NextGeneration();
 		public abstract float GetBestFitness();//placeholder for proper "GetAllTheStatistics" type of func (or class delegating func)
 	}

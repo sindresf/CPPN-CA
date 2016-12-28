@@ -15,7 +15,7 @@ namespace CPPNNEATCA
 
 		public Parameters()
 		{
-			experiment = new Test1DimCA(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
+			experiment = new LambdaExperiment(); // THE ONLY LINE NEEDING CHANGING IN THE GENERAL CASE
 			CA = experiment.GetParameters();
 			EA = new EAParameters(experiment);
 			CPPN = new CPPNParameters(CA);
@@ -24,25 +24,28 @@ namespace CPPNNEATCA
 
 	struct EAParameters
 	{
-		public const int PopulationSize = 60;
-		public const int MaximumRuns = 25;
-		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public static INeatCA CAExperiment;
-
 		public EAParameters(INeatCA experimentCA)
 		{
 			CAExperiment = experimentCA;
 		}
+
+		public const int PopulationSize = 140;
+		public const int MaximumRuns = 50;
+		public const int SpeciesImprovementTriesBeforeDeath = 25;
+		public const int SetNToOneLimit = 12;
+		public const int LowerChampionSpeciesCount = 5;
 
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;
 		public const float FunctionSimilarityWeight = 1.0f;
 		public const float WeightDifferenceSimilarityWeight = 0.4f;
 		public const float SpeciesInclusionRadius = 3.0f;
-		public const int LowerChampionSpeciesCount = 5;
-		public const int SetNToOneLimit = 12;
 
 		public static float ASexualReproductionQuota = 0.25f;
+
+		public static bool RandomGeneStart = true;
+		public static float RandomGeneStartChance = 0.06f;
 
 		public static bool IsSeededRun = false;
 		public static int RandomSeed = 42;
@@ -55,14 +58,16 @@ namespace CPPNNEATCA
 		public int CellWorldWidth;
 		public int CellWorldHeight;
 		public int MaxGeneration;
+		public float MaxFitnessPossible;
 
-		public CAParameters(int NeighbourHoodSize, int CellStateCount, int CellWorldWidth, int MaxGeneration)
+		public CAParameters(int NeighbourHoodSize, int CellStateCount, int CellWorldWidth, int MaxGeneration, float MaxFitness = float.MinValue)
 		{
 			this.NeighbourHoodSize = NeighbourHoodSize;
 			this.CellStateCount = CellStateCount;
 			this.CellWorldWidth = CellWorldWidth;
 			CellWorldHeight = CellWorldWidth;
 			this.MaxGeneration = MaxGeneration;
+			MaxFitnessPossible = MaxFitness;
 		}
 	}
 

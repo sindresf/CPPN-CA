@@ -54,6 +54,13 @@ namespace CPPNNEATCA.NEAT
 			population.MakeNextGeneration();
 		}
 
+		public override bool SolvedIt()
+		{
+			if(parameters.CA.MaxFitnessPossible != float.MinValue)
+				return GetBestFitness() == parameters.CA.MaxFitnessPossible;
+			return false; //makes it just search for "the best"
+		}
+
 		public override float GetBestFitness()
 		{
 			float best = 0.0f;

@@ -29,5 +29,6 @@ namespace CPPNNEATCA.CA.Base
 		{
 			return parameters;
 		}
+		
 	}
 }

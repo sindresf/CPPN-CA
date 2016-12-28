@@ -12,6 +12,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		PyramidAbsoluteValue,
 		Modulo,
 		Linear,
+		Sigmoid,
 		Sensor
 	}
 	abstract class ActivationFunction
@@ -47,6 +48,8 @@ namespace CPPNNEATCA.CPPN.Parts
 				return new ModuloFunction();
 			case ActivationFunctionType.Linear:
 				return new LinearFunction();
+			case ActivationFunctionType.Sigmoid:
+				return new SigmoidFunction();
 			case ActivationFunctionType.Sensor:
 				return null;
 			default:
@@ -163,6 +166,27 @@ namespace CPPNNEATCA.CPPN.Parts
 			double b = coefficients['b'].coValue;
 			float x = inputs.WeightedSum();
 			return (float)(a * x + b);
+		}
+	}
+	class SigmoidFunction : ActivationFunction
+	{
+		public SigmoidFunction() : base(ActivationFunctionType.Sigmoid)
+		{
+			coefficients.Add('a', new Coefficient(1.0, 0.04, 0.0, 1.0));
+			coefficients.Add('b', new Coefficient(1.0, 0.04, 0.0, 1.0));
+			coefficients.Add('c', new Coefficient(0.0, 0.04, 0.0, 1.0));
+		}
+
+		public override float GetOutput(TupleList<float, float> inputs)
+		{
+			var sum = inputs.WeightedSum();
+			var a = coefficients['a'].coValue;
+			var b = coefficients['b'].coValue;
+			var c = coefficients['c'].coValue;
+
+			double denominator = (1*a) + Math.Pow(Math.E,-(sum*b));
+
+			return (float)((1.0 / denominator) + c);
 		}
 	}
 	class SensorFunction : ActivationFunction
