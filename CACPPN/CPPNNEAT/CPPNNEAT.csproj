@@ -90,7 +90,6 @@
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\IDCounters.cs" />
     <Compile Include="Utils\IInfo.cs" />
-    <Compile Include="Utils\NEATInfo.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
     <Compile Include="Utils\TupleList.cs" />
   </ItemGroup>
