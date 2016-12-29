@@ -52,7 +52,10 @@ namespace CPPNNEATCA.NEAT.Parts
 			NeatGenome newGenome = new NeatGenome(genome);
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 				if(Neat.random.DoMutation(type))
+				{
 					newGenome = MutateOfType(type, newGenome, IDs);
+					newGenome.hasMutated = true;
+				}
 
 			return newGenome;
 		}
@@ -120,7 +123,7 @@ namespace CPPNNEATCA.NEAT.Parts
 																						   //making a minimal linked-list graph for checking
 			var graph = new Dictionary<int,List<int>>();
 
-			foreach(var node in genome.nodeGenes)	
+			foreach(var node in genome.nodeGenes)
 				graph.Add(node.nodeID, new List<int>());
 			foreach(var connection in genome.connectionGenes)
 				graph[connection.fromNodeID].Add(connection.toNodeID);

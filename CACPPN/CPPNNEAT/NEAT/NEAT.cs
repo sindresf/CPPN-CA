@@ -57,26 +57,22 @@ namespace CPPNNEATCA.NEAT
 		public override bool SolvedIt()
 		{
 			if(parameters.CA.MaxFitnessPossible != float.MinValue)
-				return GetBestFitness() == parameters.CA.MaxFitnessPossible;
+				return GetBestIndividual().Fitness.SameWithinReason(parameters.CA.MaxFitnessPossible);
 			return false; //makes it just search for "the best"
 		}
 
-		public override float GetBestFitness()
+		public override Individual GetBestIndividual()
 		{
-			float best = 0.0f;
-			int bestID = 0;
+			var best = float.MinValue;
+			NEATIndividual bestIndie = null;
 			foreach(Species sp in population.species)
-			{
 				foreach(NEATIndividual indie in sp.populace)
-				{
 					if(indie.Fitness > best)
 					{
 						best = indie.Fitness;
-						bestID = indie.individualID;
+						bestIndie = indie;
 					}
-				}
-			}
-			return best;
+			return bestIndie;
 		}
 	}
 }

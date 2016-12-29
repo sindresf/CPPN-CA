@@ -37,11 +37,13 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void Initialize(IDCounters IDs)
 		{
+			var genome = new NeatGenome();
+			genome.Initialize(IDs);
 			for(int i = 0; i < EAParameters.PopulationSize; i++)
 			{
-				NEATIndividual indie = new NEATIndividual(IDs);
-				indie.Initialize(IDs);
+				NEATIndividual indie = new NEATIndividual(genome, IDs);
 				populace.Add(indie);
+				genome = new NeatGenome(genome);
 			}
 		}
 

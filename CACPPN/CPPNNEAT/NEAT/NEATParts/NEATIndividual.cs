@@ -10,17 +10,10 @@ namespace CPPNNEATCA.NEAT.Parts
 		public NeatGenome genome;
 		public ICPPNetwork network;
 
-		public NEATIndividual(IDCounters IDs) : base(IDs.IndividualID)
+		public NEATIndividual(NeatGenome genome, IDCounters IDs) : base(IDs.IndividualID)
 		{
-			Fitness = 0.3f;
-		}
-
-		public override void Initialize(IDCounters IDs)
-		{
-			genome = new NeatGenome();
-			genome.Initialize(IDs);
-			/*if(Neat.random.NextBoolean(MutationChances.CreationMutationChance))
-				Mutator.Mutate(genome, IDs);*/
+			Fitness = 0.0f;
+			this.genome = genome;
 		}
 
 		public override void Evaluate(int speciesCount)
