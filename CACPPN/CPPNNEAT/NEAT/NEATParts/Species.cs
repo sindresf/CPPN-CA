@@ -78,6 +78,22 @@ namespace CPPNNEATCA.NEAT.Parts
 			populace = new List<NEATIndividual>(_populace);
 		}
 
+		public bool BelongsInSpecies(NEATIndividual indie)
+		{
+			bool yes = false;
+
+			var randRep = Neat.random.Representative(populace);
+			if(indie.DifferenceTo(randRep) <= EAParameters.SpeciesInclusionRadius)
+				yes = true;
+
+			return yes;
+		}
+
+		public void AddIndividual(NEATIndividual indie)
+		{
+			populace.Add(indie);
+		}
+
 		private NEATIndividual getBest()
 		{
 			float bestFitness = 0.0f;

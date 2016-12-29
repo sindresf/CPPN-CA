@@ -47,6 +47,18 @@ namespace CPPNNEATCA.Utils
 			}
 			return CPPN.Parts.ActivationFunctionType.Linear;
 		}
+		public static Coefficient Coefficient(this Random rand, Dictionary<char, Coefficient> dict)
+		{
+			//a bit of a bias way to go about it but not even supposed to be used so... can look at it properly later
+			ICollection<char> keys = dict.Keys;
+			double chance = 1.0/keys.Count;
+			foreach(char key in keys)
+			{
+				if(rand.NextBoolean(chance))
+					return dict[key];
+			}
+			throw new DllNotFoundException("silly random select failed");
+		}
 		public static ConnectionGene ConnectionGene(this Random rand, NeatGenome genome)
 		{
 			return genome.connectionGenes[rand.Next(genome.connectionGenes.Count)];
@@ -68,17 +80,9 @@ namespace CPPNNEATCA.Utils
 			var toID = rand.Next(minID,maxID);
 			return null;
 		}
-		public static Coefficient Coefficient(this Random rand, Dictionary<char, Coefficient> dict)
+		public static NEATIndividual Representative(this Random rand, List<NEATIndividual> populace)
 		{
-			//a bit of a bias way to go about it but not even supposed to be used so... can look at it properly later
-			ICollection<char> keys = dict.Keys;
-			double chance = 1.0/keys.Count;
-			foreach(char key in keys)
-			{
-				if(rand.NextBoolean(chance))
-					return dict[key];
-			}
-			throw new DllNotFoundException("silly random select failed");
+			return populace[rand.Next(0, populace.Count)];
 		}
 	}
 }
