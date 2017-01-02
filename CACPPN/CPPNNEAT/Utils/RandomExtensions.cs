@@ -84,5 +84,10 @@ namespace CPPNNEATCA.Utils
 		{
 			return populace[rand.Next(0, populace.Count)];
 		}
+
+		public static NEATIndividual Individual(this Random rand, List<NEATIndividual> populace)
+		{
+			return populace[rand.Next(0, populace.Count)];
+		}
 	}
 }

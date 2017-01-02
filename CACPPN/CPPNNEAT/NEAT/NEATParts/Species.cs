@@ -78,16 +78,27 @@ namespace CPPNNEATCA.NEAT.Parts
 			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
 				_populace.Add(getBest());
 
-			foreach(NEATIndividual indie in populace)
+			/*foreach(NEATIndividual indie in populace)
 			{ //TODO this is not proper
 				if(Neat.random.NextDouble() <= EAParameters.ASexualReproductionQuota)
 					indie.genome = Mutator.Mutate(indie.genome, IDs);
-				if(indie.DifferenceTo(representative) <= EAParameters.SpeciesInclusionRadius)
-					_populace.Add(indie);
+				if(BelongsInSpecies(indie))
+					_populace.Add(indie); //can't actually do this because of species size things
 				else
 					missFits.Add(indie);
+			}*/
+			while(_populace.Count < AllowedPopulaceSize) //aka can have more indies next generation
+			{
+				var indie = Neat.random.Individual(populace);
+				if(Neat.random.NextDouble() <= EAParameters.ASexualReproductionQuota)
+					indie.genome = Mutator.Mutate(indie.genome, IDs);
+				if(BelongsInSpecies(indie))
+					_populace.Add(indie); //can't actually do this because of species size things
+				else
+					missFits.Add(indie);
+				//crossover 
 			}
-			//crossover 
+
 			populace = new List<NEATIndividual>(_populace);
 
 			return missFits;

@@ -144,6 +144,5 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			return actualMissfits;
 		}
-
 	}
 }
