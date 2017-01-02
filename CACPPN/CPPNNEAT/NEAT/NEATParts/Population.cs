@@ -93,6 +93,10 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			return allowedPopulaceSize;
 		}
+		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
+		{
+			return avgSpots;
+		}
 
 		private List<NEATIndividual> GetSpeciesRepresentatives()
 		{
@@ -122,20 +126,24 @@ namespace CPPNNEATCA.NEAT.Parts
 		private List<NEATIndividual> MissFitsInAllSpecies(List<NEATIndividual> missFits)
 		{
 			var actualMissfits = new List<NEATIndividual>();
+			bool noHome = true;
 			foreach(var missfit in missFits)
+			{
 				foreach(var sp in species)
-					if(!sp.BelongsInSpecies(missfit))
-						actualMissfits.Add(missfit);
-					else
+				{
+					if(sp.BelongsInSpecies(missfit))
+					{
+						noHome = false;
 						sp.AddIndividual(missfit);
+						break;
+					}
+				}
+				if(noHome)
+					actualMissfits.Add(missfit);
+				noHome = true;
+			}
 			return actualMissfits;
 		}
 
-		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
-		{
-			if(spotsleft < avgSpots) return spotsleft;
-
-			return avgSpots;
-		}
 	}
 }

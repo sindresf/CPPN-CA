@@ -30,9 +30,9 @@ namespace CPPNNEATCA
 			CAExperiment = experimentCA;
 		}
 
-		public const int PopulationSize = 140;
+		public const int PopulationSize = 100;
 		public const int MaximumRuns = 50;
-		public const int SpeciesImprovementTriesBeforeDeath = 25;
+		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public const int SetNToOneLimit = 12;
 		public const int LowerChampionSpeciesCount = 5;
 
@@ -40,7 +40,7 @@ namespace CPPNNEATCA
 		public const float DisjointSimilarityWeight = 1.0f;
 		public const float FunctionSimilarityWeight = 1.0f;
 		public const float WeightDifferenceSimilarityWeight = 0.4f;
-		public const float SpeciesInclusionRadius = 3.0f;
+		public const float SpeciesInclusionRadius = 7.0f;
 
 		public static float ASexualReproductionQuota = 0.25f;
 
