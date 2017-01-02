@@ -95,6 +95,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		}
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
 		{
+			//ok now this
 			return avgSpots;
 		}
 

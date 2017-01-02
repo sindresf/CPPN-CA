@@ -39,7 +39,7 @@ namespace CPPNNEATCA
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;
 		public const float FunctionSimilarityWeight = 1.0f;
-		public const float WeightDifferenceSimilarityWeight = 0.4f;
+		public const float WeightDifferenceSimilarityWeight = 1f;
 		public const float SpeciesInclusionRadius = 3.0f;
 
 		public static float ASexualReproductionQuota = 0.25f;

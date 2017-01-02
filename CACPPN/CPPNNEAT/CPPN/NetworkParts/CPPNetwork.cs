@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.NEAT.Parts;
@@ -53,6 +52,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			foreach(ConnectionGene gene in connectionGenes)
 			{
+				if(!gene.isEnabled) continue;
 				bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
 				var toDict = contains ? hiddenNodes : outputNodes;
 
@@ -76,16 +76,11 @@ namespace CPPNNEATCA.CPPN.Parts
 
 		public int GetNextState(List<float> input)
 		{
-			bool logTime = false;// NEAT.Neat.random.NextDouble() < 0.0005;
-			var timer = new Stopwatch();
-			if(logTime) timer.Start();
 			PropagateInput(input);
 			if(hiddenNodes.Count > 0)
 				PropagateInternal();
 			int state;
 			state = CheckStateVote();
-			if(logTime) timer.Stop();
-			if(logTime) Console.WriteLine("network took: {0}ms", timer.ElapsedMilliseconds);
 			return state;
 		}
 		private void PropagateInput(List<float> input)
@@ -124,6 +119,7 @@ namespace CPPNNEATCA.CPPN.Parts
 				if(!node.IsFullyNotified)
 				{
 					Console.WriteLine();
+					Console.WriteLine("nodeID:{0} state:{1}, shouldHave:{2} had:{3}", node.nodeID, node.representedState, node.shouldHave, node.inValues.Count);
 					throw new Exception("The fuck!? not notified output node!");
 				}
 				var activationLevel = node.Activation;

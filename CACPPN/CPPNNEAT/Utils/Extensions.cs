@@ -149,6 +149,7 @@ namespace CPPNNEATCA.Utils
 
 			difference += excessVar * EAParameters.ExcessSimilarityWeight;
 			difference += disjointVar * EAParameters.DisjointSimilarityWeight;
+			difference += functionVar * EAParameters.FunctionSimilarityWeight;
 			difference += (weightDiffSum / sameGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
 			return difference;
 		}

@@ -40,9 +40,9 @@ namespace CPPNNEATCA.CPPN.Parts
 
 	class InternalNetworkNode : InputNetworkNode, INetworkNode
 	{
-		protected ConcurrentDictionary<int, float> inValues, inWeights;
+		public ConcurrentDictionary<int, float> inValues, inWeights;
 		protected ActivationFunction Function;
-		protected int shouldHave;
+		public int shouldHave;
 
 		public InternalNetworkNode(int nodeID, ActivationFunction function) : base(nodeID)
 		{
