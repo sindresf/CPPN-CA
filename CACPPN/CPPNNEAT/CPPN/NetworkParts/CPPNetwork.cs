@@ -120,6 +120,16 @@ namespace CPPNNEATCA.CPPN.Parts
 				{
 					Console.WriteLine();
 					Console.WriteLine("nodeID:{0} state:{1}, shouldHave:{2} had:{3}", node.nodeID, node.representedState, node.shouldHave, node.inValues.Count);
+					Console.WriteLine("incoming connections:");
+					var wKeys = new int[node.inWeights.Keys.Count];
+					var vKeys = new int[node.inValues.Keys.Count];
+					node.inWeights.Keys.CopyTo(wKeys, 0);
+					node.inValues.Keys.CopyTo(vKeys, 0);
+					foreach(var w in wKeys)
+						Console.Write(w + " ");
+					Console.WriteLine();
+					foreach(var v in vKeys)
+						Console.Write(v + " ");
 					throw new Exception("The fuck!? not notified output node!");
 				}
 				var activationLevel = node.Activation;

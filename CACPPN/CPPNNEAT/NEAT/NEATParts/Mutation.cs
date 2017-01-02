@@ -98,7 +98,6 @@ namespace CPPNNEATCA.NEAT.Parts
 															(float)Neat.random.NextRangedDouble(0.0,CPPNParameters.InitialMaxConnectionWeight));
 
 			var newSplittConnGene = new ConnectionGene(connectionToSplitt);
-			genome.connectionGenes.Remove(connectionToSplitt);
 			genome.connectionGenes.Add(newSplittConnGene);
 			genome.nodeGenes.Add(newNode);
 			genome.connectionGenes.Add(firstHalfGene);

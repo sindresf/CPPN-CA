@@ -69,9 +69,11 @@ namespace CPPNNEATCA.Utils
 		}
 		public static NodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
-			int outputNodeStart = 0; //this needs work. maybe switching out functionality.
-			int outputNodeEnd = outputNodeStart + Neat.parameters.CPPN.OutputSize;
-			return genome.nodeGenes[rand.Next(0, genome.nodeGenes.Count - Neat.parameters.CPPN.InputSize)];
+			var nodes = new List<NodeGene>();
+			foreach(var node in genome.nodeGenes)
+				if(node.type != NodeType.Output)
+					nodes.Add(node);
+			return genome.nodeGenes[rand.Next(0, nodes.Count)];
 		}
 		public static NodeGene NodeGeneAfterInSequence(this Random rand, NeatGenome genome, NodeGene fromNode)
 		{
