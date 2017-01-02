@@ -12,6 +12,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		public bool isDead { get; private set; }
 		private float BestFitnessAchieved;
 		private int improvementCount;
+		private NEATIndividual representative;
 
 		public Species(int speciesID)
 		{
@@ -63,29 +64,40 @@ namespace CPPNNEATCA.NEAT.Parts
 				isDead = ++improvementCount > EAParameters.SpeciesImprovementTriesBeforeDeath;
 		}
 
-		public void MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs)
+		public NEATIndividual NewSpeciesRepresentative()
 		{
-			//this is where the compare should come into play for fitness selection.
-			//and "foreach" by the allowed amount
+			representative = Neat.random.Representative(populace);
+			return representative;
+		}
+
+		public List<NEATIndividual> MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs)
+		{
+			var missFits = new List<NEATIndividual>();
+
 			var _populace = new List<NEATIndividual>();
 			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
 				_populace.Add(getBest());
+
 			foreach(NEATIndividual indie in populace)
 			{ //TODO this is not proper
-				indie.genome = Mutator.Mutate(indie.genome, IDs);
-				_populace.Add(indie);
+				if(Neat.random.NextDouble() <= EAParameters.ASexualReproductionQuota)
+					indie.genome = Mutator.Mutate(indie.genome, IDs);
+				if(indie.DifferenceTo(representative) <= EAParameters.SpeciesInclusionRadius)
+					_populace.Add(indie);
+				else
+					missFits.Add(indie);
 			}
+			//crossover 
 			populace = new List<NEATIndividual>(_populace);
+
+			return missFits;
 		}
 
 		public bool BelongsInSpecies(NEATIndividual indie)
 		{
 			bool yes = false;
-
-			var randRep = Neat.random.Representative(populace);
-			if(indie.DifferenceTo(randRep) <= EAParameters.SpeciesInclusionRadius)
+			if(indie.DifferenceTo(representative) <= EAParameters.SpeciesInclusionRadius)
 				yes = true;
-
 			return yes;
 		}
 

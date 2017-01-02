@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.Utils;
 
@@ -73,7 +74,15 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void MakeNextGeneration()
 		{
-			Dictionary<int,int> allowedPopulaceSize = new Dictionary<int, int>();
+			var allowedPopulaceSize = SpeciesSizes();
+			var speciesRepresentatives = GetSpeciesRepresentatives();
+			var missfits = GetMissFitsFromSpeciesNextGeneration(allowedPopulaceSize);
+			FindMissfitsHomeInPopulation(missfits);
+		}
+
+		private Dictionary<int, int> SpeciesSizes()
+		{
+			var allowedPopulaceSize = new Dictionary<int, int>();
 			int averageSpots = EAParameters.PopulationSize / species.Count;
 			int spotsLeft = EAParameters.PopulationSize;
 			foreach(Species sp in species)
@@ -82,8 +91,44 @@ namespace CPPNNEATCA.NEAT.Parts
 				allowedPopulaceSize[sp.speciesID] = spots;
 				spotsLeft -= spots;
 			}
+			return allowedPopulaceSize;
+		}
+
+		private List<NEATIndividual> GetSpeciesRepresentatives()
+		{
+			var representatives = new List<NEATIndividual>();
 			foreach(Species sp in species)
-				sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID], IDs);
+				representatives.Add(sp.NewSpeciesRepresentative());
+			return representatives;
+		}
+
+		private List<NEATIndividual> GetMissFitsFromSpeciesNextGeneration(Dictionary<int, int> allowedPopulaceSize)
+		{
+			var missFits = new List<NEATIndividual>();
+			foreach(Species sp in species)
+				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID], IDs));
+			return missFits;
+		}
+
+		private void FindMissfitsHomeInPopulation(List<NEATIndividual> missFits)
+		{
+			//if does not comply with any representatives.
+			var actualMissfits = MissFitsInAllSpecies(missFits);
+			Console.WriteLine("AMF:" + actualMissfits.Count);
+			foreach(var mf in actualMissfits)
+				AddSpecies(mf);
+		}
+
+		private List<NEATIndividual> MissFitsInAllSpecies(List<NEATIndividual> missFits)
+		{
+			var actualMissfits = new List<NEATIndividual>();
+			foreach(var missfit in missFits)
+				foreach(var sp in species)
+					if(!sp.BelongsInSpecies(missfit))
+						actualMissfits.Add(missfit);
+					else
+						sp.AddIndividual(missfit);
+			return actualMissfits;
 		}
 
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
