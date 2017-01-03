@@ -43,12 +43,10 @@ namespace CPPNNEATCA.CA.Experiments
 
 			foreach(Rule rule in ruleSet)
 			{
-				Console.Write(".");
 				bool same = TransitionFunction(rule) == rule.Result;
 				if(same) Fitness++;
 				else Fitness -= 1.2;
 			}
-			Console.WriteLine("!");
 			return (float)Math.Pow(Fitness, 2);
 		}
 	}

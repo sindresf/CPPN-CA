@@ -8,7 +8,6 @@ namespace CPPNNEATCA.CPPN.Parts
 
 	interface INetworkNode
 	{
-		void SetupDone();
 		void Notify(int inputNodeID, float value);
 		void AddInputConnection(int inputNodeID, float inputWeight);
 	}
@@ -49,11 +48,13 @@ namespace CPPNNEATCA.CPPN.Parts
 			Function = function;
 			inValues = new ConcurrentDictionary<int, float>();
 			inWeights = new ConcurrentDictionary<int, float>();
+			shouldHave = 0;
 		}
 
 		public virtual void AddInputConnection(int inputNodeID, float inputWeight)
 		{
 			inWeights[inputNodeID] = inputWeight;
+			shouldHave++;
 		}
 
 		public virtual void Notify(int inputNodeID, float value)
@@ -70,11 +71,6 @@ namespace CPPNNEATCA.CPPN.Parts
 			float nodeOutput = Function.GetOutput(nodeInput);
 			foreach(InternalNetworkNode node in outConnections)
 				node.Notify(nodeID, nodeOutput);
-		}
-
-		public virtual void SetupDone()
-		{
-			shouldHave = inWeights.Count;
 		}
 
 		public virtual bool IsFullyNotified

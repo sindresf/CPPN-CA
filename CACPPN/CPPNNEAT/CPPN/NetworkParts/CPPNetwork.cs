@@ -34,6 +34,7 @@ namespace CPPNNEATCA.CPPN.Parts
 				switch(gene.type)
 				{
 				case NodeType.Sensor:
+					if(nodeID == 3 || nodeID == 4) Console.WriteLine(nodeID + " just happened");
 					inputNodes.Add(nodeID, new InputNetworkNode(nodeID));
 					break;
 				case NodeType.Hidden:
@@ -53,25 +54,21 @@ namespace CPPNNEATCA.CPPN.Parts
 			foreach(ConnectionGene gene in connectionGenes)
 			{
 				if(!gene.isEnabled) continue;
-				bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
-				var toDict = contains ? hiddenNodes : outputNodes;
+				else
+				{
+					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
+					var toDict = contains ? hiddenNodes : outputNodes;
 
-				var toNode = toDict[gene.toNodeID];
-				toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
+					var toNode = toDict[gene.toNodeID];
+					toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
-				if(inputNodes.ContainsKey(gene.fromNodeID))
-					inputNodes[gene.fromNodeID].AddOutConnection(toDict[gene.toNodeID]);
+					if(inputNodes.ContainsKey(gene.fromNodeID))
+						inputNodes[gene.fromNodeID].AddOutConnection(toDict[gene.toNodeID]);
 
-				else if(hiddenNodes.ContainsKey(gene.fromNodeID))
-					((InternalNetworkNode)hiddenNodes[gene.fromNodeID]).AddOutConnection(toDict[gene.toNodeID]);
+					else if(hiddenNodes.ContainsKey(gene.fromNodeID))
+						((InternalNetworkNode)hiddenNodes[gene.fromNodeID]).AddOutConnection(toDict[gene.toNodeID]);
+				}
 			}
-
-			if(hiddenNodes.Count > 0)
-				foreach(INetworkNode node in hiddenNodes.Values)
-					node.SetupDone();
-
-			foreach(INetworkNode node in outputNodes.Values)
-				node.SetupDone();
 		}
 
 		public int GetNextState(List<float> input)
@@ -93,8 +90,6 @@ namespace CPPNNEATCA.CPPN.Parts
 			var whileRuns = 1;
 			while(awaitingNotificationsNodes.Count > 0)
 			{
-				if(whileRuns % 10 == 0)
-					Console.WriteLine("whileRun nr." + whileRuns);
 				if(whileRuns > 500)
 					break;
 				var doneNodesID = new List<int>();
@@ -125,12 +120,14 @@ namespace CPPNNEATCA.CPPN.Parts
 					var vKeys = new int[node.inValues.Keys.Count];
 					node.inWeights.Keys.CopyTo(wKeys, 0);
 					node.inValues.Keys.CopyTo(vKeys, 0);
+					Console.Write("connections: ");
 					foreach(var w in wKeys)
 						Console.Write(w + " ");
-					Console.WriteLine();
+					Console.Write("\nvalues received: ");
 					foreach(var v in vKeys)
 						Console.Write(v + " ");
-					throw new Exception("The fuck!? not notified output node!");
+					Console.WriteLine();
+					//throw new Exception("The fuck!? not notified output node!");
 				}
 				var activationLevel = node.Activation;
 				if(activationLevel > maxActivation)

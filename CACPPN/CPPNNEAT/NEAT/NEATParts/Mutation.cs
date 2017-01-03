@@ -91,14 +91,13 @@ namespace CPPNNEATCA.NEAT.Parts
 															newNode.nodeID,
 															true,
 															1.0f);
+
 			var secondHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
 															newNode.nodeID,
 															connectionToSplitt.toNodeID,
 															true,
 															(float)Neat.random.NextRangedDouble(0.0,CPPNParameters.InitialMaxConnectionWeight));
 
-			var newSplittConnGene = new ConnectionGene(connectionToSplitt);
-			genome.connectionGenes.Add(newSplittConnGene);
 			genome.nodeGenes.Add(newNode);
 			genome.connectionGenes.Add(firstHalfGene);
 			genome.connectionGenes.Add(secondHalfGene);

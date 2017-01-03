@@ -73,7 +73,7 @@ namespace CPPNNEATCA.Utils
 			foreach(var node in genome.nodeGenes)
 				if(node.type != NodeType.Output)
 					nodes.Add(node);
-			return genome.nodeGenes[rand.Next(0, nodes.Count)];
+			return nodes[rand.Next(0, nodes.Count)];
 		}
 		public static NodeGene NodeGeneAfterInSequence(this Random rand, NeatGenome genome, NodeGene fromNode)
 		{
