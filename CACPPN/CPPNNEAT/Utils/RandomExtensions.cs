@@ -65,7 +65,7 @@ namespace CPPNNEATCA.Utils
 		}
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
-			return genome.nodeGenes[rand.Next(Neat.parameters.CPPN.InputSize, genome.nodeGenes.Count)];
+			return genome.nodeGenes[rand.Next(3, genome.nodeGenes.Count)];
 		}
 		public static NodeGene InternalNodeGene(this Random rand, NeatGenome genome)
 		{

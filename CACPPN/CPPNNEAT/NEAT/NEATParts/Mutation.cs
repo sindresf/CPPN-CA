@@ -107,9 +107,13 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome AddConnection(NeatGenome genome, IDCounters IDs)
 		{
+			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
+			if(toNode.nodeID <= 2) throw new Exception("was in addConnection; nodeGene:" + toNode.geneID + " nodeID:" + toNode.nodeID);
+
+
+
 			var connGenes = genome.connectionGenes;
 			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
-			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
 
 			bool baseCase = fromNode.type == NodeType.Sensor && toNode.type == NodeType.Output; //already exist all of these
 			baseCase |= connGenes.Contains(fromNode.nodeID, toNode.nodeID); //existing "internal" connection
@@ -205,7 +209,7 @@ namespace CPPNNEATCA.NEAT.Parts
 				moreInBoth = geneIndex < conns1.Count && geneIndex < conns2.Count;
 			}
 
-			AddExcecssGenes(childGenome, conns1, conns2, InvolvedNodes, geneIndex);
+			AddExcessGenes(childGenome, conns1, conns2, InvolvedNodes, geneIndex);
 
 			childGenome.nodeGenes.AddRange(GetInvolvedNodesFromConnections(InvolvedNodes, nodes1, nodes2));
 			return childGenome;
@@ -239,6 +243,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		}
 		private static List<NodeGene> GetInvolvedNodesFromConnections(List<int> InvolvedNodes, NodeGeneSequence nodes1, NodeGeneSequence nodes2)
 		{
+
 			var childNodes = new List<NodeGene>();
 			bool in1 = false;
 			bool in2 = false;
@@ -260,9 +265,11 @@ namespace CPPNNEATCA.NEAT.Parts
 						throw new Exception("an InvolvedNode was in neither parent nodeGeneSequence!");
 				}
 			}
+			foreach(var node in childNodes)
+				Console.Write("gID:{0} nID:{1}\t", node.geneID, node.nodeID);
 			return childNodes;
 		}
-		private static List<int> AddExcecssGenes(NeatGenome childGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, List<int> InvolvedNodes, int geneIndex)
+		private static List<int> AddExcessGenes(NeatGenome childGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, List<int> InvolvedNodes, int geneIndex)
 		{
 
 			if(geneIndex == conns1.Count)

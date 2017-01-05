@@ -53,7 +53,7 @@ namespace CPPNNEATCA.Utils
 				return could;
 			}
 			throw new Exception("shouldn't have come here! (cycle check fail)");
-		}
+		} //TODO THIS NEEDS WORK I THINK
 	}
 	static class NEATExtensions
 	{

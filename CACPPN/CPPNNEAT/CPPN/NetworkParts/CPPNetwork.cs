@@ -58,7 +58,13 @@ namespace CPPNNEATCA.CPPN.Parts
 				{
 					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
 					var toDict = contains ? hiddenNodes : outputNodes;
-
+					if(!toDict.ContainsKey(gene.toNodeID))
+					{
+						Console.WriteLine("gene {0}:", gene.geneID);
+						foreach(var connGene in connectionGenes)
+							Console.WriteLine("conn{0}: from:{1} to:{2}", connGene.geneID, connGene.fromNodeID, connGene.toNodeID);
+						Console.WriteLine();
+					}
 					var toNode = toDict[gene.toNodeID];
 					toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
@@ -113,20 +119,20 @@ namespace CPPNNEATCA.CPPN.Parts
 				var node = ((OutputNetworkNode)Inode);
 				if(!node.IsFullyNotified)
 				{
-					Console.WriteLine();
+					/*Console.WriteLine();
 					Console.WriteLine("nodeID:{0} state:{1}, shouldHave:{2} had:{3}", node.nodeID, node.representedState, node.shouldHave, node.inValues.Count);
-					Console.WriteLine("incoming connections:");
+					Console.WriteLine("incoming connections:");*/
 					var wKeys = new int[node.inWeights.Keys.Count];
 					var vKeys = new int[node.inValues.Keys.Count];
 					node.inWeights.Keys.CopyTo(wKeys, 0);
 					node.inValues.Keys.CopyTo(vKeys, 0);
-					Console.Write("connections: ");
+					/*Console.Write("connections: ");
 					foreach(var w in wKeys)
 						Console.Write(w + " ");
 					Console.Write("\nvalues received: ");
 					foreach(var v in vKeys)
 						Console.Write(v + " ");
-					Console.WriteLine();
+					Console.WriteLine();*/
 					//throw new Exception("The fuck!? not notified output node!");
 				}
 				var activationLevel = node.Activation;
