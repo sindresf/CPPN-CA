@@ -12,16 +12,13 @@ namespace CPPNNEATCA.Utils
 		{
 			return mid + ((rand.NextDouble() * 2.0 * minMax) - minMax);
 		}
-
 		public static float NextFloat(this Random rand)
 		{
 			return (float)rand.NextDouble();
 		}
-		public static float InitialConnectionWeight(this Random rand)
-		{
-			return (float)(rand.NextRangedDouble(0.0, CPPNParameters.InitialMaxConnectionWeight));
-		}
-
+	}
+	static class RandomBoolExtensions
+	{
 		public static bool NextBoolean(this Random rand)
 		{
 			return rand.NextDouble() > 0.5000;
@@ -34,7 +31,14 @@ namespace CPPNNEATCA.Utils
 		{
 			return rand.NextDouble() <= MutationChances.GetChanceFor(type);
 		}
+	}
 
+	static class CPPNRandomExtensions//has usings explicitly from CPPN
+	{
+		public static float InitialConnectionWeight(this Random rand)
+		{
+			return (float)(rand.NextRangedDouble(0.0, CPPNParameters.InitialMaxConnectionWeight));
+		}
 		public static ActivationFunctionType ActivationFunctionType(this Random rand)
 		{
 			float selectorValue = rand.NextFloat();
@@ -59,6 +63,10 @@ namespace CPPNNEATCA.Utils
 			}
 			throw new DllNotFoundException("silly random select failed");
 		}
+	}
+
+	static class NeatRandomExtensions //has arguments explicitly from NEAT
+	{
 		public static ConnectionGene ConnectionGene(this Random rand, NeatGenome genome)
 		{
 			return genome.connectionGenes[rand.Next(genome.connectionGenes.Count)];
@@ -97,7 +105,6 @@ namespace CPPNNEATCA.Utils
 		{
 			return populace[rand.Next(0, populace.Count)];
 		}
-
 		public static NEATIndividual Individual(this Random rand, List<NEATIndividual> populace)
 		{
 			return populace[rand.Next(0, populace.Count)];
