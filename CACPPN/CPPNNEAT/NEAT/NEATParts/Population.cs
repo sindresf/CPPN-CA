@@ -36,12 +36,13 @@ namespace CPPNNEATCA.NEAT.Parts
 			species[0].Initialize(IDs);
 		}
 
-		public void AddSpecies(NEATIndividual indie)
+		public Species AddSpecies(NEATIndividual indie)
 		{
 			int id = IDs.SpeciesID;
 			Species sp = new Species(indie, id);
 			species.Add(sp);
 			SpeciesFitnessMap.Add(id, sp.SpeciesFitness);
+			return sp;
 		}
 
 		public void KillSpecies(List<Species> deadSpecies)
@@ -103,14 +104,12 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private Dictionary<int, int> SpeciesSizes()
 		{
-			var allowedPopulaceSize = new Dictionary<int, int>();
+			var allowedPopulaceSizes = new Dictionary<int, int>();
 			int averageSpots = EAParameters.PopulationSize / species.Count;
 			foreach(Species sp in species)
-			{
-				int spots = CalculateSpeciesAllowedPopulaceCount(sp,averageSpots); //normalize these?
-				allowedPopulaceSize[sp.speciesID] = spots;
-			}
-			return allowedPopulaceSize;
+				allowedPopulaceSizes[sp.speciesID] = CalculateSpeciesAllowedPopulaceCount(sp, averageSpots);
+
+			return allowedPopulaceSizes;
 		}
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots)
 		{
@@ -142,18 +141,53 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			var missFits = new List<NEATIndividual>();
 			foreach(Species sp in species)
+			{
+				Console.WriteLine("species size:{0}", allowedPopulaceSize[sp.speciesID]);
+				Console.Read();
 				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID],
 					IDs,
 					newNodeGenesThisGeneration,
 					newConnectionGenesThisGeneration));
+
+			}
 			return missFits;
 		}
 
 		private void FindMissfitsHomeInPopulation(List<NEATIndividual> missFits)
 		{
-			//if does not comply with any representatives.
 			var actualMissfits = MissFitsInAllSpecies(missFits);
-			Console.WriteLine("AMF:" + actualMissfits.Count);
+			var missFitMatches = new Dictionary<int,List<NEATIndividual>>();
+			var seenMFBefore = new List<int>();
+			foreach(var mf1 in actualMissfits)
+			{
+				foreach(var mf2 in actualMissfits)
+					if(!seenMFBefore.Contains(mf2.individualID))
+						if(mf1.individualID != mf2.individualID)
+							if(mf1.DifferenceTo(mf2) <= EAParameters.SpeciesInclusionRadius)
+								if(missFitMatches.ContainsKey(mf1.individualID))
+									missFitMatches[mf1.individualID].Add(mf2);
+								else
+								{
+									missFitMatches.Add(mf1.individualID, new List<NEATIndividual>());
+									missFitMatches[mf1.individualID].Add(mf1);
+									missFitMatches[mf1.individualID].Add(mf2);
+								}
+				seenMFBefore.Add(mf1.individualID);
+			}
+			if(missFitMatches.Keys.Count != 0)
+				foreach(var val in missFitMatches.Values)
+				{
+					var sp = AddSpecies(val[0]);
+					foreach(var indie in val)
+						if(indie.individualID != val[0].individualID)
+							sp.AddIndividual(indie);
+				}
+
+			for(int i = 0; i < actualMissfits.Count; i++)
+				foreach(var id in missFitMatches.Keys)
+					if(id == actualMissfits[i].individualID) actualMissfits.Remove(actualMissfits[i]);
+
+
 			foreach(var mf in actualMissfits)
 				AddSpecies(mf);
 		}

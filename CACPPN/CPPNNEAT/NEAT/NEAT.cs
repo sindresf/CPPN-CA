@@ -64,9 +64,8 @@ namespace CPPNNEATCA.NEAT
 				var maxFit = parameters.CA.MaxFitnessPossible;
 				bool isSame = fit.SameWithinReason(maxFit);
 				return isSame;
-				//return GetBestIndividual().Fitness.SameWithinReason(parameters.CA.MaxFitnessPossible);
 			}
-			return false; //makes it just search for "the best"
+			return false;
 		}
 
 		public override Individual GetBestIndividual()
