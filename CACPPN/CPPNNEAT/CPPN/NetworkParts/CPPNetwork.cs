@@ -27,6 +27,13 @@ namespace CPPNNEATCA.CPPN.Parts
 		}
 		private void SetupNodeList(GeneSequence<NodeGene> nodeGenes)
 		{
+			var seenBefore = new List<int>();
+			foreach(var node in nodeGenes)
+				if(!seenBefore.Contains(node.nodeID))
+					seenBefore.Add(node.nodeID);
+				else
+					throw new Exception("same nodeID in network!");
+
 			int representedState = 0;
 			foreach(NodeGene gene in nodeGenes)
 			{

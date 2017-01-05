@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CPPNNEAT.Utils;
 using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.NEAT;
 using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.NEAT.Parts;
 
@@ -183,6 +184,10 @@ namespace CPPNNEATCA.Utils
 			foreach(var node in nodes)
 				if(node.nodeID == ID) return true;
 			return false;
+		}
+		public static bool HasInternalNodes(this NeatGenome genome)
+		{
+			return genome.nodeGenes.Count > Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize;
 		}
 	}
 	static class Extensions1D

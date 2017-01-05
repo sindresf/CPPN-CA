@@ -174,7 +174,7 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
 		{
-			if(genome.nodeGenes.Count > Neat.parameters.CA.NeighbourHoodSize + Neat.parameters.CA.CellStateCount)
+			if(genome.HasInternalNodes())
 			{
 				var newType = Neat.random.ActivationFunctionType();
 				var nodeGene = Neat.random.InternalNodeGene(genome);
@@ -239,11 +239,11 @@ namespace CPPNNEATCA.NEAT.Parts
 					childGenome.connectionGenes.Add(gene);
 				}
 			}
+			InvolvedNodes.Sort();
 			return InvolvedNodes;
 		}
 		private static List<NodeGene> GetInvolvedNodesFromConnections(List<int> InvolvedNodes, NodeGeneSequence nodes1, NodeGeneSequence nodes2)
 		{
-
 			var childNodes = new List<NodeGene>();
 			bool in1 = false;
 			bool in2 = false;
@@ -265,8 +265,6 @@ namespace CPPNNEATCA.NEAT.Parts
 						throw new Exception("an InvolvedNode was in neither parent nodeGeneSequence!");
 				}
 			}
-			foreach(var node in childNodes)
-				Console.Write("gID:{0} nID:{1}\t", node.geneID, node.nodeID);
 			return childNodes;
 		}
 		private static List<int> AddExcessGenes(NeatGenome childGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, List<int> InvolvedNodes, int geneIndex)

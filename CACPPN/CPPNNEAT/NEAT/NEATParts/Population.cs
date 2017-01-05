@@ -142,8 +142,6 @@ namespace CPPNNEATCA.NEAT.Parts
 			var missFits = new List<NEATIndividual>();
 			foreach(Species sp in species)
 			{
-				Console.WriteLine("species size:{0}", allowedPopulaceSize[sp.speciesID]);
-				Console.Read();
 				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID],
 					IDs,
 					newNodeGenesThisGeneration,

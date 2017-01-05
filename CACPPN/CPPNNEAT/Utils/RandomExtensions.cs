@@ -65,13 +65,13 @@ namespace CPPNNEATCA.Utils
 		}
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
-			return genome.nodeGenes[rand.Next(3, genome.nodeGenes.Count)];
+			return genome.nodeGenes[rand.Next(Neat.parameters.CPPN.InputSize, genome.nodeGenes.Count)];
 		}
 		public static NodeGene InternalNodeGene(this Random rand, NeatGenome genome)
 		{
 			var nodes = new List<NodeGene>();
 			foreach(var node in genome.nodeGenes)
-				if(node.type != NodeType.Hidden)
+				if(node.type == NodeType.Hidden)
 					nodes.Add(node);
 			if(nodes.Count > 0)
 				return nodes[rand.Next(0, nodes.Count)];
