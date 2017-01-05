@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -78,7 +79,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
 				_populace.Add(getBest());
 
-			var ASexCount = AllowedPopulaceSize;//(int)(AllowedPopulaceSize*EAParameters.ASexualReproductionQuota);
+			var ASexCount = (int)(AllowedPopulaceSize*EAParameters.ASexualReproductionQuota);
 
 			var ASexPopulace = new List<NEATIndividual>(populace);
 			while(_populace.Count < ASexCount && !ASexPopulace.IsEmpty()) //this should instead "fill up the ASexual reproduction" and then fill up the rest with crossover
@@ -93,12 +94,11 @@ namespace CPPNNEATCA.NEAT.Parts
 					missFits.Add(mutatedIndie);
 				ASexPopulace.Remove(origIndie);
 			}
-			var SexualPopulace = new List<NEATIndividual>(populace);
-			while(_populace.Count < AllowedPopulaceSize && !SexualPopulace.IsEmpty())
+			while(_populace.Count < AllowedPopulaceSize)
 			{
 				//crossover THIS IS LIKE... NEEDED!
-				var dad = Neat.random.Individual(SexualPopulace); //goes by fitnessi
-				var mum = Neat.random.Individual(SexualPopulace); //same
+				var dad = Neat.random.Individual(populace);
+				var mum = Neat.random.Individual(populace);
 
 				var child = new NEATIndividual(Mutator.Crossover(dad,mum),IDs);
 				if(Neat.random.NextBoolean(EAParameters.SexualReproductionStillMutateChance))
@@ -107,8 +107,6 @@ namespace CPPNNEATCA.NEAT.Parts
 					_populace.Add(child); //can't actually do this because of species size things
 				else
 					missFits.Add(child);
-				SexualPopulace.Remove(dad);
-				SexualPopulace.Remove(mum);
 			}
 
 			populace = new List<NEATIndividual>(_populace);

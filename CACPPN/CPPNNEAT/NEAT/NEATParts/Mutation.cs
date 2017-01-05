@@ -20,7 +20,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		private const double RandomResetWeight   = 0.1;
 		private const double DisableInheritedGene = 0.75;
 
-		public static double GetMutationChance(MutationType type)
+		public static double GetChanceFor(MutationType type)
 		{
 			switch(type)
 			{
@@ -107,7 +107,6 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome AddConnection(NeatGenome genome, IDCounters IDs)
 		{
-			//NO RECCURENT BULLSHITT.
 			var connGenes = genome.connectionGenes;
 			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
 			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
@@ -158,12 +157,12 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome ChangeWeight(NeatGenome genome)
 		{
-			ConnectionGene oldConnGene = Neat.random.ConnectionGene(genome);
+			var oldConnGene = Neat.random.ConnectionGene(genome);
 			float newWeight = (oldConnGene.connectionWeight + Neat.random.NextFloat() * 2.0f * MutationChances.MutatWeightAmount
 																			- MutationChances.MutatWeightAmount).ClampWeight();
 			oldConnGene.connectionWeight = newWeight;
 
-			ConnectionGene newConnGene = new ConnectionGene(oldConnGene);
+			var newConnGene = new ConnectionGene(oldConnGene);
 			genome.connectionGenes.Remove(oldConnGene);
 			genome.connectionGenes.Add(newConnGene);
 			return genome;
@@ -171,27 +170,25 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
 		{
-			var newType = Neat.random.ActivationFunctionType();
-			int geneIndex = Neat.random.Next(Neat.parameters.CPPN.InputSize,
-						Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize);
-
-			var nodeGene = genome.nodeGenes[geneIndex];
-			nodeGene = ((InternalNodeGene)genome.nodeGenes[geneIndex]).ChangeFunction(newType, nodeGene.geneID);
+			if(genome.nodeGenes.Count > Neat.parameters.CA.NeighbourHoodSize + Neat.parameters.CA.CellStateCount)
+			{
+				var newType = Neat.random.ActivationFunctionType();
+				var nodeGene = Neat.random.InternalNodeGene(genome);
+				nodeGene = ((InternalNodeGene)nodeGene).ChangeFunction(newType, nodeGene.geneID);
+			}
 			return genome;
 		}
 
 		public static NeatGenome Crossover(NEATIndividual indie1, NEATIndividual indie2)
 		{
-			var genome1 = indie1.genome; //DRID I FOR BARE KJØR WHILE. simpler
+			var genome1 = indie1.genome;
 			var genome2 = indie2.genome;
 
-			bool equalFitness = indie1.Fitness.SameWithinReason(indie2.Fitness);
 			var mostFitGenome = indie1.Fitness > indie2.Fitness ? indie1.genome : indie2.genome; //doesn't matter if they're equal
 
 			var childGenome = new NeatGenome();
 
 			int geneIndex = 0;
-			//the connections
 			var InvolvedNodes = new List<int>();
 			var nodes1 = genome1.nodeGenes;
 			var conns1 = genome1.connectionGenes;
@@ -199,39 +196,49 @@ namespace CPPNNEATCA.NEAT.Parts
 			var nodes2 = genome2.nodeGenes;
 			var conns2 = genome2.connectionGenes;
 
-			var gene1 = conns1[geneIndex];
-			var gene2 = conns2[geneIndex];
-
-			AddInvolvedConnNodes(InvolvedNodes, gene1);
-			AddInvolvedConnNodes(InvolvedNodes, gene2);
-
 			bool moreInBoth = geneIndex < conns1.Count && geneIndex < conns2.Count;
-			bool equalID = gene1.geneID == gene2.geneID;
+			bool equalFitness = indie1.Fitness.SameWithinReason(indie2.Fitness);
 			while(moreInBoth)
 			{
-				if(equalID)
-					childGenome.connectionGenes.Add(Neat.random.NextBoolean() ? gene1 : gene2);
-				else
-				{
-					if(equalFitness)
-						childGenome.connectionGenes.Add(Neat.random.NextBoolean() ? gene1 : gene2);
-					else
-						childGenome.connectionGenes.Add(mostFitGenome.connectionGenes[geneIndex]);
-				}
+				HandleMatchingAndDisjointConnectionGenes(childGenome, mostFitGenome, conns1, conns2, equalFitness, InvolvedNodes, geneIndex);
 				geneIndex++;
 				moreInBoth = geneIndex < conns1.Count && geneIndex < conns2.Count;
 			}
 
-			if(geneIndex == conns1.Count)
+			AddExcecssGenes(childGenome, conns1, conns2, InvolvedNodes, geneIndex);
+
+			childGenome.nodeGenes.AddRange(GetInvolvedNodesFromConnections(InvolvedNodes, nodes1, nodes2));
+			return childGenome;
+		}
+		private static List<int> HandleMatchingAndDisjointConnectionGenes(NeatGenome childGenome, NeatGenome mostFitGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, bool equalFitness, List<int> InvolvedNodes, int geneIndex)
+		{
+			ConnectionGene gene1,gene2;
+			gene1 = conns1[geneIndex];
+			gene2 = conns2[geneIndex];
+			bool equalID = gene1.geneID == gene2.geneID;
+			if(equalID)
 			{
-				HandleExcessGenes(conns2, InvolvedNodes, geneIndex, childGenome);
-			} else if(geneIndex == conns2.Count)
-			{
-				HandleExcessGenes(conns1, InvolvedNodes, geneIndex, childGenome);
+				var gene = Neat.random.NextBoolean() ? gene1 : gene2;
+				InvolvedNodes = AddInvolvedConnNodes(InvolvedNodes, gene);
+				childGenome.connectionGenes.Add(gene);
 			} else
 			{
-				throw new Exception("genIndex did not catch up to either parent genome!");
+				if(equalFitness)
+				{
+					var gene = Neat.random.NextBoolean() ? gene1 : gene2;
+					InvolvedNodes = AddInvolvedConnNodes(InvolvedNodes, gene);
+					childGenome.connectionGenes.Add(gene);
+				} else
+				{
+					var gene = mostFitGenome.connectionGenes[geneIndex];
+					InvolvedNodes = AddInvolvedConnNodes(InvolvedNodes, gene);
+					childGenome.connectionGenes.Add(gene);
+				}
 			}
+			return InvolvedNodes;
+		}
+		private static List<NodeGene> GetInvolvedNodesFromConnections(List<int> InvolvedNodes, NodeGeneSequence nodes1, NodeGeneSequence nodes2)
+		{
 			var childNodes = new List<NodeGene>();
 			bool in1 = false;
 			bool in2 = false;
@@ -253,29 +260,42 @@ namespace CPPNNEATCA.NEAT.Parts
 						throw new Exception("an InvolvedNode was in neither parent nodeGeneSequence!");
 				}
 			}
-			childGenome.nodeGenes.AddRange(childNodes);
-			return childGenome;
+			return childNodes;
 		}
+		private static List<int> AddExcecssGenes(NeatGenome childGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, List<int> InvolvedNodes, int geneIndex)
+		{
 
+			if(geneIndex == conns1.Count)
+			{
+				HandleExcessGenes(conns2, InvolvedNodes, geneIndex, childGenome);
+			} else if(geneIndex == conns2.Count)
+			{
+				HandleExcessGenes(conns1, InvolvedNodes, geneIndex, childGenome);
+			} else
+			{
+				throw new Exception("genIndex did not catch up to either parent genome!");
+			}
+			return InvolvedNodes;
+		}
 		private static void HandleExcessGenes(ConnectionGeneSequence connsLong, List<int> InvolvedNodes, int geneIndex, NeatGenome childGenome)
 		{
 			for(int i = geneIndex; i < connsLong.Count; i++)
 			{
-				AddInvolvedConnNodes(InvolvedNodes, connsLong[i]);
+				InvolvedNodes = AddInvolvedConnNodes(InvolvedNodes, connsLong[i]);
 				childGenome.connectionGenes.Add(connsLong[i]);
 			}
 		}
-
-		private static void AddInvolvedConnNodes(List<int> involvedNodes, ConnectionGene connGene)
+		private static List<int> AddInvolvedConnNodes(List<int> involvedNodes, ConnectionGene connGene)
 		{
 			AddInvolvedNode(involvedNodes, connGene.fromNodeID);
 			AddInvolvedNode(involvedNodes, connGene.toNodeID);
+			return involvedNodes;
 		}
-
-		private static void AddInvolvedNode(List<int> involvedNodes, int node)
+		private static List<int> AddInvolvedNode(List<int> involvedNodes, int nodeID)
 		{
-			if(!involvedNodes.Contains(node))
-				involvedNodes.Add(node);
+			if(!involvedNodes.Contains(nodeID))
+				involvedNodes.Add(nodeID);
+			return involvedNodes;
 		}
 	}
 }

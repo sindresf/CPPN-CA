@@ -32,7 +32,7 @@ namespace CPPNNEATCA.Utils
 		}
 		public static bool DoMutation(this Random rand, MutationType type)
 		{
-			return rand.NextDouble() <= MutationChances.GetMutationChance(type);
+			return rand.NextDouble() <= MutationChances.GetChanceFor(type);
 		}
 
 		public static ActivationFunctionType ActivationFunctionType(this Random rand)
@@ -66,6 +66,17 @@ namespace CPPNNEATCA.Utils
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
 			return genome.nodeGenes[rand.Next(Neat.parameters.CPPN.InputSize, genome.nodeGenes.Count)];
+		}
+		public static NodeGene InternalNodeGene(this Random rand, NeatGenome genome)
+		{
+			var nodes = new List<NodeGene>();
+			foreach(var node in genome.nodeGenes)
+				if(node.type != NodeType.Hidden)
+					nodes.Add(node);
+			if(nodes.Count > 0)
+				return nodes[rand.Next(0, nodes.Count)];
+			else
+				return null;
 		}
 		public static NodeGene NotOutputNodeGene(this Random rand, NeatGenome genome)
 		{
