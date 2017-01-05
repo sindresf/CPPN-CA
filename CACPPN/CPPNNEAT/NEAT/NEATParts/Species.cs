@@ -82,7 +82,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			var ASexPopulace = new List<NEATIndividual>(populace);
 
 			_populace.AddRange(ASexualPart(ASexCount, ASexPopulace, missFits, IDs));
-			_populace.AddRange(SexualPart(AllowedPopulaceSize, IDs, missFits));
+			_populace.AddRange(SexualPart(AllowedPopulaceSize, missFits, IDs));
 
 			populace = new List<NEATIndividual>(_populace);
 
@@ -106,7 +106,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			return _populace;
 		}
-		private List<NEATIndividual> SexualPart(int AllowedPopulaceSize, IDCounters IDs, List<NEATIndividual> missFits)
+		private List<NEATIndividual> SexualPart(int AllowedPopulaceSize, List<NEATIndividual> missFits, IDCounters IDs)
 		{
 			var _populace = new List<NEATIndividual>();
 			while(_populace.Count < AllowedPopulaceSize)

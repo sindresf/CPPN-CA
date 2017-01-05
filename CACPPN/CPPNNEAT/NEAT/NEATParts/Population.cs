@@ -15,6 +15,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		public IDCounters IDs;
 
 		private float avgSpeciesFitness;
+		private float SpeciesFitnessSD;
 
 		public Population(INeatCA ca, IDCounters IDs)
 		{
@@ -23,6 +24,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			species = new List<Species>();
 			SpeciesFitnessMap = new Dictionary<int, float>();
 			avgSpeciesFitness = 0.0f;
+			SpeciesFitnessSD = 0.0f;
 			//HERE HERE HERE BULLSHITT!
 			//var x = PieChart.ProcessFile(File.Open("lol", FileMode.Open));
 		}
@@ -56,6 +58,11 @@ namespace CPPNNEATCA.NEAT.Parts
 			foreach(Species sp in species) sp.EvaluatePopulace();
 			//Parallel.ForEach(species, (Species species) => { species.EvaluatePopulace(); });
 			CheckForDeadSpecies();
+			CalcGenerationAvgFitness();
+			CalcGenerationFitnessSD();
+		}
+		private void CalcGenerationAvgFitness()
+		{
 			avgSpeciesFitness = 0.0f;
 			foreach(Species sp in species)
 			{
@@ -63,6 +70,16 @@ namespace CPPNNEATCA.NEAT.Parts
 				avgSpeciesFitness += sp.SpeciesFitness;
 			}
 			avgSpeciesFitness /= species.Count;
+		}
+		private void CalcGenerationFitnessSD()
+		{
+			var subMeanSquares = new List<double>();
+			foreach(var sp in species)
+				subMeanSquares.Add(Math.Pow(sp.SpeciesFitness - avgSpeciesFitness, 2.0));
+			double MeanMean = 0.0f;
+			foreach(var mean in subMeanSquares)
+				MeanMean += mean;
+			SpeciesFitnessSD = (float)(Math.Sqrt(MeanMean / subMeanSquares.Count));
 		}
 
 		private void CheckForDeadSpecies()
@@ -88,19 +105,29 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			var allowedPopulaceSize = new Dictionary<int, int>();
 			int averageSpots = EAParameters.PopulationSize / species.Count;
-			int spotsLeft = EAParameters.PopulationSize;
 			foreach(Species sp in species)
 			{
-				int spots = CalculateSpeciesAllowedPopulaceCount(sp,averageSpots,spotsLeft);
+				int spots = CalculateSpeciesAllowedPopulaceCount(sp,averageSpots); //normalize these?
 				allowedPopulaceSize[sp.speciesID] = spots;
-				spotsLeft -= spots;
 			}
 			return allowedPopulaceSize;
 		}
-		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots, int spotsleft)
+		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots)
 		{
-			//ok now this
-			return avgSpots;
+			int SDCount = 0;
+			int skewDir = 1;
+			float higherGoal = sp.SpeciesFitness;
+			float lowerGoal = sp.SpeciesFitness;
+			float growingFitness = avgSpeciesFitness;
+			if(growingFitness > sp.SpeciesFitness) skewDir *= -1;
+
+			while(growingFitness > lowerGoal && growingFitness < higherGoal)
+			{
+				SDCount += skewDir;
+				growingFitness += SpeciesFitnessSD * skewDir;
+			}
+
+			return avgSpots + (SDCount * 2);
 		}
 
 		private List<NEATIndividual> GetSpeciesRepresentatives()
