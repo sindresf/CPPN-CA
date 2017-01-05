@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -8,8 +9,8 @@ namespace CPPNNEATCA.NEAT.Parts
 		public readonly int speciesID;
 		public List<NEATIndividual> populace { get; private set; }
 		public float SpeciesFitness { get; private set; }
-
 		public bool isDead { get; private set; }
+
 		private float BestFitnessAchieved;
 		private int improvementCount;
 		private NEATIndividual representative;
@@ -29,8 +30,8 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private void Setup()
 		{
-			SpeciesFitness = 0.0f;
-			BestFitnessAchieved = 0.0f;
+			SpeciesFitness = float.MinValue;
+			BestFitnessAchieved = float.MinValue;
 			populace = new List<NEATIndividual>();
 			isDead = false;
 			improvementCount = 0;
@@ -51,8 +52,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		public void EvaluatePopulace()
 		{
 			foreach(NEATIndividual indie in populace) indie.Evaluate(populace.Count);
-			//Parallel.ForEach(populace, indie => { indie.Evaluate(populace.Count); });
-			SpeciesFitness = populace.SumFitness();
+			SpeciesFitness = (float)(Math.Pow(populace.SumFitness(), 2) / populace.Count);
 			DiedOffCheck();
 		}
 
