@@ -16,6 +16,12 @@ namespace CPPNNEATCA.NEAT.Parts
 			this.genome = genome;
 		}
 
+		public NEATIndividual(NEATIndividual indie) : base(indie.individualID)
+		{
+			Fitness = 0.0f;
+			genome = new NeatGenome(indie.genome);
+		}
+
 		public override void Evaluate(int speciesCount)
 		{
 			network = new CPPNetwork(genome, Neat.parameters.CPPN);

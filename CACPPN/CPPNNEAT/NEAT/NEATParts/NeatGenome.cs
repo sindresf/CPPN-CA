@@ -12,6 +12,8 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public NeatGenome()
 		{
+			nodeGenes = new NodeGeneSequence();
+			connectionGenes = new ConnectionGeneSequence();
 			hasMutated = false;
 		}
 
@@ -46,7 +48,6 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private void InitilizeNodeGenes(IDCounters IDs)
 		{
-			nodeGenes = new NodeGeneSequence();
 			int nodeID = 0;
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
 				nodeGenes.Add(new SensorNodeGene(IDs.NodeGeneID, nodeID++));
@@ -58,7 +59,6 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private void InitializeConnectionGenes(IDCounters IDs)
 		{
-			connectionGenes = new ConnectionGeneSequence();
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
 				for(int j = Neat.parameters.CPPN.OutputSize; j > 0; j--)
 				{

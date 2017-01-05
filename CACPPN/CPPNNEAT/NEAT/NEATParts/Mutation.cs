@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CPPNNEATCA.NEAT.Base;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -181,62 +182,100 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public static NeatGenome Crossover(NEATIndividual indie1, NEATIndividual indie2)
 		{
-			Console.WriteLine("crossover!");
-			NeatGenome genome1 = indie1.genome;
-			NeatGenome genome2 = indie2.genome;
-			if(indie1.Fitness.SameWithinReason(indie2.Fitness))
-				return SameFitnessRandomCrossOver(genome1, genome2);
+			var genome1 = indie1.genome; //DRID I FOR BARE KJØR WHILE. simpler
+			var genome2 = indie2.genome;
 
-			bool parent1HasMostNodes = genome1.nodeGenes.Count > genome2.nodeGenes.Count; //not GENE IDs
+			bool equalFitness = indie1.Fitness.SameWithinReason(indie2.Fitness);
+			var mostFitGenome = indie1.Fitness > indie2.Fitness ? indie1.genome : indie2.genome; //doesn't matter if they're equal
 
-			bool mostFitIsIndie1 = indie1.Fitness > indie2.Fitness;
-			NeatGenome childGenome = new NeatGenome();
-			if(parent1HasMostNodes)
+			var childGenome = new NeatGenome();
+
+			int geneIndex = 0;
+			//the connections
+			var InvolvedNodes = new List<int>();
+			var nodes1 = genome1.nodeGenes;
+			var conns1 = genome1.connectionGenes;
+
+			var nodes2 = genome2.nodeGenes;
+			var conns2 = genome2.connectionGenes;
+
+			var gene1 = conns1[geneIndex];
+			var gene2 = conns2[geneIndex];
+
+			AddInvolvedConnNodes(InvolvedNodes, gene1);
+			AddInvolvedConnNodes(InvolvedNodes, gene2);
+
+			bool moreInBoth = geneIndex < conns1.Count && geneIndex < conns2.Count;
+			bool equalID = gene1.geneID == gene2.geneID;
+			while(moreInBoth)
 			{
-				childGenome.nodeGenes.Add(mostFitIsIndie1 ? genome1.nodeGenes[0] : genome2.nodeGenes[0]); //this type of stuff
-			} else
-			{
-
+				if(equalID)
+					childGenome.connectionGenes.Add(Neat.random.NextBoolean() ? gene1 : gene2);
+				else
+				{
+					if(equalFitness)
+						childGenome.connectionGenes.Add(Neat.random.NextBoolean() ? gene1 : gene2);
+					else
+						childGenome.connectionGenes.Add(mostFitGenome.connectionGenes[geneIndex]);
+				}
+				geneIndex++;
+				moreInBoth = geneIndex < conns1.Count && geneIndex < conns2.Count;
 			}
 
+			if(geneIndex == conns1.Count)
+			{
+				HandleExcessGenes(conns2, InvolvedNodes, geneIndex, childGenome);
+			} else if(geneIndex == conns2.Count)
+			{
+				HandleExcessGenes(conns1, InvolvedNodes, geneIndex, childGenome);
+			} else
+			{
+				throw new Exception("genIndex did not catch up to either parent genome!");
+			}
+			var childNodes = new List<NodeGene>();
+			bool in1 = false;
+			bool in2 = false;
+			bool inBoth = in1 && in2;
+			foreach(var nodeID in InvolvedNodes)
+			{
+				in1 = nodes1.Contains(nodeID);
+				in2 = nodes2.Contains(nodeID);
+				inBoth = in1 && in2;
+				if(inBoth)
+					childNodes.Add(Neat.random.NextBoolean() ? nodes2.Get(nodeID) : nodes2.Get(nodeID));
+				else
+				{
+					if(in1)
+						childNodes.Add(nodes1.Get(nodeID));
+					else if(in2)
+						childNodes.Add(nodes2.Get(nodeID));
+					else
+						throw new Exception("an InvolvedNode was in neither parent nodeGeneSequence!");
+				}
+			}
+			childGenome.nodeGenes.AddRange(childNodes);
 			return childGenome;
 		}
 
-		private static NeatGenome SameFitnessRandomCrossOver(NeatGenome genome1, NeatGenome genome2)
+		private static void HandleExcessGenes(ConnectionGeneSequence connsLong, List<int> InvolvedNodes, int geneIndex, NeatGenome childGenome)
 		{
-			Console.WriteLine("crossover same fitt!");
-			NeatGenome childGenome = new NeatGenome();
-			int shortestNodeGeneList = genome1.nodeGenes.Count < genome2.nodeGenes.Count ?
-									   genome1.nodeGenes.Count :
-									   genome2.nodeGenes.Count;
-
-			for(int i = 0; i < shortestNodeGeneList; i++)
+			for(int i = geneIndex; i < connsLong.Count; i++)
 			{
-				if(Neat.random.NextBoolean())
-					childGenome.nodeGenes.Add(genome1.nodeGenes[i]);
-				else
-					childGenome.nodeGenes.Add(genome1.nodeGenes[i]);
+				AddInvolvedConnNodes(InvolvedNodes, connsLong[i]);
+				childGenome.connectionGenes.Add(connsLong[i]);
 			}
-			//TODO what for the remaining genes?
+		}
 
-			//must be heavily redone
-			int shortestConnectionGeneList = genome1.connectionGenes.Count < genome2.connectionGenes.Count ?
-									   genome1.connectionGenes.Count :
-									   genome2.connectionGenes.Count;
+		private static void AddInvolvedConnNodes(List<int> involvedNodes, ConnectionGene connGene)
+		{
+			AddInvolvedNode(involvedNodes, connGene.fromNodeID);
+			AddInvolvedNode(involvedNodes, connGene.toNodeID);
+		}
 
-			var longestGenome = NeatGenome.GetLonger(genome1, genome2);
-
-			for(int i = 0; i < shortestNodeGeneList; i++)
-			{
-				if(Neat.random.NextBoolean())
-					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);
-				else
-					childGenome.connectionGenes.Add(genome1.connectionGenes[i]);
-			}
-			//TODO what for the remaining genes?
-			// just add them all from the longestGenome
-
-			return childGenome;
+		private static void AddInvolvedNode(List<int> involvedNodes, int node)
+		{
+			if(!involvedNodes.Contains(node))
+				involvedNodes.Add(node);
 		}
 	}
 }

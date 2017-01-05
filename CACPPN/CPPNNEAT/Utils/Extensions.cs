@@ -160,7 +160,24 @@ namespace CPPNNEATCA.Utils
 					return true;
 			return false;
 		}
-
+		public static bool Contains(this NodeGeneSequence nodeGenes, int nodeID)
+		{
+			foreach(var gene in nodeGenes)
+				if(gene.nodeID == nodeID)
+					return true;
+			return false;
+		}
+		public static NodeGene Get(this NodeGeneSequence nodeGenes, int nodeID)
+		{
+			foreach(var node in nodeGenes)
+				if(node.nodeID == nodeID)
+					return node;
+			return null;
+		}
+		public static bool IsEmpty(this List<NEATIndividual> list)
+		{
+			return list.Count == 0;
+		}
 		public static bool ContainsID(this List<CycleCheckGraphNode> nodes, int ID)
 		{
 			foreach(var node in nodes)

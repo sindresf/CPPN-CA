@@ -43,6 +43,7 @@ namespace CPPNNEATCA
 		public const float SpeciesInclusionRadius = 3.0f;
 
 		public static float ASexualReproductionQuota = 0.25f;
+		public static float SexualReproductionStillMutateChance = 0.06f;
 
 		public static bool RandomGeneStart = true;
 		public static float RandomGeneStartChance = 0.06f;

@@ -78,25 +78,37 @@ namespace CPPNNEATCA.NEAT.Parts
 			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
 				_populace.Add(getBest());
 
-			/*foreach(NEATIndividual indie in populace)
-			{ //TODO this is not proper
-				if(Neat.random.NextDouble() <= EAParameters.ASexualReproductionQuota)
-					indie.genome = Mutator.Mutate(indie.genome, IDs);
-				if(BelongsInSpecies(indie))
-					_populace.Add(indie); //can't actually do this because of species size things
-				else
-					missFits.Add(indie);
-			}*/
-			while(_populace.Count < AllowedPopulaceSize) //aka can have more indies next generation
+			var ASexCount = AllowedPopulaceSize;//(int)(AllowedPopulaceSize*EAParameters.ASexualReproductionQuota);
+
+			var ASexPopulace = new List<NEATIndividual>(populace);
+			while(_populace.Count < ASexCount && !ASexPopulace.IsEmpty()) //this should instead "fill up the ASexual reproduction" and then fill up the rest with crossover
 			{
-				var indie = Neat.random.Individual(populace);
-				if(Neat.random.NextDouble() <= EAParameters.ASexualReproductionQuota)
-					indie.genome = Mutator.Mutate(indie.genome, IDs);
-				if(BelongsInSpecies(indie))
-					_populace.Add(indie); //can't actually do this because of species size things
+				var origIndie = Neat.random.Individual(ASexPopulace);
+				origIndie.genome = Mutator.Mutate(origIndie.genome, IDs);
+				var mutatedIndie = new NEATIndividual(origIndie);
+
+				if(BelongsInSpecies(mutatedIndie))
+					_populace.Add(mutatedIndie); //can't actually do this because of species size things
 				else
-					missFits.Add(indie);
-				//crossover 
+					missFits.Add(mutatedIndie);
+				ASexPopulace.Remove(origIndie);
+			}
+			var SexualPopulace = new List<NEATIndividual>(populace);
+			while(_populace.Count < AllowedPopulaceSize && !SexualPopulace.IsEmpty())
+			{
+				//crossover THIS IS LIKE... NEEDED!
+				var dad = Neat.random.Individual(SexualPopulace); //goes by fitnessi
+				var mum = Neat.random.Individual(SexualPopulace); //same
+
+				var child = new NEATIndividual(Mutator.Crossover(dad,mum),IDs);
+				if(Neat.random.NextBoolean(EAParameters.SexualReproductionStillMutateChance))
+					child.genome = Mutator.Mutate(child.genome, IDs);
+				if(BelongsInSpecies(child))
+					_populace.Add(child); //can't actually do this because of species size things
+				else
+					missFits.Add(child);
+				SexualPopulace.Remove(dad);
+				SexualPopulace.Remove(mum);
 			}
 
 			populace = new List<NEATIndividual>(_populace);
