@@ -127,7 +127,7 @@ namespace CPPNNEATCA.NEAT.Parts
 				growingFitness += SpeciesFitnessSD * skewDir;
 			}
 
-			return avgSpots + (SDCount * 2);
+			return (int)(avgSpots + SDCount * 2.0).Clamp(0, EAParameters.PopulationSize);
 		}
 
 		private List<NEATIndividual> GetSpeciesRepresentatives()
@@ -178,6 +178,22 @@ namespace CPPNNEATCA.NEAT.Parts
 				noHome = true;
 			}
 			return actualMissfits;
+		}
+
+		public NEATIndividual GetBestIndividual()
+		{
+			float bestFitness = float.MinValue;
+			NEATIndividual bestIndie = null;
+			foreach(var sp in species)
+			{
+				var spBest = sp.GetBest();
+				if(spBest.Fitness > bestFitness)
+				{
+					bestFitness = spBest.Fitness;
+					bestIndie = spBest;
+				}
+			}
+			return bestIndie;
 		}
 	}
 }

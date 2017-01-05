@@ -71,20 +71,10 @@ namespace CPPNNEATCA.NEAT
 
 		public override Individual GetBestIndividual()
 		{
-			var best = float.MinValue;
-			NEATIndividual bestIndie = null;
-			Console.Write(population.species.Count);
-			foreach(Species sp in population.species)
-			{
-				Console.WriteLine(" " + sp.populace.Count);
-				foreach(NEATIndividual indie in sp.populace)
-					if(indie.Fitness > best)
-					{
-						best = indie.Fitness;
-						bestIndie = indie;
-					}
-			}
-			Console.WriteLine(bestIndie.Fitness);
+			Console.WriteLine("\nspecies present:" + population.species.Count);
+
+			NEATIndividual bestIndie = population.GetBestIndividual();
+			Console.WriteLine("best:{0}\n", bestIndie.Fitness);
 			return bestIndie;
 		}
 	}

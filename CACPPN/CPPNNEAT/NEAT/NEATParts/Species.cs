@@ -133,7 +133,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			populace.Add(indie);
 		}
 
-		private NEATIndividual GetBest()
+		public NEATIndividual GetBest()
 		{
 			float bestFitness = 0.0f;
 			List<NEATIndividual> bestIndies = new List<NEATIndividual>();
