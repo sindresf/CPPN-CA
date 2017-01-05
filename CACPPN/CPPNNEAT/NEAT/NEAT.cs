@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CPPNNEATCA.CA;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;

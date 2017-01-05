@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
@@ -71,55 +70,62 @@ namespace CPPNNEATCA.NEAT.Parts
 			return representative;
 		}
 
-		public List<NEATIndividual> MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs)
+		public List<NEATIndividual> MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs, List<int> newNodeGenes, List<int> newConnectionGenes)
 		{
 			var missFits = new List<NEATIndividual>();
 
 			var _populace = new List<NEATIndividual>();
 			if(populace.Count >= EAParameters.LowerChampionSpeciesCount)
-				_populace.Add(getBest());
+				_populace.Add(GetBest());
 
 			var ASexCount = (int)(AllowedPopulaceSize*EAParameters.ASexualReproductionQuota);
-
 			var ASexPopulace = new List<NEATIndividual>(populace);
-			while(_populace.Count < ASexCount && !ASexPopulace.IsEmpty()) //this should instead "fill up the ASexual reproduction" and then fill up the rest with crossover
-			{
-				var origIndie = Neat.random.Individual(ASexPopulace);
-				origIndie.genome = Mutator.Mutate(origIndie.genome, IDs);
-				var mutatedIndie = new NEATIndividual(origIndie);
 
-				if(BelongsInSpecies(mutatedIndie))
-					_populace.Add(mutatedIndie); //can't actually do this because of species size things
-				else
-					missFits.Add(mutatedIndie);
-				ASexPopulace.Remove(origIndie);
-			}
-			while(_populace.Count < AllowedPopulaceSize)
-			{
-				//crossover THIS IS LIKE... NEEDED!
-				var dad = Neat.random.Individual(populace);
-				var mum = Neat.random.Individual(populace);
-
-				var child = new NEATIndividual(Mutator.Crossover(dad,mum),IDs);
-				if(Neat.random.NextBoolean(EAParameters.SexualReproductionStillMutateChance))
-					child.genome = Mutator.Mutate(child.genome, IDs);
-				if(BelongsInSpecies(child))
-					_populace.Add(child); //can't actually do this because of species size things
-				else
-					missFits.Add(child);
-			}
+			_populace.AddRange(ASexualPart(ASexCount, ASexPopulace, missFits, IDs));
+			_populace.AddRange(SexualPart(AllowedPopulaceSize, IDs, missFits));
 
 			populace = new List<NEATIndividual>(_populace);
 
 			return missFits;
 		}
 
+		private List<NEATIndividual> ASexualPart(int ASexCount, List<NEATIndividual> ASexPopulace, List<NEATIndividual> missFits, IDCounters IDs)
+		{
+			var _populace = new List<NEATIndividual>();
+			while(_populace.Count < ASexCount && !ASexPopulace.IsEmpty())
+			{
+				var origIndie = Neat.random.Individual(ASexPopulace);
+				origIndie.genome = Mutator.Mutate(origIndie.genome, IDs);
+				var mutatedIndie = new NEATIndividual(origIndie);
+
+				if(BelongsInSpecies(mutatedIndie))
+					_populace.Add(mutatedIndie);
+				else
+					missFits.Add(mutatedIndie);
+				ASexPopulace.Remove(origIndie);
+			}
+			return _populace;
+		}
+		private List<NEATIndividual> SexualPart(int AllowedPopulaceSize, IDCounters IDs, List<NEATIndividual> missFits)
+		{
+			var _populace = new List<NEATIndividual>();
+			while(_populace.Count < AllowedPopulaceSize)
+			{
+				var dad = Neat.random.Individual(populace);
+				var mum = Neat.random.Individual(populace);
+				var child = new NEATIndividual(Mutator.Crossover(dad,mum),IDs);
+				if(Neat.random.NextBoolean(EAParameters.SexualReproductionStillMutateChance))
+					child.genome = Mutator.Mutate(child.genome, IDs);
+				if(BelongsInSpecies(child))
+					_populace.Add(child);
+				else
+					missFits.Add(child);
+			}
+			return _populace;
+		}
 		public bool BelongsInSpecies(NEATIndividual indie)
 		{
-			bool yes = false;
-			if(indie.DifferenceTo(representative) <= EAParameters.SpeciesInclusionRadius)
-				yes = true;
-			return yes;
+			return (indie.DifferenceTo(representative) <= EAParameters.SpeciesInclusionRadius);
 		}
 
 		public void AddIndividual(NEATIndividual indie)
@@ -127,17 +133,24 @@ namespace CPPNNEATCA.NEAT.Parts
 			populace.Add(indie);
 		}
 
-		private NEATIndividual getBest()
+		private NEATIndividual GetBest()
 		{
 			float bestFitness = 0.0f;
-			NEATIndividual bestIndie = null;
-			foreach(NEATIndividual indie in populace)
+			List<NEATIndividual> bestIndies = new List<NEATIndividual>();
+			bestFitness = float.MinValue;
+			foreach(var indie in populace)
+			{
 				if(indie.Fitness > bestFitness)
 				{
-					bestFitness = indie.Fitness;
-					bestIndie = indie;
-				}
-			return bestIndie ?? populace[0];
+					bestIndies = new List<NEATIndividual>();
+					bestIndies.Add(indie);
+				} else if(indie.Fitness == bestFitness)
+					bestIndies.Add(indie);
+			}
+			if(bestIndies.Count == 1)
+				return bestIndies[0];
+			else
+				return Neat.random.Individual(bestIndies);
 		}
 	}
 }

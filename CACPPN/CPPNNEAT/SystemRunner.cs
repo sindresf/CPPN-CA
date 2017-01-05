@@ -16,7 +16,6 @@ namespace CPPNNEATCA
 		{
 			//ParaRun();
 			SingleRun();
-			//LambdaExpTest();
 		}
 
 		public static void LambdaExpTest()
@@ -31,6 +30,7 @@ namespace CPPNNEATCA
 				Console.WriteLine("i = {3} ->rule: {0},{1},{2}", cond1, cond2, cond3, i);
 			}
 		}
+
 		public static void SingleRun()
 		{
 			Console.WriteLine("running");
