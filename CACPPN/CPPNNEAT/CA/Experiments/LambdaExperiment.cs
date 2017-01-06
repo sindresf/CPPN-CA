@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using CPPNNEATCA.CA.Base;
+using CPPNNEATCA.CPPN;
+using CPPNNEATCA.CPPN.Parts;
 
 namespace CPPNNEATCA.CA.Experiments
 {
@@ -45,10 +47,35 @@ namespace CPPNNEATCA.CA.Experiments
 			{
 				bool same = TransitionFunction(rule) == rule.Result;
 				if(same) Fitness++;
-				else Fitness -= 1.2;
+				else Fitness -= 1.5;
 			}
 
-			if(Fitness > Math.Pow(ruleSet.Count, 2)) throw new Exception("weird fitness!");
+			return (float)Math.Pow(Fitness, 2);
+		}
+		public float RunNetworkFeedbackEvaluation(ICPPNetwork inetwork)
+		{
+			var network = (CPPNetwork)inetwork;
+			double Fitness = 0.0;
+
+			foreach(Rule rule in ruleSet)
+			{
+				network.ActivateOutputNodes(rule);
+				var actives = network.outputNodes;
+				var wantedState = rule.Result;
+				foreach(var inode in actives.Values)
+				{
+					var node = (OutputNetworkNode)inode;
+					if(node.representedState == wantedState)
+						Fitness += Math.Pow(node.Activation, 2);
+					else
+						Fitness -= Math.Pow(1 - node.Activation, 2);
+				}
+
+
+				//bool same = network.GetNextState(rule) == wantedState;
+				//if(same) Fitness += 13;
+				//else Fitness -= 5;
+			}
 			return (float)Math.Pow(Fitness, 2);
 		}
 	}

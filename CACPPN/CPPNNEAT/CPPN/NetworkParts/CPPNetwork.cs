@@ -85,6 +85,12 @@ namespace CPPNNEATCA.CPPN.Parts
 			state = CheckStateVote();
 			return state;
 		}
+		public void ActivateOutputNodes(List<float> input)
+		{
+			PropagateInput(input);
+			if(hiddenNodes.Count > 0)
+				PropagateInternal();
+		}
 		private void PropagateInput(List<float> input)
 		{
 			foreach(InputNetworkNode node in inputNodes.Values)

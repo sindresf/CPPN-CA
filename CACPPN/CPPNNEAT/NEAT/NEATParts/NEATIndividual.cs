@@ -1,4 +1,5 @@
-﻿using CPPNNEATCA.CPPN;
+﻿using CPPNNEATCA.CA.Experiments;
+using CPPNNEATCA.CPPN;
 using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.Utils;
@@ -25,8 +26,9 @@ namespace CPPNNEATCA.NEAT.Parts
 		public override void Evaluate(int speciesCount)
 		{
 			network = new CPPNetwork(genome, Neat.parameters.CPPN);
-			Fitness = Neat.evaluator.RunEvaluation(network.GetNextState);
-			if(Fitness != Neat.parameters.CA.MaxFitnessPossible)
+			//Fitness = Neat.evaluator.RunEvaluation(network.GetNextState);
+			Fitness = ((LambdaExperiment)(Neat.evaluator)).RunNetworkFeedbackEvaluation(network); //trial thing. might have it Inside the RunEvaluation call
+			if(Fitness >= Neat.parameters.CA.MaxFitnessPossible)
 				Fitness = Fitness / speciesCount;
 			else
 				Fitness = Fitness;

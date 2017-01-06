@@ -38,7 +38,7 @@ namespace CPPNNEATCA.Utils
 
 		public static bool CanReachGoalFromRoot(this Dictionary<int, List<int>> tree, int root, int goalValue)
 		{
-			if(tree[root].Count == 0) //no outgoing edges = no goal reachable (only output nodes can be the root for this if)
+			if(tree[root].Count == 0)
 			{
 				return false;
 			} else if(tree[root].Contains(goalValue)) //goal "reached"
@@ -55,7 +55,7 @@ namespace CPPNNEATCA.Utils
 				return could;
 			}
 			throw new Exception("shouldn't have come here! (cycle check fail)");
-		} //TODO THIS NEEDS WORK I THINK
+		} //TODO THIS NEEDS WORK
 	}
 	static class NEATExtensions
 	{
