@@ -113,7 +113,20 @@ namespace CPPNNEATCA.NEAT.Parts
 			int averageSpots = EAParameters.PopulationSize / species.Count;
 			foreach(Species sp in species)
 				allowedPopulaceSizes[sp.speciesID] = CalculateSpeciesAllowedPopulaceCount(sp, averageSpots);
-
+			//normalize
+			int min = EAParameters.PopulationSize;
+			int max = 0;
+			foreach(var size in allowedPopulaceSizes.Values)
+			{
+				if(size < min) min = size;
+				if(size > max) max = size;
+			}
+			float range = max-min != 0 ? max-min : 1;
+			var normalized01AllowedSizes = new Dictionary<int,int>();
+			foreach(var pair in allowedPopulaceSizes)
+				normalized01AllowedSizes[pair.Key] = (int)((pair.Value - min) / range);
+			foreach(var pair in normalized01AllowedSizes)
+				allowedPopulaceSize[pair.Key] = pair.Value * EAParameters.PopulationSize;
 			return allowedPopulaceSizes;
 		}
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots)
