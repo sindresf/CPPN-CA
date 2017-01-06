@@ -35,36 +35,36 @@ namespace CPPNNEATCA.NEAT.Parts
 			hasMutated = false;
 		}
 
-		public override void Initialize(IDCounters IDs)
+		public override void Initialize(Population population)
 		{
-			InitilizeNodeGenes(IDs);
+			InitilizeNodeGenes(population);
 			if(nodeGenes.Count != 5) throw new TypeInitializationException("not 5 nodes initially", null);
-			InitializeConnectionGenes(IDs);
+			InitializeConnectionGenes(population);
 			if(connectionGenes.Count != 6) throw new TypeInitializationException("not 6 connections initially", null);
 			if(EAParameters.RandomGeneStart)
 				if(Neat.random.NextDouble() <= EAParameters.RandomGeneStartChance)
-					Mutator.Mutate(this, IDs);
+					Mutator.Mutate(this, population);
 		}
 
-		private void InitilizeNodeGenes(IDCounters IDs)
+		private void InitilizeNodeGenes(Population population)
 		{
 			int nodeID = 0;
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
-				nodeGenes.Add(new SensorNodeGene(IDs.NodeGeneID, nodeID++));
+				nodeGenes.Add(new SensorNodeGene(population.IDs.NodeGeneID, nodeID++));
 
 			int stateCounter = 0;
 			for(int i = Neat.parameters.CPPN.InputSize; i < Neat.parameters.CPPN.InputSize + Neat.parameters.CPPN.OutputSize; i++)
-				nodeGenes.Add(new OutputNodeGene(IDs.NodeGeneID, nodeID++, stateCounter++));
+				nodeGenes.Add(new OutputNodeGene(population.IDs.NodeGeneID, nodeID++, stateCounter++));
 		}
 
-		private void InitializeConnectionGenes(IDCounters IDs)
+		private void InitializeConnectionGenes(Population population)
 		{
 			for(int i = 0; i < Neat.parameters.CPPN.InputSize; i++)
 				for(int j = Neat.parameters.CPPN.OutputSize; j > 0; j--)
 				{
 					if(nodeGenes[i].nodeID > 2) throw new ArgumentException("fromNodeID over 2");
 					if(nodeGenes[nodeGenes.Count - j].nodeID > 4) throw new ArgumentException("toNodeID over 4");
-					connectionGenes.Add(new ConnectionGene(IDs.ConnectionGeneID,
+					connectionGenes.Add(new ConnectionGene(population.IDs.ConnectionGeneID,
 						nodeGenes[i].nodeID,
 						nodeGenes[nodeGenes.Count - j].nodeID,
 						true,

@@ -8,7 +8,7 @@ namespace CPPNNEATCA.NEAT.Parts
 	class Population
 	{
 		public List<Species> species { get; private set; }
-		private List<int> newNodeGenesThisGeneration, newConnectionGenesThisGeneration;
+		public List<int> newNodeGenesThisGeneration, newConnectionGenesThisGeneration;
 		private Dictionary<int,float> SpeciesFitnessMap;
 
 		public INeatCA ca;
@@ -17,10 +17,9 @@ namespace CPPNNEATCA.NEAT.Parts
 		private float avgSpeciesFitness;
 		private float SpeciesFitnessSD;
 
-		public Population(INeatCA ca, IDCounters IDs)
+		public Population(INeatCA ca)
 		{
 			this.ca = ca;
-			this.IDs = IDs;
 			species = new List<Species>();
 			SpeciesFitnessMap = new Dictionary<int, float>();
 			avgSpeciesFitness = 0.0f;
@@ -33,7 +32,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			species.Add(new Species(IDs.SpeciesID));
 			SpeciesFitnessMap.Add(species[0].speciesID, species[0].SpeciesFitness);
-			species[0].Initialize(IDs);
+			species[0].Initialize(this);
 		}
 
 		public Species AddSpecies(NEATIndividual indie)
@@ -143,7 +142,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			foreach(Species sp in species)
 			{
 				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID],
-					IDs,
+					this,
 					newNodeGenesThisGeneration,
 					newConnectionGenesThisGeneration));
 

@@ -37,13 +37,13 @@ namespace CPPNNEATCA.NEAT.Parts
 			improvementCount = 0;
 		}
 
-		public void Initialize(IDCounters IDs)
+		public void Initialize(Population population)
 		{
 			var genome = new NeatGenome();
-			genome.Initialize(IDs);
+			genome.Initialize(population);
 			for(int i = 0; i < EAParameters.PopulationSize; i++)
 			{
-				NEATIndividual indie = new NEATIndividual(genome, IDs);
+				NEATIndividual indie = new NEATIndividual(genome, population.IDs);
 				populace.Add(indie);
 				genome = new NeatGenome(genome);
 			}
@@ -70,7 +70,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			return representative;
 		}
 
-		public List<NEATIndividual> MakeNextGeneration(int AllowedPopulaceSize, IDCounters IDs, List<int> newNodeGenes, List<int> newConnectionGenes)
+		public List<NEATIndividual> MakeNextGeneration(int AllowedPopulaceSize, Population population, List<int> newNodeGenes, List<int> newConnectionGenes)
 		{
 			var missFits = new List<NEATIndividual>();
 
@@ -81,21 +81,21 @@ namespace CPPNNEATCA.NEAT.Parts
 			var ASexCount = (int)(AllowedPopulaceSize*EAParameters.ASexualReproductionQuota);
 			var ASexPopulace = new List<NEATIndividual>(populace);
 
-			_populace.AddRange(ASexualPart(ASexCount, ASexPopulace, missFits, IDs));
-			_populace.AddRange(SexualPart(AllowedPopulaceSize, missFits, IDs));
+			_populace.AddRange(ASexualPart(ASexCount, ASexPopulace, missFits, population));
+			_populace.AddRange(SexualPart(AllowedPopulaceSize, missFits, population));
 
 			populace = new List<NEATIndividual>(_populace);
 
 			return missFits;
 		}
 
-		private List<NEATIndividual> ASexualPart(int ASexCount, List<NEATIndividual> ASexPopulace, List<NEATIndividual> missFits, IDCounters IDs)
+		private List<NEATIndividual> ASexualPart(int ASexCount, List<NEATIndividual> ASexPopulace, List<NEATIndividual> missFits, Population population)
 		{
 			var _populace = new List<NEATIndividual>();
 			while(_populace.Count < ASexCount && !ASexPopulace.IsEmpty())
 			{
 				var origIndie = Neat.random.Individual(ASexPopulace);
-				origIndie.genome = Mutator.Mutate(origIndie.genome, IDs);
+				origIndie.genome = Mutator.Mutate(origIndie.genome, population);
 				var mutatedIndie = new NEATIndividual(origIndie);
 
 				if(BelongsInSpecies(mutatedIndie))
@@ -106,16 +106,16 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			return _populace;
 		}
-		private List<NEATIndividual> SexualPart(int AllowedPopulaceSize, List<NEATIndividual> missFits, IDCounters IDs)
+		private List<NEATIndividual> SexualPart(int AllowedPopulaceSize, List<NEATIndividual> missFits, Population population)
 		{
 			var _populace = new List<NEATIndividual>();
 			while(_populace.Count < AllowedPopulaceSize)
 			{
 				var dad = Neat.random.Individual(populace);
 				var mum = Neat.random.Individual(populace);
-				var child = new NEATIndividual(Mutator.Crossover(dad,mum),IDs);
+				var child = new NEATIndividual(Mutator.Crossover(dad,mum),population.IDs);
 				if(Neat.random.NextBoolean(EAParameters.SexualReproductionStillMutateChance))
-					child.genome = Mutator.Mutate(child.genome, IDs);
+					child.genome = Mutator.Mutate(child.genome, population);
 				if(BelongsInSpecies(child))
 					_populace.Add(child);
 				else

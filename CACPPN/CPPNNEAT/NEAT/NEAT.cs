@@ -17,11 +17,12 @@ namespace CPPNNEATCA.NEAT
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;
 
-		public Neat() //to become the wrapper for the CA so NEAT can run exactly the same
+		public Neat()
 		{
-			IDs = new IDCounters();
 			evaluator = parameters.experiment;
-			population = new Population(evaluator, IDs);
+			population = new Population(evaluator);
+			IDs = new IDCounters();
+			population.IDs = IDs;
 		}
 
 		static Neat()

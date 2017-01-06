@@ -48,52 +48,52 @@ namespace CPPNNEATCA.NEAT.Parts
 
 	class Mutator
 	{
-		public static NeatGenome Mutate(NeatGenome genome, IDCounters IDs)
+		public static NeatGenome Mutate(NeatGenome genome, Population population)
 		{
 			NeatGenome newGenome = new NeatGenome(genome);
 			foreach(MutationType type in Enum.GetValues(typeof(MutationType)))
 				if(Neat.random.DoMutation(type))
 				{
-					newGenome = MutateOfType(type, newGenome, IDs);
+					newGenome = MutateOfType(type, newGenome, population);
 					newGenome.hasMutated = true;
 				}
 
 			return newGenome;
 		}
 
-		private static NeatGenome MutateOfType(MutationType type, NeatGenome genome, IDCounters IDs)
+		private static NeatGenome MutateOfType(MutationType type, NeatGenome genome, Population population)
 		{
 			switch(type)
 			{
 			case MutationType.ChangeWeight:
 				return ChangeWeight(genome);
 			case MutationType.AddConnection:
-				return AddConnection(genome, IDs);
+				return AddConnection(genome, population);
 			case MutationType.AddNode:
-				return AddNode(genome, IDs);
+				return AddNode(genome, population);
 			case MutationType.ChangeFunction: //and then maybe "mutateCurrentFunction type"
-				return ChangeNodeFunction(genome, IDs);
+				return ChangeNodeFunction(genome);
 			default:
 				return genome;
 			}
 		}
 
-		private static NeatGenome AddNode(NeatGenome genome, IDCounters IDs)
+		private static NeatGenome AddNode(NeatGenome genome, Population population)
 		{
 			var connectionToSplitt = Neat.random.ConnectionGene(genome);
 			connectionToSplitt.isEnabled = false;
-			var id = IDs.NodeGeneID;
+			var id = population.IDs.NodeGeneID;
 			var newNode = new HiddenNodeGene(id,
 										genome.nodeGenes.Count,
 										Neat.random.ActivationFunctionType());
 
-			var firstHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
+			var firstHalfGene = new ConnectionGene(population.IDs.ConnectionGeneID,
 															connectionToSplitt.fromNodeID,
 															newNode.nodeID,
 															true,
 															1.0f);
 
-			var secondHalfGene = new ConnectionGene(IDs.ConnectionGeneID,
+			var secondHalfGene = new ConnectionGene(population.IDs.ConnectionGeneID,
 															newNode.nodeID,
 															connectionToSplitt.toNodeID,
 															true,
@@ -105,7 +105,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			return genome;
 		}
 
-		private static NeatGenome AddConnection(NeatGenome genome, IDCounters IDs)
+		private static NeatGenome AddConnection(NeatGenome genome, Population population)
 		{
 			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
 			if(toNode.nodeID <= 2) throw new Exception("was in addConnection; nodeGene:" + toNode.geneID + " nodeID:" + toNode.nodeID);
@@ -150,7 +150,7 @@ namespace CPPNNEATCA.NEAT.Parts
 				}
 			}
 
-			var conGene = new ConnectionGene(IDs.ConnectionGeneID,
+			var conGene = new ConnectionGene(population.IDs.ConnectionGeneID,
 														fromNode.nodeID,
 														toNode.nodeID,
 														true, //was this supposed to be weighted random for new ones?
@@ -172,7 +172,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			return genome;
 		}
 
-		private static NeatGenome ChangeNodeFunction(NeatGenome genome, IDCounters IDs)
+		private static NeatGenome ChangeNodeFunction(NeatGenome genome)
 		{
 			if(genome.HasInternalNodes())
 			{

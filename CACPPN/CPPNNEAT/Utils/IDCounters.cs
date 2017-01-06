@@ -1,8 +1,12 @@
-﻿namespace CPPNNEATCA.Utils
+﻿using CPPNNEATCA.NEAT.Parts;
+
+namespace CPPNNEATCA.Utils
 {
 	class IDCounters
 	{
 		private int spID, indID, ngID, cgID;
+
+		private Population population;
 
 		public IDCounters()
 		{
@@ -24,7 +28,10 @@
 		}
 		public int NodeGeneID
 		{
-			get { return ngID++; }
+			get
+			{
+				return ngID++;
+			}
 			private set { ngID = value; }
 		}
 		public int ConnectionGeneID
