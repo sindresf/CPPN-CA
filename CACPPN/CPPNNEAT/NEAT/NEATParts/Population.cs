@@ -113,20 +113,46 @@ namespace CPPNNEATCA.NEAT.Parts
 			int averageSpots = EAParameters.PopulationSize / species.Count;
 			foreach(Species sp in species)
 				allowedPopulaceSizes[sp.speciesID] = CalculateSpeciesAllowedPopulaceCount(sp, averageSpots);
-			//normalize
-			int min = EAParameters.PopulationSize;
-			int max = 0;
-			foreach(var size in allowedPopulaceSizes.Values)
+			int sumSizes = 0;
+			foreach(var val in allowedPopulaceSizes.Values)
+				sumSizes += val;
+			int missing = EAParameters.PopulationSize - sumSizes;
+			int count = 1;
+			if(missing < 0)
 			{
-				if(size < min) min = size;
-				if(size > max) max = size;
-			}
-			float range = max-min != 0 ? max-min : 1;
-			var normalized01AllowedSizes = new Dictionary<int,int>();
-			foreach(var pair in allowedPopulaceSizes)
-				normalized01AllowedSizes[pair.Key] = (int)((pair.Value - min) / range);
-			foreach(var pair in normalized01AllowedSizes)
-				allowedPopulaceSize[pair.Key] = pair.Value * EAParameters.PopulationSize;
+				missing *= -1;
+				count = -1;
+				for(int i = 0; i < missing; i++)
+				{
+					var key = 0;
+					var max = int.MinValue;
+					foreach(var pair in allowedPopulaceSizes)
+						if(pair.Value > max)
+						{
+							key = pair.Key;
+							max = pair.Value;
+						}
+					allowedPopulaceSizes[key] += count;
+				}
+			} else
+				for(int i = 0; i < missing; i++)
+				{
+					var key = 0;
+					var min = int.MaxValue;
+					foreach(var pair in allowedPopulaceSizes)
+						if(pair.Value < min)
+						{
+							key = pair.Key;
+							min = pair.Value;
+						}
+					allowedPopulaceSizes[key] += count;
+				}
+
+			Console.WriteLine("sumSizes = {0}", sumSizes);
+			sumSizes = 0;
+			foreach(var val in allowedPopulaceSizes.Values)
+				sumSizes += val;
+			Console.WriteLine("after adding missing sumSizes = {0}", sumSizes);
 			return allowedPopulaceSizes;
 		}
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots)
@@ -140,14 +166,14 @@ namespace CPPNNEATCA.NEAT.Parts
 				while(growingFitness < goalFitness)
 				{
 					SDCount++;
-					growingFitness += SpeciesFitnessSD * 0.25f;
+					growingFitness += SpeciesFitnessSD * 0.5f;
 				}
 			} else
 			{
 				while(growingFitness > goalFitness)
 				{
-					SDCount++;
-					growingFitness += SpeciesFitnessSD * -1 * 0.25f;
+					SDCount--;
+					growingFitness += SpeciesFitnessSD * -0.5f;
 				}
 			}
 			return (int)(avgSpots + SDCount * 2.0).Clamp(0, EAParameters.PopulationSize);
