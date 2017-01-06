@@ -9,6 +9,7 @@ namespace CPPNNEATCA.NEAT.Parts
 	{
 		public List<Species> species { get; private set; }
 		public List<int> newNodeGenesThisGeneration, SplittConnectionGeneIDsThisGeneration;
+		public Dictionary<Tuple<int,int>, int> addedConnectionsThisGeneration;
 		public Dictionary<int,Tuple<int,int,int>> newConnectionGenesThisGenerationFromConnectionSplit;
 		private Dictionary<int,float> SpeciesFitnessMap;
 
@@ -95,6 +96,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			newNodeGenesThisGeneration = new List<int>();
 			SplittConnectionGeneIDsThisGeneration = new List<int>();
+			addedConnectionsThisGeneration = new Dictionary<Tuple<int, int>, int>();
 			newConnectionGenesThisGenerationFromConnectionSplit = new Dictionary<int, Tuple<int, int, int>>();
 
 			var allowedPopulaceSize = SpeciesSizes();

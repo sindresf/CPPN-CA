@@ -124,13 +124,10 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		private static NeatGenome AddConnection(NeatGenome genome, Population population)
 		{
-			NodeGene toNode = Neat.random.NotInputNodeGene(genome);
-			if(toNode.nodeID <= 2) throw new Exception("was in addConnection; nodeGene:" + toNode.geneID + " nodeID:" + toNode.nodeID);
-
-
+			var toNode = Neat.random.NotInputNodeGene(genome);
 
 			var connGenes = genome.connectionGenes;
-			NodeGene fromNode = Neat.random.NotOutputNodeGene(genome);
+			var fromNode = Neat.random.NotOutputNodeGene(genome);
 
 			bool baseCase = fromNode.type == NodeType.Sensor && toNode.type == NodeType.Output; //already exist all of these
 			baseCase |= connGenes.Contains(fromNode.nodeID, toNode.nodeID); //existing "internal" connection
@@ -166,12 +163,22 @@ namespace CPPNNEATCA.NEAT.Parts
 					break; //the connection is none-cyclic
 				}
 			}
+			int id = -1;
+			var key = Tuple.Create(fromNode.nodeID, toNode.nodeID);
+			if(population.addedConnectionsThisGeneration.ContainsKey(key))
+			{
+				id = population.addedConnectionsThisGeneration[key];
+			} else
+			{
+				id = population.IDs.ConnectionGeneID;
+				population.addedConnectionsThisGeneration.Add(key, id);
+			}
 
-			var conGene = new ConnectionGene(population.IDs.ConnectionGeneID,
-														fromNode.nodeID,
-														toNode.nodeID,
-														true, //was this supposed to be weighted random for new ones?
-														Neat.random.InitialConnectionWeight());
+			var conGene = new ConnectionGene(id,
+												fromNode.nodeID,
+												toNode.nodeID,
+												true, //was this supposed to be weighted random for new ones?
+												Neat.random.InitialConnectionWeight());
 			genome.connectionGenes.Add(conGene);
 			return genome;
 		}
