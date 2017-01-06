@@ -103,7 +103,7 @@ namespace CPPNNEATCA.NEAT.Parts
 
 			allowedPopulaceSize = SpeciesSizes();
 			var speciesRepresentatives = GetSpeciesRepresentatives();
-			var missfits = GetMissFitsFromSpeciesNextGeneration(allowedPopulaceSize);
+			var missfits = GetMissFitsFromSpeciesNextGeneration();
 			FindMissfitsHomeInPopulation(missfits);
 		}
 
@@ -113,8 +113,14 @@ namespace CPPNNEATCA.NEAT.Parts
 			int averageSpots = EAParameters.PopulationSize / species.Count;
 			foreach(Species sp in species)
 				allowedPopulaceSizes[sp.speciesID] = CalculateSpeciesAllowedPopulaceCount(sp, averageSpots);
+			allowedPopulaceSizes = EnforcePopulationSize(allowedPopulaceSizes);
+			return SizesForSurvivors(allowedPopulaceSizes);
+		}
+		private Dictionary<int, int> EnforcePopulationSize(Dictionary<int, int> allowedPopulaceSizes)
+		{
+			var enforcedPopulation = new Dictionary<int,int>(allowedPopulaceSizes);
 			int sumSizes = 0;
-			foreach(var val in allowedPopulaceSizes.Values)
+			foreach(var val in enforcedPopulation.Values)
 				sumSizes += val;
 			int missing = EAParameters.PopulationSize - sumSizes;
 			int count = 1;
@@ -126,34 +132,48 @@ namespace CPPNNEATCA.NEAT.Parts
 				{
 					var key = 0;
 					var max = int.MinValue;
-					foreach(var pair in allowedPopulaceSizes)
+					foreach(var pair in enforcedPopulation)
 						if(pair.Value > max)
 						{
 							key = pair.Key;
 							max = pair.Value;
 						}
-					allowedPopulaceSizes[key] += count;
+					enforcedPopulation[key] += count;
 				}
 			} else
 				for(int i = 0; i < missing; i++)
 				{
 					var key = 0;
 					var min = int.MaxValue;
-					foreach(var pair in allowedPopulaceSizes)
+					foreach(var pair in enforcedPopulation)
 						if(pair.Value < min)
 						{
 							key = pair.Key;
 							min = pair.Value;
 						}
-					allowedPopulaceSizes[key] += count;
+					enforcedPopulation[key] += count;
 				}
-
-			Console.WriteLine("sumSizes = {0}", sumSizes);
-			sumSizes = 0;
-			foreach(var val in allowedPopulaceSizes.Values)
-				sumSizes += val;
-			Console.WriteLine("after adding missing sumSizes = {0}", sumSizes);
-			return allowedPopulaceSizes;
+			return enforcedPopulation;
+		}
+		private Dictionary<int, int> SizesForSurvivors(Dictionary<int, int> dict)
+		{
+			var sizes = new Dictionary<int,int>(dict);
+			var phasedOutSpeciesIDs = new List<int>();
+			foreach(var pair in dict)
+				if(pair.Value == 0)
+					phasedOutSpeciesIDs.Add(pair.Key);
+			var phasedOutSpecies = new List<Species>();
+			foreach(var sp in species)
+			{
+				if(phasedOutSpeciesIDs.Contains(sp.speciesID))
+					phasedOutSpecies.Add(sp);
+			}
+			foreach(var ID in phasedOutSpeciesIDs)
+			{
+				sizes.Remove(ID);
+			}
+			KillSpecies(phasedOutSpecies);
+			return sizes;
 		}
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots)
 		{
@@ -166,14 +186,14 @@ namespace CPPNNEATCA.NEAT.Parts
 				while(growingFitness < goalFitness)
 				{
 					SDCount++;
-					growingFitness += SpeciesFitnessSD * 0.5f;
+					growingFitness += SpeciesFitnessSD * 0.7f;
 				}
 			} else
 			{
 				while(growingFitness > goalFitness)
 				{
 					SDCount--;
-					growingFitness += SpeciesFitnessSD * -0.5f;
+					growingFitness += SpeciesFitnessSD * -0.7f;
 				}
 			}
 			return (int)(avgSpots + SDCount * 2.0).Clamp(0, EAParameters.PopulationSize);
@@ -187,17 +207,14 @@ namespace CPPNNEATCA.NEAT.Parts
 			return representatives;
 		}
 
-		private List<NEATIndividual> GetMissFitsFromSpeciesNextGeneration(Dictionary<int, int> allowedPopulaceSize)
+		private List<NEATIndividual> GetMissFitsFromSpeciesNextGeneration()
 		{
 			var missFits = new List<NEATIndividual>();
 			foreach(Species sp in species)
-			{
 				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID],
 					this,
 					newNodeGenesThisGeneration,
 					SplittConnectionGeneIDsThisGeneration));
-
-			}
 			return missFits;
 		}
 

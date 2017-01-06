@@ -86,7 +86,6 @@ namespace CPPNNEATCA.NEAT.Parts
 			int toGeneID = -1;
 			if(population.SplittConnectionGeneIDsThisGeneration.Contains(connectionToSplitt.geneID))
 			{
-				Console.Write("_");
 				var IDs = population.newConnectionGenesThisGenerationFromConnectionSplit[connectionToSplitt.geneID];
 				fromGeneID = IDs.Item1;
 				newNodeID = IDs.Item2;
@@ -167,10 +166,8 @@ namespace CPPNNEATCA.NEAT.Parts
 			int id = -1;
 			var key = Tuple.Create(fromNode.nodeID, toNode.nodeID);
 			if(population.addedConnectionsThisGeneration.ContainsKey(key))
-			{
-				Console.Write("~~");
 				id = population.addedConnectionsThisGeneration[key];
-			} else
+			else
 			{
 				id = population.IDs.ConnectionGeneID;
 				population.addedConnectionsThisGeneration.Add(key, id);

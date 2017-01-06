@@ -51,7 +51,6 @@ namespace CPPNNEATCA.NEAT
 				bestAchieved = challenger;
 				generationOfBest = currentGeneration;
 			}
-
 		}
 
 		public override bool IsDeadRun()
@@ -81,7 +80,6 @@ namespace CPPNNEATCA.NEAT
 		public override Individual GetBestIndividual()
 		{
 			var bestIndie = population.GetBestIndividual();
-			Console.WriteLine("best:{0}\n", bestIndie.Fitness);
 			return bestIndie;
 		}
 	}

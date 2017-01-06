@@ -65,10 +65,6 @@ namespace CPPNNEATCA
 			for(int i = 0; i < EAParameters.MaximumRuns; i++)
 			{
 				Console.WriteLine("generation:" + i);
-				Console.Write("species present:{0} sizes: ", ((Neat)neat).population.species.Count);
-				foreach(var spSize in ((Neat)neat).population.allowedPopulaceSize.Values)
-					Console.Write(spSize + " ");
-				Console.WriteLine();
 				neat.EvaluatePopulation(i);
 				if(neat.IsDeadRun())
 				{
