@@ -86,6 +86,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			int toGeneID = -1;
 			if(population.SplittConnectionGeneIDsThisGeneration.Contains(connectionToSplitt.geneID))
 			{
+				Console.Write("_");
 				var IDs = population.newConnectionGenesThisGenerationFromConnectionSplit[connectionToSplitt.geneID];
 				fromGeneID = IDs.Item1;
 				newNodeID = IDs.Item2;
@@ -167,6 +168,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			var key = Tuple.Create(fromNode.nodeID, toNode.nodeID);
 			if(population.addedConnectionsThisGeneration.ContainsKey(key))
 			{
+				Console.Write("~~");
 				id = population.addedConnectionsThisGeneration[key];
 			} else
 			{
@@ -212,7 +214,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			var genome1 = indie1.genome;
 			var genome2 = indie2.genome;
 
-			var mostFitGenome = indie1.Fitness > indie2.Fitness ? indie1.genome : indie2.genome; //doesn't matter if they're equal
+			var mostFitGenome = indie1.Fitness > indie2.Fitness ? indie1.genome : indie2.genome;
 
 			var childGenome = new NeatGenome();
 

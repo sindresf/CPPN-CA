@@ -12,6 +12,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		public Dictionary<Tuple<int,int>, int> addedConnectionsThisGeneration;
 		public Dictionary<int,Tuple<int,int,int>> newConnectionGenesThisGenerationFromConnectionSplit;
 		private Dictionary<int,float> SpeciesFitnessMap;
+		public Dictionary<int,int> allowedPopulaceSize;
 
 		public INeatCA ca;
 		public IDCounters IDs;
@@ -32,6 +33,7 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void Initialize()
 		{
+			allowedPopulaceSize = new Dictionary<int, int>();
 			species.Add(new Species(IDs.SpeciesID));
 			SpeciesFitnessMap.Add(species[0].speciesID, species[0].SpeciesFitness);
 			species[0].Initialize(this);
@@ -99,7 +101,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			addedConnectionsThisGeneration = new Dictionary<Tuple<int, int>, int>();
 			newConnectionGenesThisGenerationFromConnectionSplit = new Dictionary<int, Tuple<int, int, int>>();
 
-			var allowedPopulaceSize = SpeciesSizes();
+			allowedPopulaceSize = SpeciesSizes();
 			var speciesRepresentatives = GetSpeciesRepresentatives();
 			var missfits = GetMissFitsFromSpeciesNextGeneration(allowedPopulaceSize);
 			FindMissfitsHomeInPopulation(missfits);

@@ -31,7 +31,7 @@ namespace CPPNNEATCA
 		}
 
 		public const int PopulationSize = 100;
-		public const int MaximumRuns = 50;
+		public const int MaximumRuns = 25;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public const int SetNToOneLimit = 12;
 		public const int LowerChampionSpeciesCount = 5;

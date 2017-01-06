@@ -26,7 +26,10 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			network = new CPPNetwork(genome, Neat.parameters.CPPN);
 			Fitness = Neat.evaluator.RunEvaluation(network.GetNextState);
-			Fitness *= Fitness / speciesCount;
+			if(Fitness != Neat.parameters.CA.MaxFitnessPossible)
+				Fitness = Fitness / speciesCount;
+			else
+				Fitness = Fitness;
 		}
 	}
 }

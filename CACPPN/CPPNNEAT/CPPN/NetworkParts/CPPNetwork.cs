@@ -60,18 +60,10 @@ namespace CPPNNEATCA.CPPN.Parts
 		{
 			foreach(ConnectionGene gene in connectionGenes)
 			{
-				if(!gene.isEnabled) continue;
-				else
+				if(gene.isEnabled)
 				{
 					bool contains = hiddenNodes.ContainsKey(gene.toNodeID);
 					var toDict = contains ? hiddenNodes : outputNodes;
-					if(!toDict.ContainsKey(gene.toNodeID))
-					{
-						Console.WriteLine("gene {0}:", gene.geneID);
-						foreach(var connGene in connectionGenes)
-							Console.WriteLine("conn{0}: from:{1} to:{2}", connGene.geneID, connGene.fromNodeID, connGene.toNodeID);
-						Console.WriteLine();
-					}
 					var toNode = toDict[gene.toNodeID];
 					toNode.AddInputConnection(gene.fromNodeID, gene.connectionWeight);
 
@@ -120,7 +112,7 @@ namespace CPPNNEATCA.CPPN.Parts
 		private int CheckStateVote()
 		{
 			int voted = -1;
-			float maxActivation = float.MinValue;
+			float MostActivated = float.MinValue;
 			foreach(INetworkNode Inode in outputNodes.Values)
 			{
 				var node = ((OutputNetworkNode)Inode);
@@ -128,12 +120,12 @@ namespace CPPNNEATCA.CPPN.Parts
 				{
 					/*Console.WriteLine();
 					Console.WriteLine("nodeID:{0} state:{1}, shouldHave:{2} had:{3}", node.nodeID, node.representedState, node.shouldHave, node.inValues.Count);
-					Console.WriteLine("incoming connections:");*/
+					Console.WriteLine("incoming connections:");
 					var wKeys = new int[node.inWeights.Keys.Count];
 					var vKeys = new int[node.inValues.Keys.Count];
 					node.inWeights.Keys.CopyTo(wKeys, 0);
 					node.inValues.Keys.CopyTo(vKeys, 0);
-					/*Console.Write("connections: ");
+					Console.Write("connections: ");
 					foreach(var w in wKeys)
 						Console.Write(w + " ");
 					Console.Write("\nvalues received: ");
@@ -143,9 +135,9 @@ namespace CPPNNEATCA.CPPN.Parts
 					//throw new Exception("The fuck!? not notified output node!");
 				}
 				var activationLevel = node.Activation;
-				if(activationLevel > maxActivation)
+				if(activationLevel > MostActivated)
 				{
-					maxActivation = activationLevel;
+					MostActivated = activationLevel;
 					voted = node.representedState;
 				}
 			}

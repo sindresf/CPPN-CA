@@ -19,9 +19,9 @@ namespace CPPNNEATCA.CA.Experiments
 	{
 
 		//private static int[] results = new int[] {0,0,0,0,0,0,0,0}; // lambda = 1
-		//private static int[] results = new int[] {0,1,0,0,1,1,0,0}; // lambda = 2
-		//private static int[] results = new int[] {1,1,1,0,1,1,1,0}; // lambda = 3
-		private static int[] results = new int[] {0,1,1,0,1,0,1,0}; // lambda = 4 RULE 30 
+		private static int[] results = new int[] {0,1,0,0,1,1,0,0}; // lambda = 2
+																	//private static int[] results = new int[] {1,1,1,0,1,1,1,0}; // lambda = 3
+																	//private static int[] results = new int[] {0,1,1,0,1,0,1,0}; // lambda = 4 RULE 30 
 																	//private static int[] results = new int[] {0,0,1,1,1,1,1,0}; // lambda = 4 RULE 110 
 
 		private static RuleSet ruleSet = new RuleSet(results);
@@ -47,6 +47,8 @@ namespace CPPNNEATCA.CA.Experiments
 				if(same) Fitness++;
 				else Fitness -= 1.2;
 			}
+
+			if(Fitness > Math.Pow(ruleSet.Count, 2)) throw new Exception("weird fitness!");
 			return (float)Math.Pow(Fitness, 2);
 		}
 	}

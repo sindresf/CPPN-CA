@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
-using CPPNNEATCA.NEAT.Parts;
-using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA
 {
@@ -69,7 +65,11 @@ namespace CPPNNEATCA
 			for(int i = 0; i < EAParameters.MaximumRuns; i++)
 			{
 				Console.WriteLine("generation:" + i);
-				neat.EvaluatePopulation();
+				Console.Write("species present:{0} sizes: ", ((Neat)neat).population.species.Count);
+				foreach(var spSize in ((Neat)neat).population.allowedPopulaceSize.Values)
+					Console.Write(spSize + " ");
+				Console.WriteLine();
+				neat.EvaluatePopulation(i);
 				if(neat.IsDeadRun())
 				{
 					Console.WriteLine("death");
@@ -83,6 +83,18 @@ namespace CPPNNEATCA
 				}
 				neat.NextGeneration();
 			}
+			Console.WriteLine("best individual in existence:");
+			var best = ((Neat)neat).bestAchieved;
+			Console.WriteLine("individualID: {0} generation:{1}", best.individualID, ((Neat)neat).generationOfBest);
+			Console.WriteLine("\tFitness:{0}", best.Fitness);
+			Console.WriteLine("\tstats:");
+			Console.WriteLine("\t\tnodes:{0}", best.genome.nodeGenes.Count);
+			Console.Write("\t\tConnections:{0}", best.genome.connectionGenes.Count);
+			int count = 0;
+			foreach(var gene in best.genome.connectionGenes)
+				if(gene.isEnabled)
+					count++;
+			Console.WriteLine(" enabled:{0}", count);
 			if(solvedit)
 				Console.WriteLine("your perfect genome is ready for you in {0}", @"C:/genes");
 		}

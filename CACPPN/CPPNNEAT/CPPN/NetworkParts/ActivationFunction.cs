@@ -185,7 +185,6 @@ namespace CPPNNEATCA.CPPN.Parts
 			var c = coefficients['c'].coValue;
 
 			double denominator = (1*a) + Math.Pow(Math.E,-(sum*b));
-
 			return (float)((1.0 / denominator) + c);
 		}
 	}

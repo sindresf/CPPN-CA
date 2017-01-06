@@ -17,6 +17,9 @@ namespace CPPNNEATCA.NEAT
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;
 
+		public NEATIndividual bestAchieved;
+		public int generationOfBest = 0;
+
 		public Neat()
 		{
 			evaluator = parameters.experiment;
@@ -36,23 +39,29 @@ namespace CPPNNEATCA.NEAT
 		public override void InitializePopulation()
 		{
 			population.Initialize();
+			bestAchieved = population.GetBestIndividual();
 		}
 
-		public override void EvaluatePopulation()
+		public override void EvaluatePopulation(int currentGeneration)
 		{
 			population.Evaluate();
+			var challenger = population.GetBestIndividual();
+			if(challenger != null && challenger.Fitness > bestAchieved.Fitness)
+			{
+				bestAchieved = challenger;
+				generationOfBest = currentGeneration;
+			}
+
 		}
 
 		public override bool IsDeadRun()
 		{
-			//means the last species killed itself off due to no improvement
 			return population.species.Count == 0;
 		}
 
 		public override void NextGeneration()
 		{
 			CurrentGeneration++;
-			//don't forget elitism for species with 5+ indies
 			population.MakeNextGeneration();
 		}
 
@@ -71,9 +80,7 @@ namespace CPPNNEATCA.NEAT
 
 		public override Individual GetBestIndividual()
 		{
-			Console.WriteLine("\nspecies present:" + population.species.Count);
-
-			NEATIndividual bestIndie = population.GetBestIndividual();
+			var bestIndie = population.GetBestIndividual();
 			Console.WriteLine("best:{0}\n", bestIndie.Fitness);
 			return bestIndie;
 		}

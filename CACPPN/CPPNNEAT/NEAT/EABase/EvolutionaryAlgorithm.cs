@@ -4,7 +4,7 @@
 	{
 		public int CurrentGeneration { get; protected set; }
 		public abstract void InitializePopulation();
-		public abstract void EvaluatePopulation();
+		public abstract void EvaluatePopulation(int currentGeneration);
 
 		public abstract bool IsDeadRun();
 		public abstract bool SolvedIt();
