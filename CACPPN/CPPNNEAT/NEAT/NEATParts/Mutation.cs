@@ -81,19 +81,36 @@ namespace CPPNNEATCA.NEAT.Parts
 		private static NeatGenome AddNode(NeatGenome genome, Population population)
 		{
 			var connectionToSplitt = Neat.random.ConnectionGene(genome);
+			int fromGeneID = -1;
+			int newNodeID = -1;
+			int toGeneID = -1;
+			if(population.SplittConnectionGeneIDsThisGeneration.Contains(connectionToSplitt.geneID))
+			{
+				var IDs = population.newConnectionGenesThisGenerationFromConnectionSplit[connectionToSplitt.geneID];
+				fromGeneID = IDs.Item1;
+				newNodeID = IDs.Item2;
+				toGeneID = IDs.Item3;
+			} else
+			{
+				population.SplittConnectionGeneIDsThisGeneration.Add(connectionToSplitt.geneID);
+				fromGeneID = population.IDs.ConnectionGeneID;
+				newNodeID = population.IDs.NodeGeneID;
+				toGeneID = population.IDs.ConnectionGeneID;
+				population.newConnectionGenesThisGenerationFromConnectionSplit.Add(connectionToSplitt.geneID, Tuple.Create(fromGeneID, newNodeID, toGeneID));
+			}
+
 			connectionToSplitt.isEnabled = false;
-			var id = population.IDs.NodeGeneID;
-			var newNode = new HiddenNodeGene(id,
+			var newNode = new HiddenNodeGene(newNodeID,
 										genome.nodeGenes.Count,
 										Neat.random.ActivationFunctionType());
 
-			var firstHalfGene = new ConnectionGene(population.IDs.ConnectionGeneID,
+			var firstHalfGene = new ConnectionGene(fromGeneID,
 															connectionToSplitt.fromNodeID,
 															newNode.nodeID,
 															true,
 															1.0f);
 
-			var secondHalfGene = new ConnectionGene(population.IDs.ConnectionGeneID,
+			var secondHalfGene = new ConnectionGene(toGeneID,
 															newNode.nodeID,
 															connectionToSplitt.toNodeID,
 															true,

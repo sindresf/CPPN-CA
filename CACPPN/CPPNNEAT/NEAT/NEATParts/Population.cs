@@ -8,7 +8,8 @@ namespace CPPNNEATCA.NEAT.Parts
 	class Population
 	{
 		public List<Species> species { get; private set; }
-		public List<int> newNodeGenesThisGeneration, newConnectionGenesThisGeneration;
+		public List<int> newNodeGenesThisGeneration, SplittConnectionGeneIDsThisGeneration;
+		public Dictionary<int,Tuple<int,int,int>> newConnectionGenesThisGenerationFromConnectionSplit;
 		private Dictionary<int,float> SpeciesFitnessMap;
 
 		public INeatCA ca;
@@ -93,7 +94,8 @@ namespace CPPNNEATCA.NEAT.Parts
 		public void MakeNextGeneration()
 		{
 			newNodeGenesThisGeneration = new List<int>();
-			newConnectionGenesThisGeneration = new List<int>();
+			SplittConnectionGeneIDsThisGeneration = new List<int>();
+			newConnectionGenesThisGenerationFromConnectionSplit = new Dictionary<int, Tuple<int, int, int>>();
 
 			var allowedPopulaceSize = SpeciesSizes();
 			var speciesRepresentatives = GetSpeciesRepresentatives();
@@ -144,7 +146,7 @@ namespace CPPNNEATCA.NEAT.Parts
 				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID],
 					this,
 					newNodeGenesThisGeneration,
-					newConnectionGenesThisGeneration));
+					SplittConnectionGeneIDsThisGeneration));
 
 			}
 			return missFits;

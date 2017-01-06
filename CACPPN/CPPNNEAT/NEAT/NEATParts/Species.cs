@@ -43,7 +43,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			genome.Initialize(population);
 			for(int i = 0; i < EAParameters.PopulationSize; i++)
 			{
-				NEATIndividual indie = new NEATIndividual(genome, population.IDs);
+				var indie = new NEATIndividual(genome, population.IDs);
 				populace.Add(indie);
 				genome = new NeatGenome(genome);
 			}
