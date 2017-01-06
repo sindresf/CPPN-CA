@@ -56,6 +56,11 @@ namespace CPPNNEATCA.CPPN.Parts
 				return null;
 			}
 		}
+
+		public static float GetFunctionDifference(ActivationFunctionType type1, ActivationFunctionType type2)
+		{
+			return CPPNParameters.ActivationFunctionSimilarity[(int)type1, (int)type2];
+		}
 	}
 	class SinusFunction : ActivationFunction
 	{

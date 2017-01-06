@@ -72,14 +72,14 @@ namespace CPPNNEATCA.NEAT.Parts
 				}
 		}
 
-		public static NeatGenome GetLonger(NeatGenome genome1, NeatGenome genome2)
+		public static NeatGenome GetMostConnected(NeatGenome genome1, NeatGenome genome2)
 		{
-			return genome1.IsLongerThan(genome2) ? genome1 : genome2;
+			return genome1.IsMoreConnectedThan(genome2) ? genome1 : genome2;
 		}
 
-		public static NeatGenome GetShorter(NeatGenome genome1, NeatGenome genome2)
+		public static NeatGenome GetLeastConnected(NeatGenome genome1, NeatGenome genome2)
 		{
-			return genome1.IsLongerThan(genome2) ? genome2 : genome1;
+			return genome1.IsMoreConnectedThan(genome2) ? genome2 : genome1;
 		}
 	}
 }

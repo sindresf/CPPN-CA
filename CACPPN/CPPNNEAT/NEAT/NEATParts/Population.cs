@@ -119,18 +119,24 @@ namespace CPPNNEATCA.NEAT.Parts
 		private int CalculateSpeciesAllowedPopulaceCount(Species sp, int avgSpots)
 		{
 			int SDCount = 0;
-			int skewDir = 1;
-			float higherGoal = sp.SpeciesFitness;
-			float lowerGoal = sp.SpeciesFitness;
+			float goalFitness = sp.SpeciesFitness;
 			float growingFitness = avgSpeciesFitness;
-			if(growingFitness > sp.SpeciesFitness) skewDir *= -1;
-
-			while(growingFitness > lowerGoal && growingFitness < higherGoal)
+			bool goingUp = growingFitness < goalFitness;
+			if(goingUp)
 			{
-				SDCount += skewDir;
-				growingFitness += SpeciesFitnessSD * skewDir;
+				while(growingFitness < goalFitness)
+				{
+					SDCount++;
+					growingFitness += SpeciesFitnessSD * 0.25f;
+				}
+			} else
+			{
+				while(growingFitness > goalFitness)
+				{
+					SDCount++;
+					growingFitness += SpeciesFitnessSD * -1 * 0.25f;
+				}
 			}
-
 			return (int)(avgSpots + SDCount * 2.0).Clamp(0, EAParameters.PopulationSize);
 		}
 

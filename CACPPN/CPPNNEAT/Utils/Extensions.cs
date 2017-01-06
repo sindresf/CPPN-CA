@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CPPNNEAT.Utils;
+using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
 using CPPNNEATCA.NEAT.Base;
@@ -76,19 +77,9 @@ namespace CPPNNEATCA.Utils
 		{
 			return indie1.genome.connectionGenes.Count < limit && indie2.genome.connectionGenes.Count < limit;
 		}
-		public static bool IsLongerThan(this NeatGenome genom1, NeatGenome genome2)
+		public static bool IsMoreConnectedThan(this NeatGenome genom1, NeatGenome genome2)
 		{
 			return genom1.connectionGenes.Count > genome2.connectionGenes.Count;
-		}
-		public static int GetHighestConnectionGeneID(this NeatGenome genome)
-		{
-			int max = 0;
-			foreach(Gene gene in genome.connectionGenes)
-			{
-				if(gene.geneID > max)
-					max = gene.geneID;
-			}
-			return max;
 		}
 		public static float GetWeightDifference(this ConnectionGene gene1, ConnectionGene gene2)
 		{
@@ -100,29 +91,44 @@ namespace CPPNNEATCA.Utils
 
 			float excessVar = 0.0f;
 			float disjointVar = 0.0f;
-			float functionVar = 0.0f; //Needs incorporating
+			float functionVar = 0.0f;
 			float weightDiffSum = 0.0f;
-			int sameGeneCount = 0;
+			int sameConnGeneCount = 0;
 
-			//TODO need a "longest of nodeGene" function
-			//TODO need to go through nodeGenes
-			//	TODO so that function difference can be done
+			var shortestNodeSequence = indie1.genome.nodeGenes.Count < indie2.genome.nodeGenes.Count ? indie1.genome.nodeGenes.Count : indie2.genome.nodeGenes.Count;
+			var nodes1 = indie1.genome.nodeGenes;
+			var nodes2 = indie2.genome.nodeGenes;
+			int nodeIndex = 0;
+			while(nodeIndex < shortestNodeSequence)
+			{
+				var node1 = nodes1[nodeIndex];
+				var node2 = nodes2[nodeIndex];
+				if(node1.geneID == node2.geneID)
+				{
+					if(node1.type == NodeType.Hidden)
+						if(node2.type != NodeType.Hidden) throw new Exception("gene describing totally different things");
+						else
+							functionVar += ActivationFunction.GetFunctionDifference(((HiddenNodeGene)node1).Function.Type, ((HiddenNodeGene)node2).Function.Type);
+				} else
+					difference += 0.1f;
+				nodeIndex++;
+			}
 
-			List<ConnectionGene> longestGeneSequence = NeatGenome.GetLonger(indie1.genome, indie2.genome).connectionGenes;
-			List<ConnectionGene> shortestGeneSequence = NeatGenome.GetShorter(indie1.genome, indie2.genome).connectionGenes;
+			var longestGeneSequence = NeatGenome.GetMostConnected(indie1.genome, indie2.genome).connectionGenes;
+			var shortestGeneSequence = NeatGenome.GetLeastConnected(indie1.genome, indie2.genome).connectionGenes;
 
 			int disjointID = shortestGeneSequence[shortestGeneSequence.Count-1].geneID;
 
 
 			int shortIndex = 0;
 			foreach(ConnectionGene gene in longestGeneSequence)
-			{ // juuust might be able to restructure this for readability O:)
+			{
 				if(shortIndex < shortestGeneSequence.Count)
 				{
-					ConnectionGene shortGene = shortestGeneSequence[shortIndex];
+					var shortGene = shortestGeneSequence[shortIndex];
 					if(gene.geneID == shortGene.geneID)
 					{
-						sameGeneCount++;
+						sameConnGeneCount++;
 						weightDiffSum += gene.GetWeightDifference(shortGene);
 					} else
 					{
@@ -135,7 +141,7 @@ namespace CPPNNEATCA.Utils
 					else if(gene.geneID > disjointID) excessVar++;
 					else
 					{
-						sameGeneCount++;
+						sameConnGeneCount++;
 						weightDiffSum += gene.GetWeightDifference(shortestGeneSequence[shortestGeneSequence.Count - 1]);
 					}
 				}
@@ -151,7 +157,7 @@ namespace CPPNNEATCA.Utils
 			difference += excessVar * EAParameters.ExcessSimilarityWeight;
 			difference += disjointVar * EAParameters.DisjointSimilarityWeight;
 			difference += functionVar * EAParameters.FunctionSimilarityWeight;
-			difference += (weightDiffSum / sameGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
+			difference += (weightDiffSum / sameConnGeneCount) * EAParameters.WeightDifferenceSimilarityWeight;
 			return difference;
 		}
 		public static bool Contains(this ConnectionGeneSequence connGenes, int fromID, int toID)
