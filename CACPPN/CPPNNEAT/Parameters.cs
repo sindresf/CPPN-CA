@@ -30,8 +30,8 @@ namespace CPPNNEATCA
 			CAExperiment = experimentCA;
 		}
 
-		public const int PopulationSize = 100;
-		public const int MaximumRuns = 80;
+		public const int PopulationSize = 150;
+		public const int MaximumRuns = 30;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
 		public const int SetNToOneLimit = 12;
 		public const int LowerChampionSpeciesCount = 5;

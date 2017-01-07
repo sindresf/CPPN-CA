@@ -8,16 +8,13 @@ namespace CPPNNEATCA.NEAT.Parts
 
 	struct MutationChances //check these up against standard NEAT settings
 	{
-		public const float MutatWeightAmount   = 0.1f;
-		public const double CreationMutationChance = 0.05; // <- completely out of my ass, like most of these
-
 		private const double AddNewNode          = 0.03;
 		private const double AddNewConnection    = 0.05;
 		private const double ChangeNodeFunction  = 0.01;
 
-		private const double MutateWeights       = 0.8;
 		private const double MutateWeight        = 0.90;
-		private const double RandomResetWeight   = 0.1;
+		public const float MutatWeightAmount   = 0.05f;
+		private const double RandomResetWeight   = 0.08;
 		private const double DisableInheritedGene = 0.75;
 
 		public static double GetChanceFor(MutationType type)
@@ -28,8 +25,8 @@ namespace CPPNNEATCA.NEAT.Parts
 				return AddNewNode;
 			case MutationType.AddConnection:
 				return AddNewConnection;
-			case MutationType.ChangeWeight:
-				return MutatWeightAmount;
+			case MutationType.MutateWeight:
+				return MutateWeight;
 			case MutationType.ChangeFunction:
 				return ChangeNodeFunction;
 			default:
@@ -38,11 +35,11 @@ namespace CPPNNEATCA.NEAT.Parts
 		}
 	}
 
-	enum MutationType //by ordering this you can order the mutations in case of several for the same genome
-	{// like adding a node and a connection before changing a weight might be nice, so that every weight is present.
+	enum MutationType
+	{
 		AddNode,
 		AddConnection,
-		ChangeWeight,
+		MutateWeight,
 		ChangeFunction
 	}
 
@@ -65,7 +62,7 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			switch(type)
 			{
-			case MutationType.ChangeWeight:
+			case MutationType.MutateWeight:
 				return ChangeWeight(genome);
 			case MutationType.AddConnection:
 				return AddConnection(genome, population);
@@ -288,6 +285,7 @@ namespace CPPNNEATCA.NEAT.Parts
 						throw new Exception("an InvolvedNode was in neither parent nodeGeneSequence!");
 				}
 			}
+			if(childNodes.Count <= 3) Console.WriteLine("what"); //THIS NEEDS FIX!!! :O :O 
 			return childNodes;
 		}
 		private static List<int> AddExcessGenes(NeatGenome childGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, List<int> InvolvedNodes, int geneIndex)

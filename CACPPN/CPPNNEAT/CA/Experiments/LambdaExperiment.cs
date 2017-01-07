@@ -21,12 +21,12 @@ namespace CPPNNEATCA.CA.Experiments
 	{
 
 		//private static int[] results = new int[] {0,0,0,0,0,0,0,0}; // lambda = 1
-		private static int[] results = new int[] {0,1,0,0,1,1,0,0}; // lambda = 2
-																	//private static int[] results = new int[] {1,1,1,0,1,1,1,0}; // lambda = 3
-																	//private static int[] results = new int[] {0,1,1,0,1,0,1,0}; // lambda = 4 RULE 30 
+		//private static int[] results = new int[] {0,1,0,0,1,1,0,0}; // lambda = 2
+		//private static int[] results = new int[] {1,1,1,0,1,1,1,0}; // lambda = 3
+		private static int[] results = new int[] {0,1,1,0,1,0,1,0}; // lambda = 4 RULE 30 
 																	//private static int[] results = new int[] {0,0,1,1,1,1,1,0}; // lambda = 4 RULE 110 
 
-		private static RuleSet ruleSet = new RuleSet(results);
+		public static RuleSet ruleSet = new RuleSet(results);
 		public LambdaExperiment() : base()
 		{
 
@@ -66,17 +66,18 @@ namespace CPPNNEATCA.CA.Experiments
 				{
 					var node = (OutputNetworkNode)inode;
 					if(node.representedState == wantedState)
-						Fitness += Math.Pow(node.Activation, 2);
+						Fitness += Math.Pow(Math.Abs(0 - node.Activation), 2.0);
 					else
-						Fitness -= Math.Pow(1 - node.Activation, 2);
+						Fitness -= Math.Pow(Math.Abs(0 - node.Activation), 2.0);
 				}
 
 
-				//bool same = network.GetNextState(rule) == wantedState;
-				//if(same) Fitness += 13;
-				//else Fitness -= 5;
+				/*bool same = network.GetNextState(rule) == wantedState;
+				if(same) Fitness += 1;
+				else Fitness -= 2;*/
+				network.ResetNetwork();
 			}
-			return (float)Math.Pow(Fitness, 2);
+			return (float)Fitness;
 		}
 	}
 

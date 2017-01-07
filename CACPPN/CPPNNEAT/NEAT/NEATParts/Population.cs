@@ -294,5 +294,23 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			return bestIndie;
 		}
+		public NEATIndividual GetBiggestIndividual()
+		{
+			int mostStuff = 0;
+			NEATIndividual biggestIndie = null;
+			foreach(Species sp in species)
+			{
+				foreach(var indie in sp.populace)
+				{
+					int indieStuff = indie.genome.nodeGenes.Count + indie.genome.connectionGenes.Count;
+					if(indieStuff > mostStuff)
+					{
+						mostStuff = indieStuff;
+						biggestIndie = indie;
+					}
+				}
+			}
+			return biggestIndie;
+		}
 	}
 }

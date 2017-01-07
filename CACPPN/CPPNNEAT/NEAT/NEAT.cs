@@ -17,8 +17,8 @@ namespace CPPNNEATCA.NEAT
 		public static readonly TupleList<float, ActivationFunctionType> ActivationFunctionChances = CPPNParameters.ActivationFunctionChanceIntervals;
 		public static readonly Random random;
 
-		public NEATIndividual bestAchieved;
-		public int generationOfBest = 0;
+		public NEATIndividual bestAchieved, biggestAchieved;
+		public int generationOfBest = 0, generationOfBiggest = 0;
 
 		public Neat()
 		{
@@ -40,6 +40,7 @@ namespace CPPNNEATCA.NEAT
 		{
 			population.Initialize();
 			bestAchieved = population.GetBestIndividual();
+			biggestAchieved = population.GetBiggestIndividual();
 		}
 
 		public override void EvaluatePopulation(int currentGeneration)
@@ -50,6 +51,14 @@ namespace CPPNNEATCA.NEAT
 			{
 				bestAchieved = challenger;
 				generationOfBest = currentGeneration;
+			}
+			int mostStuff = biggestAchieved.genome.nodeGenes.Count + biggestAchieved.genome.connectionGenes.Count;
+			challenger = population.GetBiggestIndividual();
+			int challengerStuff = challenger.genome.nodeGenes.Count + challenger.genome.connectionGenes.Count;
+			if(challenger != null && challengerStuff > mostStuff)
+			{
+				biggestAchieved = challenger;
+				generationOfBiggest = currentGeneration;
 			}
 		}
 
@@ -81,6 +90,11 @@ namespace CPPNNEATCA.NEAT
 		{
 			var bestIndie = population.GetBestIndividual();
 			return bestIndie;
+		}
+		public Individual GetBiggestIndividual()
+		{
+			var biggestIndie = population.GetBiggestIndividual();
+			return biggestIndie;
 		}
 	}
 }

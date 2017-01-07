@@ -73,6 +73,7 @@ namespace CPPNNEATCA.Utils
 		}
 		public static NodeGene NotInputNodeGene(this Random rand, NeatGenome genome)
 		{
+			if(genome.nodeGenes.Count <= Neat.parameters.CPPN.InputSize) throw new Exception("not enough range here!");
 			return genome.nodeGenes[rand.Next(Neat.parameters.CPPN.InputSize, genome.nodeGenes.Count)];
 		}
 		public static NodeGene InternalNodeGene(this Random rand, NeatGenome genome)

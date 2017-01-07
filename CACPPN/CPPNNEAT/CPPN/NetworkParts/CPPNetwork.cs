@@ -41,7 +41,6 @@ namespace CPPNNEATCA.CPPN.Parts
 				switch(gene.type)
 				{
 				case NodeType.Sensor:
-					if(nodeID == 3 || nodeID == 4) Console.WriteLine(nodeID + " just happened");
 					inputNodes.Add(nodeID, new InputNetworkNode(nodeID));
 					break;
 				case NodeType.Hidden:
@@ -124,20 +123,6 @@ namespace CPPNNEATCA.CPPN.Parts
 				var node = ((OutputNetworkNode)Inode);
 				if(!node.IsFullyNotified)
 				{
-					/*Console.WriteLine();
-					Console.WriteLine("nodeID:{0} state:{1}, shouldHave:{2} had:{3}", node.nodeID, node.representedState, node.shouldHave, node.inValues.Count);
-					Console.WriteLine("incoming connections:");
-					var wKeys = new int[node.inWeights.Keys.Count];
-					var vKeys = new int[node.inValues.Keys.Count];
-					node.inWeights.Keys.CopyTo(wKeys, 0);
-					node.inValues.Keys.CopyTo(vKeys, 0);
-					Console.Write("connections: ");
-					foreach(var w in wKeys)
-						Console.Write(w + " ");
-					Console.Write("\nvalues received: ");
-					foreach(var v in vKeys)
-						Console.Write(v + " ");
-					Console.WriteLine();*/
 					//throw new Exception("The fuck!? not notified output node!");
 				}
 				var activationLevel = node.Activation;
@@ -149,7 +134,7 @@ namespace CPPNNEATCA.CPPN.Parts
 			}
 			return voted;
 		}
-		private void ResetNetwork()
+		public void ResetNetwork()
 		{
 			foreach(InternalNetworkNode node in hiddenNodes.Values)
 				node.RemoveOldInput();

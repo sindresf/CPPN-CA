@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CPPNNEATCA.CA.Experiments;
+using CPPNNEATCA.CPPN.Parts;
 using CPPNNEATCA.EA.Base;
 using CPPNNEATCA.NEAT;
 
@@ -91,6 +93,38 @@ namespace CPPNNEATCA
 				if(gene.isEnabled)
 					count++;
 			Console.WriteLine(" enabled:{0}", count);
+			Console.WriteLine("biggest individual in existence:");
+			var biggest = ((Neat)neat).biggestAchieved;
+			Console.WriteLine("individualID: {0} generation:{1}", biggest.individualID, ((Neat)neat).generationOfBiggest);
+			Console.WriteLine("\tFitness:{0}", biggest.Fitness);
+			Console.WriteLine("\tstats:");
+			Console.WriteLine("\t\tnodes:{0}", biggest.genome.nodeGenes.Count);
+			Console.Write("\t\tConnections:{0}", biggest.genome.connectionGenes.Count);
+			count = 0;
+			foreach(var gene in biggest.genome.connectionGenes)
+				if(gene.isEnabled)
+					count++;
+			Console.WriteLine(" enabled:{0}", count);
+			Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine("so what the best do?");
+			Console.WriteLine("wanted_gotten rule-results:");
+			foreach(var rule in LambdaExperiment.ruleSet)
+			{
+				Console.WriteLine("rule:{0} _ best:{1}", rule.Result, best.network.GetNextState(rule));
+				((CPPNetwork)(best.network)).ResetNetwork();
+			}
+			Console.WriteLine();
+			Console.WriteLine("so what the biggest do?");
+			Console.WriteLine("wanted_gotten rule-results:");
+			foreach(var rule in LambdaExperiment.ruleSet)
+			{
+				Console.WriteLine("rule:{0} _ best:{1}", rule.Result, best.network.GetNextState(rule));
+				((CPPNetwork)(biggest.network)).ResetNetwork();
+			}
+			Console.WriteLine();
+
+
 			if(solvedit)
 				Console.WriteLine("your perfect genome is ready for you in {0}", @"C:/genes");
 		}
