@@ -32,7 +32,15 @@ namespace CPPNNEATCA.CPPN.Parts
 				if(!seenBefore.Contains(node.nodeID))
 					seenBefore.Add(node.nodeID);
 				else
-					throw new Exception("same nodeID in network!");
+				{
+					Console.WriteLine();
+					foreach(var n in nodeGenes)
+					{
+						Console.Write("nID:{0} ", n.nodeID);
+					}
+					Console.WriteLine();
+					throw new Exception("network same nodeID in network!");
+				}
 
 			int representedState = 0;
 			foreach(NodeGene gene in nodeGenes)
@@ -108,7 +116,7 @@ namespace CPPNNEATCA.CPPN.Parts
 					{
 						node.PropagateOutput();
 						doneNodesID.Add(node.nodeID);
-					} //else is a recurrent thing or something
+					}
 				foreach(int ID in doneNodesID)
 					awaitingNotificationsNodes.Remove(ID);
 				whileRuns++;

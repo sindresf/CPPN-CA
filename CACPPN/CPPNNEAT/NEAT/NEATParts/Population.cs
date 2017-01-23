@@ -8,9 +8,9 @@ namespace CPPNNEATCA.NEAT.Parts
 	class Population
 	{
 		public List<Species> species { get; private set; }
-		public List<int> newNodeGenesThisGeneration, SplittConnectionGeneIDsThisGeneration;
-		public Dictionary<Tuple<int,int>, int> addedConnectionsThisGeneration;
-		public Dictionary<int,Tuple<int,int,int>> newConnectionGenesThisGenerationFromConnectionSplit;
+		public List<int> newNodeGenesThisGeneration, PreviouslySplitConnectionGeneIDs;
+		public Dictionary<Tuple<int,int>, int> PreviouslyAddedConnections;
+		public Dictionary<int,Tuple<int,int,int,int>> PreviouslySplitConnections;
 		private Dictionary<int,float> SpeciesFitnessMap;
 		public Dictionary<int,int> allowedPopulaceSize;
 
@@ -27,6 +27,10 @@ namespace CPPNNEATCA.NEAT.Parts
 			SpeciesFitnessMap = new Dictionary<int, float>();
 			avgSpeciesFitness = 0.0f;
 			SpeciesFitnessSD = 0.0f;
+			newNodeGenesThisGeneration = new List<int>();
+			PreviouslySplitConnectionGeneIDs = new List<int>();
+			PreviouslyAddedConnections = new Dictionary<Tuple<int, int>, int>();
+			PreviouslySplitConnections = new Dictionary<int, Tuple<int, int, int, int>>();
 			//HERE HERE HERE BULLSHITT!
 			//var x = PieChart.ProcessFile(File.Open("lol", FileMode.Open));
 		}
@@ -96,11 +100,6 @@ namespace CPPNNEATCA.NEAT.Parts
 
 		public void MakeNextGeneration()
 		{
-			newNodeGenesThisGeneration = new List<int>();
-			SplittConnectionGeneIDsThisGeneration = new List<int>();
-			addedConnectionsThisGeneration = new Dictionary<Tuple<int, int>, int>();
-			newConnectionGenesThisGenerationFromConnectionSplit = new Dictionary<int, Tuple<int, int, int>>();
-
 			allowedPopulaceSize = SpeciesSizes();
 			var speciesRepresentatives = GetSpeciesRepresentatives();
 			var missfits = GetMissFitsFromSpeciesNextGeneration();
@@ -214,7 +213,7 @@ namespace CPPNNEATCA.NEAT.Parts
 				missFits.AddRange(sp.MakeNextGeneration(allowedPopulaceSize[sp.speciesID],
 					this,
 					newNodeGenesThisGeneration,
-					SplittConnectionGeneIDsThisGeneration));
+					PreviouslySplitConnectionGeneIDs));
 			return missFits;
 		}
 

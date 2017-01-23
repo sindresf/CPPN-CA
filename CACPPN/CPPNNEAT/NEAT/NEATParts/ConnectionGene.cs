@@ -1,4 +1,6 @@
-﻿using CPPNNEATCA.EA.Base;
+﻿using System;
+using CPPNNEATCA.EA.Base;
+using CPPNNEATCA.Utils;
 
 namespace CPPNNEATCA.NEAT.Parts
 {
@@ -16,12 +18,15 @@ namespace CPPNNEATCA.NEAT.Parts
 			this.connectionWeight = connectionWeight;
 		}
 
-		public ConnectionGene(ConnectionGene gene) : base(gene.geneID)
+		public ConnectionGene(ConnectionGene gene, bool newWeight = false) : base(gene.geneID)
 		{
 			fromNodeID = gene.fromNodeID;
 			toNodeID = gene.toNodeID;
 			isEnabled = gene.isEnabled;
-			connectionWeight = gene.connectionWeight;
+			if(newWeight)
+				connectionWeight = Neat.random.InitialConnectionWeight();
+			else
+				connectionWeight = gene.connectionWeight;
 		}
 	}
 }

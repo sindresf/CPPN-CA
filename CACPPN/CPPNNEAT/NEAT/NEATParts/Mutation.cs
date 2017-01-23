@@ -79,26 +79,49 @@ namespace CPPNNEATCA.NEAT.Parts
 		{
 			var connectionToSplitt = Neat.random.ConnectionGene(genome);
 			int fromGeneID = -1;
+			int newNodeGeneID = -1;
 			int newNodeID = -1;
 			int toGeneID = -1;
-			if(population.SplittConnectionGeneIDsThisGeneration.Contains(connectionToSplitt.geneID))
+			if(population.PreviouslySplitConnectionGeneIDs.Contains(connectionToSplitt.geneID))
 			{
-				var IDs = population.newConnectionGenesThisGenerationFromConnectionSplit[connectionToSplitt.geneID];
+				var IDs = population.PreviouslySplitConnections[connectionToSplitt.geneID];
 				fromGeneID = IDs.Item1;
-				newNodeID = IDs.Item2;
-				toGeneID = IDs.Item3;
+				newNodeGeneID = IDs.Item2;
+				newNodeID = IDs.Item3;
+				toGeneID = IDs.Item4;
+				if(genome.nodeGenes.Contains(newNodeGeneID))
+				{
+					Console.WriteLine();
+					foreach(var n in genome.nodeGenes)
+						Console.Write("nID:{0} ", n.nodeID);
+
+					Console.WriteLine();
+					throw new Exception("already this generation same nodeID in network!");
+				}
+
 			} else
 			{
-				population.SplittConnectionGeneIDsThisGeneration.Add(connectionToSplitt.geneID);
+				population.PreviouslySplitConnectionGeneIDs.Add(connectionToSplitt.geneID);
 				fromGeneID = population.IDs.ConnectionGeneID;
-				newNodeID = population.IDs.NodeGeneID;
+				newNodeGeneID = population.IDs.NodeGeneID;
+				newNodeID = genome.nodeGenes.Count + 1; //not ok!
 				toGeneID = population.IDs.ConnectionGeneID;
-				population.newConnectionGenesThisGenerationFromConnectionSplit.Add(connectionToSplitt.geneID, Tuple.Create(fromGeneID, newNodeID, toGeneID));
+				population.PreviouslySplitConnections.Add(connectionToSplitt.geneID, Tuple.Create(fromGeneID, newNodeGeneID, newNodeID, toGeneID));
+				var seeneBefore = new List<int>();
+				if(genome.nodeGenes.Contains(newNodeGeneID))
+				{
+					Console.WriteLine();
+					foreach(var n in genome.nodeGenes)
+						Console.Write("nID:{0} ", n.nodeID);
+
+					Console.WriteLine();
+					throw new Exception("new this generation same nodeID in network!");
+				}
 			}
 
 			connectionToSplitt.isEnabled = false;
-			var newNode = new HiddenNodeGene(newNodeID,
-										genome.nodeGenes.Count,
+			var newNode = new HiddenNodeGene(newNodeGeneID,
+										newNodeID,
 										Neat.random.ActivationFunctionType());
 
 			var firstHalfGene = new ConnectionGene(fromGeneID,
@@ -112,10 +135,32 @@ namespace CPPNNEATCA.NEAT.Parts
 															connectionToSplitt.toNodeID,
 															true,
 															(float)Neat.random.NextRangedDouble(0.0,CPPNParameters.InitialMaxConnectionWeight));
-
+			if(genome.nodeGenes.Contains(newNode.nodeID))
+			{
+				Console.WriteLine();
+				foreach(var n in genome.nodeGenes)
+					Console.Write("nID:{0} ", n.nodeID);
+				Console.WriteLine("newID:{0} - newNodeID:{1}", newNode.nodeID, newNodeGeneID);
+				Console.WriteLine();
+				throw new Exception("addNode NewNode same nodeID in network!");
+			}
 			genome.nodeGenes.Add(newNode);
 			genome.connectionGenes.Add(firstHalfGene);
 			genome.connectionGenes.Add(secondHalfGene);
+			var seenBefore = new List<int>();
+			foreach(var node in genome.nodeGenes)
+				if(!seenBefore.Contains(node.nodeID))
+					seenBefore.Add(node.nodeID);
+				else
+				{
+					Console.WriteLine();
+					foreach(var n in genome.nodeGenes)
+					{
+						Console.Write("nID:{0} ", n.nodeID);
+					}
+					Console.WriteLine();
+					throw new Exception("addNode same nodeID in network!");
+				}
 			return genome;
 		}
 
@@ -162,12 +207,12 @@ namespace CPPNNEATCA.NEAT.Parts
 			}
 			int id = -1;
 			var key = Tuple.Create(fromNode.nodeID, toNode.nodeID);
-			if(population.addedConnectionsThisGeneration.ContainsKey(key))
-				id = population.addedConnectionsThisGeneration[key];
+			if(population.PreviouslyAddedConnections.ContainsKey(key)) //TODO finish the gene tracking stuff!
+				id = population.PreviouslyAddedConnections[key];
 			else
 			{
 				id = population.IDs.ConnectionGeneID;
-				population.addedConnectionsThisGeneration.Add(key, id);
+				population.PreviouslyAddedConnections.Add(key, id);
 			}
 
 			var conGene = new ConnectionGene(id,
@@ -232,6 +277,20 @@ namespace CPPNNEATCA.NEAT.Parts
 			AddExcessGenes(childGenome, conns1, conns2, InvolvedNodes, geneIndex);
 
 			childGenome.nodeGenes.AddRange(GetInvolvedNodesFromConnections(InvolvedNodes, nodes1, nodes2));
+			var seenBefore = new List<int>();
+			foreach(var node in childGenome.nodeGenes)
+				if(!seenBefore.Contains(node.nodeID))
+					seenBefore.Add(node.nodeID);
+				else
+				{
+					Console.WriteLine();
+					foreach(var n in childGenome.nodeGenes)
+					{
+						Console.Write("nID:{0} ", n.nodeID);
+					}
+					Console.WriteLine();
+					throw new Exception("Crossover same nodeID in network!");
+				}
 			return childGenome;
 		}
 		private static List<int> HandleMatchingAndDisjointConnectionGenes(NeatGenome childGenome, NeatGenome mostFitGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, bool equalFitness, List<int> InvolvedNodes, int geneIndex)
@@ -285,7 +344,6 @@ namespace CPPNNEATCA.NEAT.Parts
 						throw new Exception("an InvolvedNode was in neither parent nodeGeneSequence!");
 				}
 			}
-			if(childNodes.Count <= 3) Console.WriteLine("what"); //THIS NEEDS FIX!!! :O :O 
 			return childNodes;
 		}
 		private static List<int> AddExcessGenes(NeatGenome childGenome, ConnectionGeneSequence conns1, ConnectionGeneSequence conns2, List<int> InvolvedNodes, int geneIndex)

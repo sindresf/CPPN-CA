@@ -33,20 +33,20 @@ namespace CPPNNEATCA
 		public const int PopulationSize = 150;
 		public const int MaximumRuns = 30;
 		public const int SpeciesImprovementTriesBeforeDeath = 15;
-		public const int SetNToOneLimit = 12;
+		public const int SetNToOneLimit = 6;
 		public const int LowerChampionSpeciesCount = 5;
 
 		public const float ExcessSimilarityWeight = 1.0f;
 		public const float DisjointSimilarityWeight = 1.0f;
 		public const float FunctionSimilarityWeight = 1.0f;
-		public const float WeightDifferenceSimilarityWeight = 1f;
-		public const float SpeciesInclusionRadius = 3.0f;
+		public const float WeightDifferenceSimilarityWeight = 1.5f;
+		public const float SpeciesInclusionRadius = 2.5f;
 
-		public static float ASexualReproductionQuota = 0.25f;
-		public static float SexualReproductionStillMutateChance = 0.06f;
+		public static float ASexualReproductionQuota = 0.3f;
+		public static float SexualReproductionStillMutateChance = 0.08f;
 
 		public static bool RandomGeneStart = true;
-		public static float RandomGeneStartChance = 0.06f;
+		public static float RandomGeneStartChance = 0.12f;
 
 		public static bool IsSeededRun = false;
 		public static int RandomSeed = 42;

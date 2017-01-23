@@ -17,7 +17,7 @@ namespace CPPNNEATCA.NEAT.Parts
 			hasMutated = false;
 		}
 
-		public NeatGenome(NeatGenome copyFromGenome)
+		public NeatGenome(NeatGenome copyFromGenome, bool init = false)
 		{
 			nodeGenes = new NodeGeneSequence();
 			connectionGenes = new ConnectionGeneSequence();
@@ -31,7 +31,12 @@ namespace CPPNNEATCA.NEAT.Parts
 					nodeGenes.Add(new OutputNodeGene(((OutputNodeGene)gene)));
 			}
 			foreach(ConnectionGene gene in copyFromGenome.connectionGenes)
-				connectionGenes.Add(new ConnectionGene(gene));
+			{
+				if(init)
+					connectionGenes.Add(new ConnectionGene(gene, newWeight: true));
+				else
+					connectionGenes.Add(new ConnectionGene(gene));
+			}
 			hasMutated = false;
 		}
 

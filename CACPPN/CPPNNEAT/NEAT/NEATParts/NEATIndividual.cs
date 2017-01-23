@@ -11,10 +11,13 @@ namespace CPPNNEATCA.NEAT.Parts
 		public NeatGenome genome;
 		public ICPPNetwork network;
 
-		public NEATIndividual(NeatGenome genome, IDCounters IDs) : base(IDs.IndividualID)
+		public NEATIndividual(NeatGenome genome, IDCounters IDs, bool init = false) : base(IDs.IndividualID)
 		{
 			Fitness = 0.0f;
-			this.genome = genome;
+			if(init)
+				this.genome = new NeatGenome(genome, init: true);
+			else
+				this.genome = new NeatGenome(genome);
 		}
 
 		public NEATIndividual(NEATIndividual indie) : base(indie.individualID)
